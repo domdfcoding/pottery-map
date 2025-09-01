@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    
+
         <script>
             L_NO_TOUCH = false;
             L_DISABLE_3D = false;
         </script>
-    
+
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
     <link rel="stylesheet" href="./pottery_map.css"/>
-    
+
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
@@ -35,17 +35,17 @@
                 }
                 .leaflet-container { font-size: 16px; }
             </style>
-        
+
 </head>
 <body>
-    
-    
+
+
             <div class="folium-map" id="map_4ca15b4e5e693457da7dd773ad7a4b3e" ></div>
-        
+
 </body>
 <script>
-    
-    
+
+
             var map_4ca15b4e5e693457da7dd773ad7a4b3e = L.map(
                 "map_4ca15b4e5e693457da7dd773ad7a4b3e",
                 {
@@ -57,46 +57,46 @@
                 }
             );
 
-            
 
-        
-    
+
+
+
             var tile_layer_22027d300691ec9d7156c6f78385bb9a = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
-        
-    
+
+
             tile_layer_22027d300691ec9d7156c6f78385bb9a.addTo(map_4ca15b4e5e693457da7dd773ad7a4b3e);
-        
-    
+
+
             var marker_541509b2e7dfa1f816bdf966f299dcb4 = L.marker(
                 [53.02308684898784, -2.1629028183132877],
                 {}
             ).addTo(map_4ca15b4e5e693457da7dd773ad7a4b3e);
-        
-    
+
+
         var popup_8beba15a3374ab642f8cae807e3d0190 = L.popup({"maxWidth": 250});
 
-        
-            
+
+
                 var html_e253b3f1c22d6b8c1724f6f160274fbf = $(`<div id="html_e253b3f1c22d6b8c1724f6f160274fbf" style="width: 100.0%; height: 100.0%;"><div class="item-details"> <ul> 	<li>J & G Meakin</li> 	<li>Eagle Pottery</li> 	<li>Earthenware</li> 	<li>Plate</li> 	<li>Strawberry Border</li> </ul> <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" /> </div> </div>`)[0];
                 popup_8beba15a3374ab642f8cae807e3d0190.setContent(html_e253b3f1c22d6b8c1724f6f160274fbf);
-            
-        
+
+
 
         marker_541509b2e7dfa1f816bdf966f299dcb4.bindPopup(popup_8beba15a3374ab642f8cae807e3d0190)
         ;
 
-        
-    
-    
+
+
+
             marker_541509b2e7dfa1f816bdf966f299dcb4.bindTooltip(
                 `<div>
                      J & G Meakin
                  </div>`,
                 {"sticky": true}
             );
-        
+
 </script>
 </html>

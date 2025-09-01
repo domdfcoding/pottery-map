@@ -1,5 +1,6 @@
-import folium
+# 3rd party
 import dom_toml
+import folium
 
 m = folium.Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
 m.add_css_link("pottery_map.css", "./pottery_map.css")
@@ -32,11 +33,9 @@ for item in pottery:
 </div>
 """
 	folium.Marker(
-		location=[item["location"]["latitude"], item["location"]["longitude"]],
-		tooltip=item["company"],
-		popup=folium.Popup(popup_text, max_width=250),
-		# icon=folium.Icon(icon="cloud"),
-	).add_to(m)
-
+			location=[item["location"]["latitude"], item["location"]["longitude"]],
+			tooltip=item["company"],
+			popup=folium.Popup(popup_text, max_width=250),
+			).add_to(m)
 
 m.save("index.html")
