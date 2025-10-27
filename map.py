@@ -66,8 +66,8 @@ for company, company_data in pottery_by_company.items():
 		popup_text += f"""
 <ul>
 	<li>{item['design']}</li>
-	<li>{item['type']}</li>
-	<li>{item['item']}</li>
+	<li>{item['type']} {item['item']}</li>
+	<li>{item['era']}</li>
 </ul>
 <img class="pottery-image" src="{item['photo_url']}" />
 	"""

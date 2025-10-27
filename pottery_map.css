@@ -7,3 +7,7 @@ img.pottery-image {
 	max-height: 50vh;
 	overflow-y: scroll;
 }
+
+.item-details ul {
+	list-style-type: none;
+}
