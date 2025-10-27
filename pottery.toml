@@ -1,8 +1,8 @@
-["J & G Meakin Strawberry Border"]
+["J & G Meakin Libelle Marjolein Bastin"]
 company = "J & G Meakin"
 factory = "Eagle Pottery"
-location = {"latitude" = 53.02308684898784, "longitude" = -2.1629028183132877}
 type = "Earthenware"
-"item" = "Plate"
-"design" = "Strawberry Border"
+item = "Plate"
+design = "Strawberry Border"
+era = "c1970-c2000"
 "photo_url" = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"

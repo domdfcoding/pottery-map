@@ -2,3 +2,8 @@ img.pottery-image {
 	max-width: 240px;
 	height: auto;
 }
+
+.item-details {
+	max-height: 50vh;
+	overflow-y: scroll;
+}
