@@ -34,7 +34,7 @@ from typing import Any
 import dom_toml
 from domdf_python_tools.typing import PathLike
 
-__all__ = ["load_companies"]
+__all__ = ["group_pottery_by_company", "load_companies"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
@@ -55,3 +55,36 @@ def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Any
 		companies[company_name] = company_data
 
 	return companies
+
+
+# TODO: TypedDict etc.
+def group_pottery_by_company(pottery: list, companies: dict[str, Any]) -> dict[str, Any]:
+	"""
+	Group items in the pottery collection by the company who made them.
+
+	:param pottery: The pottery collection.
+	:param companies: Data about companies, giving factory locations.
+	"""
+
+	pottery_by_company = {}
+
+	for item in pottery:
+		new_item = dict(item)
+		company = new_item.pop("company")
+		if company not in pottery_by_company:
+			if company in companies:
+				factory = companies[company]["factory"]
+				location = companies[company]["location"]
+			else:
+				factory = new_item.get("factory", "Unknown")
+				location = new_item.get("location")
+			pottery_by_company[company] = {"items": [], "factory": factory, "location": location}
+
+		if "location" in new_item:
+			del new_item["location"]
+		if "factory" in new_item:
+			del new_item["factory"]
+
+		pottery_by_company[item["company"]]["items"].append(new_item)
+
+	return pottery_by_company
