@@ -7,6 +7,11 @@ ci:
   autoupdate_schedule: quarterly
 
 repos:
+ - repo: https://github.com/repo-helper/pyproject-parser
+   rev: v0.13.0
+   hooks:
+    - id: reformat-pyproject
+
  - repo: https://github.com/pre-commit/pre-commit-hooks
    rev: v3.4.0
    hooks:
@@ -41,7 +46,7 @@ repos:
    rev: v0.4.1
    hooks:
     - id: ensure-dunder-all
-      files: ^towpath_walk_tracker/.*\.py$
+      files: ^pottery_map/.*\.py$
 
  - repo: https://github.com/domdfcoding/flake2lint
    rev: v0.4.3
@@ -57,11 +62,11 @@ repos:
     - id: rst-inline-touching-normal
 
  - repo: https://github.com/asottile/pyupgrade
-   rev: v2.12.0
+   rev: v3.3.0
    hooks:
     - id: pyupgrade
       args:
-       - --py36-plus
+       - --py310-plus
        - --keep-runtime-typing
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -81,6 +86,13 @@ repos:
     - id: formate
       exclude: ^(doc-source/conf|__pkginfo__|setup)\.(_)?py$
 
+ - repo: https://github.com/python-coincidence/dep_checker
+   rev: v0.8.0
+   hooks:
+    - id: dep_checker
+      args:
+       - pottery_map
+
 # Custom hooks can be added below this comment
 
  - repo: https://github.com/awebdeveloper/pre-commit-stylelint
@@ -97,5 +109,7 @@ repos:
  - repo: https://github.com/ComPWA/taplo-pre-commit
    rev: v0.9.3
    hooks:
-      - id: taplo-format
-      - id: taplo-lint
+    - id: taplo-format
+      exclude: pyproject.toml
+    - id: taplo-lint
+      exclude: pyproject.toml
