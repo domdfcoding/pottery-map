@@ -110,6 +110,6 @@ repos:
    rev: v0.9.3
    hooks:
     - id: taplo-format
-      exclude: pyproject.toml
+      exclude: (pyproject.toml|formate.toml)
     - id: taplo-lint
-      exclude: pyproject.toml
+      exclude: (pyproject.toml|formate.toml)

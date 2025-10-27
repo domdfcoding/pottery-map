@@ -9,7 +9,7 @@ from domdf_python_tools.paths import PathPlus
 from folium.plugins import MarkerCluster
 
 # this package
-from companies import load_companies
+from pottery_map.companies import load_companies
 
 rand = Random("WWRD")
 
@@ -28,7 +28,7 @@ m.add_css_link("pottery_map.css", "./pottery_map.css")
 marker_cluster = MarkerCluster(options={"maxClusterRadius": 50}).add_to(m)
 
 pottery = list(dom_toml.load("pottery.toml").values())
-companies = load_companies()
+companies = load_companies("companies.toml")
 pottery_by_company = {}
 
 for item in pottery:
