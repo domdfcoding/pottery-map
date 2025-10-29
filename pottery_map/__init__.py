@@ -26,8 +26,29 @@ Map showing where items in a pottery collection were manufactured.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from typing import Any
+
+# 3rd party
+import dom_toml
+from domdf_python_tools.typing import PathLike
+
+# this package
+from pottery_map.utils import make_id
+
+__all__ = ["load_pottery_collection"]
+
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2025 Dominic Davis-Foster"
 __license__: str = "MIT License"
 __version__: str = "0.0.0"
 __email__: str = "dominic@davis-foster.co.uk"
+
+
+def load_pottery_collection(pottery_file: PathLike = "pottery.toml") -> list[dict[str, Any]]:
+	pottery = []
+	for item_id, item in dom_toml.load(pottery_file).items():
+		item["id"] = make_id(item_id)
+		pottery.append(item)
+
+	return pottery

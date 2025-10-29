@@ -27,9 +27,10 @@ Utility functions.
 #
 
 # stdlib
+import re
 from random import Random
 
-__all__ = ["set_branca_random_seed"]
+__all__ = ["make_id", "set_branca_random_seed"]
 
 
 def set_branca_random_seed(seed: str | int) -> None:
@@ -48,3 +49,10 @@ def set_branca_random_seed(seed: str | int) -> None:
 		return rand.randbytes(size)
 
 	element.urandom = urandom
+
+
+_id_regex = re.compile("[^0-9a-zA-Z]+")
+
+
+def make_id(string: str) -> str:
+	return _id_regex.sub('_', string.lower())
