@@ -32,9 +32,10 @@ from typing import Any
 
 # 3rd party
 import dom_toml
+import networkx
 from domdf_python_tools.typing import PathLike
 
-__all__ = ["group_pottery_by_company", "load_companies"]
+__all__ = ["group_pottery_by_company", "load_companies", "make_successor_network"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
@@ -48,10 +49,14 @@ def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Any
 
 	companies = {}
 	existing_coordinates = []
+	company_data: dict
 	for company_name, company_data in dom_toml.load(companies_file).items():
-		if company_data["location"] in existing_coordinates:
-			warnings.warn(f"Multiple factories at location {company_data['location']!r}")
-		existing_coordinates.append(company_data["location"])
+		if "location" in company_data:
+			if company_data["location"] in existing_coordinates:
+				warnings.warn(f"Multiple factories at location {company_data['location']!r}")
+			existing_coordinates.append(company_data["location"])
+		company_data.setdefault("factory", "Unknown")
+		company_data.setdefault("location", None)
 		companies[company_name] = company_data
 
 	return companies
@@ -75,16 +80,44 @@ def group_pottery_by_company(pottery: list, companies: dict[str, Any]) -> dict[s
 			if company in companies:
 				factory = companies[company]["factory"]
 				location = companies[company]["location"]
+				successor = companies[company].get("successor")
 			else:
 				factory = new_item.get("factory", "Unknown")
 				location = new_item.get("location")
-			pottery_by_company[company] = {"items": [], "factory": factory, "location": location}
+				successor = new_item.get("successor")
+			pottery_by_company[company] = {
+					"items": [],
+					"factory": factory,
+					"location": location,
+					"successor": successor,
+					}
 
 		if "location" in new_item:
 			del new_item["location"]
 		if "factory" in new_item:
 			del new_item["factory"]
+		if "successor" in new_item:
+			del new_item["successor"]
 
 		pottery_by_company[item["company"]]["items"].append(new_item)
 
 	return pottery_by_company
+
+
+def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
+	"""
+	Make a graph of relationships betweenn companies and their successors/parents.
+
+	:param companies:
+	"""
+
+	graph = networkx.DiGraph()
+
+	for company, company_data in companies.items():
+		successor = company_data.get("successor")
+		graph.add_node(company)
+		if successor:
+			graph.add_node(successor)
+			graph.add_edge(company, successor)
+
+	return graph
