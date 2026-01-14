@@ -46,6 +46,12 @@ __email__: str = "dominic@davis-foster.co.uk"
 
 
 def load_pottery_collection(pottery_file: PathLike = "pottery.toml") -> list[dict[str, Any]]:
+	"""
+	Load a pottery collection from a TOML file.
+
+	:param pottery_file:
+	"""
+
 	pottery = []
 	for item_id, item in dom_toml.load(pottery_file).items():
 		item["id"] = make_id(item_id)

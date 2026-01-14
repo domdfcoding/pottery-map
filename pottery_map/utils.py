@@ -55,4 +55,10 @@ _id_regex = re.compile("[^0-9a-zA-Z]+")
 
 
 def make_id(string: str) -> str:
+	"""
+	Make an ID for an HTML element from the given string.
+
+	:param string:
+	"""
+
 	return _id_regex.sub('_', string.lower())

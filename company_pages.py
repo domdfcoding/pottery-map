@@ -34,7 +34,7 @@ for company, company_data in pottery_by_company.items():
   <body>
 	<div class="container">
 
-"""
+""",
 				)
 
 		# fp.write(f"<div class='company container' id={make_id(company)}>")
@@ -45,7 +45,7 @@ for company, company_data in pottery_by_company.items():
 			factory_lat = company_data["location"]["latitude"]
 			factory_lng = company_data["location"]["longitude"]
 			fp.write(
-					f"<h6><a href='https://www.google.com/maps/place/{factory_lat},{factory_lng}'>View On Map</a></h6>\n"
+					f"<h6><a href='https://www.google.com/maps/place/{factory_lat},{factory_lng}'>View On Map</a></h6>\n",
 					)
 		fp.write(f"<div class='wares gy-2' id={make_id(company)}-wares>")
 		fp.write(f"<h3>Wares</h3>\n")
@@ -67,7 +67,7 @@ for company, company_data in pottery_by_company.items():
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 	</body>
 	</html>
-	"""
+	""",
 				)
 
 with PathPlus("companies.html").open('w') as fp:
@@ -87,7 +87,7 @@ with PathPlus("companies.html").open('w') as fp:
 	<div class="container">
 		  <h1>Companies</h1>
 		  <ul>
-"""
+""",
 			)
 	for company, company_data in sorted(pottery_by_company.items()):
 		item_count = len(company_data["items"])
@@ -100,5 +100,5 @@ with PathPlus("companies.html").open('w') as fp:
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
-"""
+""",
 			)
