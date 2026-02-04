@@ -2,28 +2,30 @@
 {% set title = company %}
 {% set root = ".." %}
 {% set companies_page = True %}
-
 {% block body %}
-			<h2>{{ factory }}</h2>
-			{%- if location %}
-				{%- set factory_lat = location["latitude"] %}
-				{%- set factory_lng = location["longitude"] %}
-				<h6><a href='https://www.google.com/maps/place/{{ factory_lat }},{{ factory_lng }}'>View On Map</a></h6>
-			{%- endif %}
-			{%- if items %}
-				<div class='wares gy-2' id={{ make_id(company) }}-wares>
-					<h3>Wares</h3>
-					{%- for item in items %}
-					<div class='item border' id={{ item['id'] }}>
-						<h4>{{ item['design'] }}</h4>
-						<p>{{ item['type'] }}</p>
-						<p>{{ item['era'] }}</p>
-						{%- if "notes" in item %}
-							<code>{{ item['notes'] }}</code><br>
-						{%- endif %}
-						<img class='pottery-image' src='{{ item['photo_url'] }}' />
-					</div>
-					{%- endfor %}
-				</div>
-			{%- endif %}
-{% endblock %}
+    <h2>{{ factory }}</h2>
+    {%- if location %}
+        {%- set factory_lat = location["latitude"] %}
+        {%- set factory_lng = location["longitude"] %}
+        <h6>
+            <a href='https://www.google.com/maps/place/{{ factory_lat }},{{ factory_lng }}'>View On Map</a>
+        </h6>
+    {%- endif %}
+    {%- if items %}
+        <div class="wares gy-2" id={{ make_id(company) }}-wares>
+            <h3>Wares</h3>
+            {%- for item in items %}
+                <div class="item border" id={{ item['id'] }}>
+                    <h4>{{ item['design'] }}</h4>
+                    <p>{{ item['type'] }}</p>
+                    <p>{{ item['era'] }}</p>
+                    {%- if "notes" in item %}
+                        <code>{{ item['notes'] }}</code>
+                        <br>
+                    {%- endif %}
+                    <img class="pottery-image" src="{{ item['photo_url'] }}" />
+                </div>
+            {%- endfor %}
+        </div>
+    {%- endif %}
+{% endblock body %}

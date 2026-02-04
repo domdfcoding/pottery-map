@@ -37,15 +37,17 @@
 	}
 }
 
-#sidebar ul li.active{ > :first-child {
+#sidebar ul li.active {
+	> :first-child {
 
-	span { color: var(--accent-colour); }
-	>svg { fill: var(--accent-colour); }
-}
-> a:first-child {
-	color: var(--accent-colour);
-	>svg { fill: var(--accent-colour); }
-}
+		span { color: var(--accent-colour); }
+		>svg { fill: var(--accent-colour); }
+	}
+
+	> a:first-child {
+		color: var(--accent-colour);
+		>svg { fill: var(--accent-colour); }
+	}
 }
 
 
