@@ -44,7 +44,7 @@ def make_map(pottery_by_company: dict[str, Any]) -> folium.Map:
 	"""
 
 	m = folium.Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
-	m.add_css_link("pottery_map.css", "./pottery_map.css")
+	m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
 
 	marker_cluster = MarkerCluster(options={"maxClusterRadius": 50}).add_to(m)
 

@@ -1,0 +1,28 @@
+{% extends "page.jinja2" %}
+{% set title = "Companies" %}
+{% set root = ".." %}
+{% set companies_page = True %}
+
+{% block body %}
+		<div class="row">
+			<div class="col-sm-6">
+		  		<h2>By Name</h2>
+				<ul>
+					{% for company, item_count in sorted(company_item_counts.items()) %}
+					<li><a href='{{ make_id(company) }}.html'>{{ company }}</a> ({{ item_count }})</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-sm-6">
+				<h2>By Parent</h2>
+
+				<ul>
+				{% for company in top_level_companies %}
+					{%- include "write_company_entries.macro.jinja2" indent content -%}
+				{% endfor %}
+				</ul>
+
+			</div>
+		</div>
+{% endblock %}
+
