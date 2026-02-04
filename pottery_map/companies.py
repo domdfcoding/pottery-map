@@ -32,7 +32,7 @@ from typing import Any
 
 # 3rd party
 import dom_toml
-import networkx  # type: ignore[import]
+import networkx  # type: ignore[import-untyped]
 from domdf_python_tools.typing import PathLike
 
 # this package

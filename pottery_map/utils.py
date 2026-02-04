@@ -68,6 +68,10 @@ def make_id(string: str) -> str:
 	return _id_regex.sub('_', string.lower())
 
 
+def _copy_file(module: str, filename: str, target_dir: PathPlus) -> None:
+	(target_dir / filename).write_text(importlib_resources.read_text(module, filename))
+
+
 def copy_static_files(static_dir: PathPlus) -> None:
 	"""
 	Copy CSS and JS files into the given directory.
@@ -80,9 +84,7 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	js_dir.maybe_make(parents=True)
 	css_dir.maybe_make()
 
-	(js_dir / "sidebar.js").write_text(importlib_resources.read_text("pottery_map.static", "sidebar.js"))
-	(css_dir / "pottery_map.css").write_text(
-			importlib_resources.read_text("pottery_map.static", "pottery_map.css")
-			)
-	(css_dir / "sidebar.css").write_text(importlib_resources.read_text("pottery_map.static", "sidebar.css"))
-	(css_dir / "style.css").write_text(importlib_resources.read_text("pottery_map.static", "style.css"))
+	_copy_file("pottery_map.static", "sidebar.js", js_dir)
+	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
+	_copy_file("pottery_map.static", "sidebar.css", css_dir)
+	_copy_file("pottery_map.static", "style.css", css_dir)
