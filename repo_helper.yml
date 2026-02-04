@@ -20,3 +20,7 @@ python_versions:
   "3.11":
   "3.12":
   "3.13":
+
+manifest_additional:
+  - recursive-include pottery_map/static/ *
+  - recursive-include pottery_map/templates/ *

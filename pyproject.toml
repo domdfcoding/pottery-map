@@ -29,6 +29,7 @@ python-implementations = [ "CPython",]
 platforms = [ "Windows", "macOS", "Linux",]
 license-key = "MIT"
 package = "pottery_map"
+additional-files = [ "recursive-include pottery_map/static/ *", "recursive-include pottery_map/templates/ *",]
 
 [tool.importcheck]
 
