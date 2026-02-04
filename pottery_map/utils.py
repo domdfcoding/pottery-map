@@ -30,7 +30,11 @@ Utility functions.
 import re
 from random import Random
 
-__all__ = ["make_id", "set_branca_random_seed"]
+# 3rd party
+from domdf_python_tools.compat import importlib_resources
+from domdf_python_tools.paths import PathPlus
+
+__all__ = ["copy_static_files", "make_id", "set_branca_random_seed"]
 
 
 def set_branca_random_seed(seed: str | int) -> None:
@@ -62,3 +66,23 @@ def make_id(string: str) -> str:
 	"""
 
 	return _id_regex.sub('_', string.lower())
+
+
+def copy_static_files(static_dir: PathPlus):
+	"""
+	Copy CSS and JS files into the given directory.
+
+	:param static_dir:
+	"""
+
+	js_dir = static_dir / "js"
+	css_dir = static_dir / "css"
+	js_dir.maybe_make(parents=True)
+	css_dir.maybe_make()
+
+	(js_dir / "sidebar.js").write_text(importlib_resources.read_text("pottery_map.static", "sidebar.js"))
+	(css_dir / "pottery_map.css").write_text(
+			importlib_resources.read_text("pottery_map.static", "pottery_map.css")
+			)
+	(css_dir / "sidebar.css").write_text(importlib_resources.read_text("pottery_map.static", "sidebar.css"))
+	(css_dir / "style.css").write_text(importlib_resources.read_text("pottery_map.static", "style.css"))

@@ -35,7 +35,10 @@ import dom_toml
 import networkx
 from domdf_python_tools.typing import PathLike
 
-__all__ = ["group_pottery_by_company", "load_companies", "make_successor_network"]
+# this package
+from pottery_map.templates import templates
+
+__all__ = ["group_pottery_by_company", "load_companies", "make_company_pages", "make_successor_network"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
@@ -121,3 +124,57 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 			graph.add_edge(company, successor)
 
 	return graph
+
+
+def _get_item_count(company_item_counts: dict[str, int], ancestors: list[str]):
+	return sum([company_item_counts.get(x, 0) for x in ancestors])
+
+
+def make_company_pages(companies_data: dict[str, Any],
+						pottery_by_company: dict[str, Any]) -> tuple[str, dict[str, str]]:
+	"""
+	Create pages listing all items made by the company, and an index of all companies.
+
+	:param companies_data:
+	:param pottery_by_company:
+	"""
+
+	pages = {}
+
+	graph = make_successor_network(companies_data)
+
+	all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
+
+	for company in all_companies:
+		if company in pottery_by_company:
+			company_data = pottery_by_company[company]
+		else:
+			company_data = {"items": [], **companies_data[company]}
+
+		pages[company] = templates.get_template("company_page.jinja2").render(
+				company=company,
+				factory=company_data["factory"],
+				location=company_data["location"],
+				items=company_data["items"],
+				all_companies=sorted(all_companies),
+				)
+
+	company_item_counts: dict[str, int] = {}
+
+	for company, company_data in pottery_by_company.items():
+		company_item_counts[company] = len(company_data["items"])
+
+	top_level_companies = [x for x in graph.nodes() if graph.out_degree(x) == 0]
+
+	index_page = templates.get_template("company_index.jinja2").render(
+			company_item_counts=company_item_counts,
+			top_level_companies=top_level_companies,
+			sorted=sorted,
+			get_item_count=_get_item_count,
+			networkx=networkx,
+			graph=graph,
+			list=list,
+			all_companies=sorted(all_companies),
+			)
+
+	return index_page, pages
