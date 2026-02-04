@@ -1,55 +1,65 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-:root{
-  --base-clr: #11121a;
-  --line-clr: #42434a;
-  --hover-clr: #222533;
-  --text-clr: #e6e6ef;
-  --accent-clr: #5e63ff;
-  --secondary-text-clr: #b0b3c1;
-}
-*{
-  margin: 0;
-  padding: 0;
-}
-html{
-  font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.5rem;
-}
-body{
-  min-height: 100vh;
-  min-height: 100dvh;
-  /* background-color: var(--base-clr); */
-  /* color: var(--text-clr); */
-  display: grid;
-  grid-template-columns: auto 1fr;
+
+:root {
+	--base-colour: #11121a;
+	--line-colour: #42434a;
+	--hover-colour: #222533;
+	--text-colour: #e6e6ef;
+	--accent-colour: #5e63ff;
+	--secondary-text-colour: #b0b3c1;
 }
 
-main{
-  padding: min(30px, 7%);
-}
-main p{
-  color: var(--secondary-text-clr);
-  margin-top: 5px;
-  margin-bottom: 15px;
-}
-.container{
-  border: 1px solid var(--line-clr);
-  border-radius: 1em;
-  margin-bottom: 20px;
-  padding: min(3em, 15%);
-
-  h2, p { margin-top: 1em }
+* {
+	margin: 0;
+	padding: 0;
 }
 
-@media(max-width: 800px){
-  body{
-    grid-template-columns: 1fr;
-  }
-  main{
-    padding: 2em 1em 60px 1em;
-  }
-  .container{
-    border: none;
-    padding: 0;
-  }
+html {
+	font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	line-height: 1.5rem;
+}
+
+body {
+	min-height: 100vh;
+	min-height: 100dvh;
+
+	/* background-color: var(--base-colour); */
+
+	/* color: var(--text-colour); */
+	display: grid;
+	grid-template-columns: auto 1fr;
+}
+
+main {
+	padding: min(30px, 7%);
+}
+
+main p {
+	color: var(--secondary-text-colour);
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.container {
+	border: 1px solid var(--line-colour);
+	border-radius: 1em;
+	margin-bottom: 20px;
+	padding: min(3em, 15%);
+
+	h2, p { margin-top: 1em; }
+}
+
+@media (max-width: 800px) {
+	body {
+		grid-template-columns: 1fr;
+	}
+
+	main {
+		padding: 2em 1em 60px;
+	}
+
+	.container {
+		border: none;
+		padding: 0;
+	}
 }

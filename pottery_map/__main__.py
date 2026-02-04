@@ -94,6 +94,3 @@ if __name__ == "__main__":
 					all_companies=sorted(all_companies),
 					)
 			)
-
-	
-
