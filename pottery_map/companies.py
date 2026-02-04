@@ -32,7 +32,7 @@ from typing import Any
 
 # 3rd party
 import dom_toml
-import networkx
+import networkx  # type: ignore[import]
 from domdf_python_tools.typing import PathLike
 
 # this package
@@ -126,12 +126,14 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 	return graph
 
 
-def _get_item_count(company_item_counts: dict[str, int], ancestors: list[str]):
+def _get_item_count(company_item_counts: dict[str, int], ancestors: list[str]) -> int:
 	return sum([company_item_counts.get(x, 0) for x in ancestors])
 
 
-def make_company_pages(companies_data: dict[str, Any],
-						pottery_by_company: dict[str, Any]) -> tuple[str, dict[str, str]]:
+def make_company_pages(
+		companies_data: dict[str, Any],
+		pottery_by_company: dict[str, Any],
+		) -> tuple[str, dict[str, str]]:
 	"""
 	Create pages listing all items made by the company, and an index of all companies.
 

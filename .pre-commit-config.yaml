@@ -101,8 +101,8 @@ repos:
    hooks:
     - id: stylelint
       additional_dependencies:
-       - stylelint@13.13.1
-       - stylelint-config-standard@22.0.0
+       - stylelint@14.16.1
+       - stylelint-config-standard@29.0.0
       args:
        - --fix
       exclude: (\.min.css|main.css|scss/bootstrap/)
@@ -114,3 +114,9 @@ repos:
       exclude: (pyproject.toml|formate.toml)
     - id: taplo-lint
       exclude: (pyproject.toml|formate.toml)
+
+ - repo: https://github.com/djlint/djLint
+   rev: v1.35.2
+   hooks:
+    - id: djlint-reformat-jinja
+    - id: djlint-jinja

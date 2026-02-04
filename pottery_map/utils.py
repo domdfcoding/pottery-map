@@ -68,7 +68,7 @@ def make_id(string: str) -> str:
 	return _id_regex.sub('_', string.lower())
 
 
-def copy_static_files(static_dir: PathPlus):
+def copy_static_files(static_dir: PathPlus) -> None:
 	"""
 	Copy CSS and JS files into the given directory.
 

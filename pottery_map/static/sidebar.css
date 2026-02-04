@@ -1,3 +1,38 @@
+.dropdown-btn {
+	width: 100%;
+	text-align: left;
+	background: none;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+}
+
+.dropdown-btn svg {
+	transition: 200ms ease;
+}
+
+.rotate svg:last-child {
+	rotate: 180deg;
+}
+
+#toggle-btn {
+	margin-left: auto;
+
+	/* padding: 1em !important; */
+	padding: 13px !important;
+	border: none;
+	border-radius: 0.5em;
+	background: none;
+	cursor: pointer;
+
+	svg {
+		transition: rotate 150ms ease;
+	}
+}
+
+#toggle-btn:hover {
+	background-color: var(--hover-colour);
+}
 
 #sidebar {
 	box-sizing: border-box;
@@ -26,6 +61,16 @@
 }
 
 
+#sidebar a, #sidebar .dropdown-btn, #sidebar .logo {
+	border-radius: 0.5em;
+	padding: 0.85em;
+	text-decoration: none;
+	color: var(--text-colour);
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+
 #sidebar > ul > li:first-child {
 	display: flex;
 	justify-content: flex-end;
@@ -36,6 +81,26 @@
 		font-weight: 600;
 	}
 }
+
+
+#sidebar svg {
+	flex-shrink: 0;
+	fill: var(--text-colour);
+}
+
+#sidebar .sub-menu a {
+	padding-left: 2em;
+}
+
+#sidebar a:hover, #sidebar .dropdown-btn:hover {
+	background-color: var(--hover-colour);
+}
+
+
+#sidebar a span, #sidebar .dropdown-btn span {
+	flex-grow: 1;
+}
+
 
 #sidebar ul li.active {
 	> :first-child {
@@ -51,38 +116,6 @@
 }
 
 
-#sidebar a, #sidebar .dropdown-btn, #sidebar .logo {
-	border-radius: 0.5em;
-	padding: 0.85em;
-	text-decoration: none;
-	color: var(--text-colour);
-	display: flex;
-	align-items: center;
-	gap: 1em;
-}
-
-.dropdown-btn {
-	width: 100%;
-	text-align: left;
-	background: none;
-	border: none;
-	font: inherit;
-	cursor: pointer;
-}
-
-#sidebar svg {
-	flex-shrink: 0;
-	fill: var(--text-colour);
-}
-
-#sidebar a span, #sidebar .dropdown-btn span {
-	flex-grow: 1;
-}
-
-#sidebar a:hover, #sidebar .dropdown-btn:hover {
-	background-color: var(--hover-colour);
-}
-
 #sidebar .sub-menu {
 	display: grid;
 	grid-template-rows: 0fr;
@@ -97,38 +130,8 @@
 	grid-template-rows: 1fr;
 }
 
-.dropdown-btn svg {
-	transition: 200ms ease;
-}
 
-.rotate svg:last-child {
-	rotate: 180deg;
-}
-
-#sidebar .sub-menu a {
-	padding-left: 2em;
-}
-
-#toggle-btn {
-	margin-left: auto;
-
-	/* padding: 1em !important; */
-	padding: 13px !important;
-	border: none;
-	border-radius: 0.5em;
-	background: none;
-	cursor: pointer;
-
-	svg {
-		transition: rotate 150ms ease;
-	}
-}
-
-#toggle-btn:hover {
-	background-color: var(--hover-colour);
-}
-
-@media (max-width: 800px) {
+@media (width <= 800px) {
 	#sidebar {
 		height: 60px;
 		width: 100%;
