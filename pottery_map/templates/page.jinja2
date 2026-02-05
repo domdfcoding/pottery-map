@@ -7,8 +7,8 @@
               rel="stylesheet"
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="../static/css/style.css">
-        <link rel="stylesheet" href="../static/css/sidebar.css">
+        <link rel="stylesheet" href="{{ root }}static/css/style.css">
+        <link rel="stylesheet" href="{{ root }}static/css/sidebar.css">
         <title>{{ title }} – Pottery Collection</title>
         {% block extrahead %}
         {% endblock extrahead %}
@@ -29,7 +29,7 @@
                     </button>
                 </li>
                 <li>
-                    <a title="Map" href="{{ root }}/">
+                    <a title="Map" href="{{ root }}">
                         <!-- <i class="fas fa-map me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Items" href="{{ root }}/items.html">
+                    <a title="Items" href="{{ root }}items.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="-5 -10 24 24"
@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Dashboard" href="{{ root }}/dashboard.html">
+                    <a title="Dashboard" href="{{ root }}dashboard.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="0 -960 960 960"
@@ -98,7 +98,7 @@
                                 </li>
                             {% else %}
                                 <li class="border-bottom">
-                                    <a href="{{ root }}/companies">View All</a>
+                                    <a href="{{ root }}companies">View All</a>
                                 </li>
                             {% endif %}
                             {% for company_name in all_companies %}
@@ -108,7 +108,7 @@
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a href="{{ root }}/companies/{{ make_id(company_name) }}.html">{{ company_name }}</a>
+                                        <a href="{{ root }}companies/{{ make_id(company_name) }}.html">{{ company_name }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
@@ -118,11 +118,12 @@
             </ul>
         </nav>
         <div class="d-flex flex-column min-vh-100">
-            <main>
-                <h1>{{ title }}</h1>
-                {% block body %}
-                {% endblock body %}
-            </main>
+            {% block main %}
+                <main class="padded">
+                    {% block body %}
+                    {% endblock body %}
+                </main>
+            {% endblock main %}
 
             {% block footer %}
                 <!-- Footer -->
@@ -145,7 +146,7 @@
                     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
                     crossorigin="anonymous"></script>
 
-            <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
+            <script type="text/javascript" src="{{ root }}static/js/sidebar.js" defer></script>
         {% endblock scripts %}
     </body>
 </html>

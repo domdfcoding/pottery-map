@@ -25,7 +25,7 @@ body {
 	grid-template-columns: auto 1fr;
 }
 
-main {
+main.padded {
 	padding: min(30px, 7%);
 }
 
@@ -80,4 +80,8 @@ main p {
 			object-fit: contain;
 		}
 	}
+}
+
+.leaflet-control-attribution {
+	font-size: 11px !important;
 }

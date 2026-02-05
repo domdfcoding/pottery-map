@@ -1,8 +1,10 @@
 {% extends "page.jinja2" %}
 {% set title = company %}
-{% set root = ".." %}
+{% set root = "../" %}
 {% set companies_page = True %}
 {% block body %}
+    <h1>{{ title }}</h1>
+
     <h2>{{ factory }}</h2>
     {%- if location %}
         {%- set factory_lat = location["latitude"] %}

@@ -30,11 +30,18 @@ if __name__ == "__main__":
 
 	# 3rd party
 	from domdf_python_tools.paths import PathPlus
+	from folium import Figure, JavascriptLink
 
 	# this package
 	from pottery_map import load_pottery_collection
-	from pottery_map.companies import group_pottery_by_company, load_companies, make_company_pages
+	from pottery_map.companies import (
+			group_pottery_by_company,
+			load_companies,
+			make_company_pages,
+			make_successor_network
+			)
 	from pottery_map.map import make_map
+	from pottery_map.templates import templates
 	from pottery_map.utils import copy_static_files, make_id, set_branca_random_seed
 
 	set_branca_random_seed("WWRD")
@@ -53,7 +60,38 @@ if __name__ == "__main__":
 	companies_dir.maybe_make()
 
 	m = make_map(pottery_by_company)
-	html = m.get_root().render()
+
+	root: Figure = m.get_root()  # type: ignore[assignment]
+
+	js_libs = m.default_js
+	m.default_js = []
+	m.default_css = [
+			("leaflet_css", "https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"),
+			(
+					"awesome_markers_css",
+					"https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css",
+					),
+			]
+
+	scripts = []
+	for lib in js_libs:
+		scripts.append(JavascriptLink(lib[1]).render())
+
+	for child in root._children.values():
+		child.render()
+
+	graph = make_successor_network(companies)
+
+	all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
+
+	html = templates.get_template("map.jinja2").render(
+			header=root.header.render(),
+			body=root.html.render(),
+			script=root.script.render(),
+			scripts='\n'.join(scripts),
+			all_companies=sorted(all_companies),
+			)
+
 	(output_dir / "index.html").write_clean(html)
 
 	companies_index, company_pages = make_company_pages(companies, pottery_by_company)

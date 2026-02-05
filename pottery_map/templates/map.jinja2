@@ -1,0 +1,26 @@
+{% extends "page.jinja2" %}
+{% set title = "Map" %}
+{% set root = "" %}
+{% set companies_page = True %}
+{% block extrahead %}
+    {{ header|safe }}
+{% endblock extrahead %}
+{% block main %}
+    <main class="min-vh-100 min-vw-75">
+        {% block body %}
+            {{ body|safe }}
+        {% endblock body %}
+    </main>
+{% endblock main %}
+
+{% block scripts %}
+    {{ super() }}
+
+    {{ scripts|safe }}
+    <script>{{ script|safe }}
+
+    map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)
+    </script>
+{% endblock scripts %}
+{% block footer %}
+{% endblock footer %}

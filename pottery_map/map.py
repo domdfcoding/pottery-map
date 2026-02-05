@@ -31,20 +31,38 @@ from typing import Any
 
 # 3rd party
 import folium
-from folium.plugins import MarkerCluster
+import folium.plugins
+
+# this package
+from pottery_map.utils import make_id
 
 __all__ = ["make_map"]
 
 
-def make_map(pottery_by_company: dict[str, Any]) -> folium.Map:
+class MarkerCluster(folium.plugins.MarkerCluster):  # noqa: D101
+	default_js = []
+
+
+class Map(folium.Map):  # noqa: D101
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self._id = "pottery"
+
+
+def make_map(pottery_by_company: dict[str, Any]) -> Map:
 	"""
 	Map the pottery collection folium map.
 
 	:param pottery_by_company:
 	"""
 
-	m = folium.Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
+	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
 	m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
+	m.add_js_link(
+			"markerclusterjs",
+			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
+			)
 
 	marker_cluster = MarkerCluster(options={"maxClusterRadius": 50}).add_to(m)
 
@@ -55,7 +73,7 @@ def make_map(pottery_by_company: dict[str, Any]) -> folium.Map:
 
 		popup_text = f"""
 <div class="item-details">
-<h2>{company}</h2>
+<a href="companies/{make_id(company)}.html"><h2>{company}</h2></a>
 <h3><strong>{company_data['factory']}</strong></h3>
 		"""
 
