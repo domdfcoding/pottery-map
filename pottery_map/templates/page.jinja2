@@ -9,7 +9,6 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="../static/css/style.css">
         <link rel="stylesheet" href="../static/css/sidebar.css">
-        <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
         <title>{{ title }} – Pottery Collection</title>
         {% block extrahead %}
         {% endblock extrahead %}
@@ -118,13 +117,35 @@
                 </li>
             </ul>
         </nav>
-        <main>
-            <h1>{{ title }}</h1>
-            {% block body %}
-            {% endblock body %}
-        </main>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-                crossorigin="anonymous"></script>
+        <div class="d-flex flex-column min-vh-100">
+            <main>
+                <h1>{{ title }}</h1>
+                {% block body %}
+                {% endblock body %}
+            </main>
+
+            {% block footer %}
+                <!-- Footer -->
+                <footer class="page-footer font-small blue pt-4 mt-auto">
+                    <!-- Footer Links -->
+                    <div class="container text-center">
+                        Powered by <a href="{{ github_url }}">pottery-map</a>.
+                        © 2026 Dominic Davis-Foster.
+                        <br>
+                        Maps from <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>. © OpenStreetMap contributors.
+                        Uses <a href="https://github.com/gravitystorm/openstreetmap-carto">OpenStreetMap Carto</a> style.
+                        Pottery icon by Singlar from <a href="https://thenounproject.com/icon/pottery-7911200/"
+    target="_blank">Noun Project</a> (CC BY 3.0).
+                    </div>
+                </footer>
+            {% endblock footer %}
+        </div>
+        {% block scripts %}
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+                    crossorigin="anonymous"></script>
+
+            <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
+        {% endblock scripts %}
     </body>
 </html>

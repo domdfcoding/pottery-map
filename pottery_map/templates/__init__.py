@@ -42,3 +42,4 @@ templates = Environment(  # nosec: B701
 		)
 
 templates.globals["make_id"] = make_id
+templates.globals["github_url"] = "https://github.com/domdfcoding/pottery-map"

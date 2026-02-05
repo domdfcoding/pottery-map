@@ -9,11 +9,6 @@
 	--secondary-text-colour: #b0b3c1;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-}
-
 html {
 	font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	line-height: 1.5rem;
@@ -41,12 +36,12 @@ main p {
 }
 
 .container {
-	border: 1px solid var(--line-colour);
-	border-radius: 1em;
-	margin-bottom: 20px;
-	padding: min(3em, 15%);
-
 	h2, p { margin-top: 1em; }
+}
+
+.page-footer {
+	margin-bottom: 20px;
+	font-size: 10pt;
 }
 
 @media (width <= 800px) {
