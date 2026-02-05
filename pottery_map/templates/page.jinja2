@@ -28,7 +28,7 @@
                         </svg>
                     </button>
                 </li>
-                <li>
+                <li class="{% if title == 'Map' %}active{% endif %}">
                     <a title="Map" href="{{ root }}">
                         <!-- <i class="fas fa-map me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
                         <span>Map</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if title == 'Items' %}active{% endif %}">
                     <a title="Items" href="{{ root }}items.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -59,7 +59,7 @@
                         <span>Items</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if title == 'Dashboard' %}active{% endif %}">
                     <a title="Dashboard" href="{{ root }}dashboard.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"

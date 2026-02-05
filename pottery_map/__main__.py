@@ -59,7 +59,7 @@ if __name__ == "__main__":
 	companies_dir = output_dir / "companies"
 	companies_dir.maybe_make()
 
-	m = make_map(pottery_by_company)
+	m = make_map(pottery_by_company, standalone=False)
 
 	root: Figure = m.get_root()  # type: ignore[assignment]
 
