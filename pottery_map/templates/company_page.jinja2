@@ -14,18 +14,77 @@
     {%- if items %}
         <div class="wares gy-2" id={{ make_id(company) }}-wares>
             <h3>Wares</h3>
-            {%- for item in items %}
-                <div class="item border" id={{ item['id'] }}>
-                    <h4>{{ item['design'] }}</h4>
-                    <p>{{ item['type'] }}</p>
-                    <p>{{ item['era'] }}</p>
-                    {%- if "notes" in item %}
-                        <code>{{ item['notes'] }}</code>
-                        <br>
-                    {%- endif %}
-                    <img class="pottery-image" src="{{ item['photo_url'] }}" />
-                </div>
-            {%- endfor %}
+            <div class="d-flex flex-wrap gap-3 items-container">
+                {%- for item in items %}
+                    <div class="item border p-1" id={{ item['id'] }}>
+                        <h4>{{ item['design'] }}</h4>
+                        <p>{{ item['type'] }}</p>
+                        <p>{{ item['era'] }}</p>
+                        {%- if "notes" in item %}
+                            <code>{{ item['notes'] }}</code>
+                            <br>
+                        {%- endif %}
+                        <div id="{{ item['id'] }}_carousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{ item['photo_url'] }}"
+                                         class="d-block w-100"
+                                         alt="Image 1 of the {{ item['design'] }} pottery" />
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
+                                         class="d-block w-100"
+                                         alt="Image 2 of the {{ item['design'] }} pottery" />
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
+                                         class="d-block w-100"
+                                         alt="Image 3 of the {{ item['design'] }} pottery" />
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev"
+                                    type="button"
+                                    data-bs-target="#{{ item['id'] }}_carousel"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next"
+                                    type="button"
+                                    data-bs-target="#{{ item['id'] }}_carousel"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+
+                            <div class="carousel-indicators">
+                                <button class="active"
+                                        data-bs-target="#{{ item['id'] }}_carousel"
+                                        role="button"
+                                        data-bs-slide-to="0"
+                                        aria-current="true"
+                                        aria-label="Slide 1">
+                                    <img class="d-block w-100" src="{{ item['photo_url'] }}" />
+                                </button>
+                                <button data-bs-target="#{{ item['id'] }}_carousel"
+                                        role="button"
+                                        data-bs-slide-to="1"
+                                        aria-label="Slide 2">
+                                    <img class="d-block w-100"
+                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+                                </button>
+                                <button data-bs-target="#{{ item['id'] }}_carousel"
+                                        role="button"
+                                        data-bs-slide-to="2"
+                                        aria-label="Slide 3">
+                                    <img class="d-block w-100"
+                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {%- endfor %}
+            </div>
         </div>
     {%- endif %}
 {% endblock body %}

@@ -57,4 +57,27 @@ main p {
 		border: none;
 		padding: 0;
 	}
+.carousel {
+	--image-height: 50px;
+
+	max-width: 330px;
+	max-height: 247px;
+	height: auto;
+	margin-bottom: calc(var(--image-height) + 10px);
+
+	.carousel-indicators {
+		margin-bottom: -20px;
+
+		button {
+			width: 100px;
+		}
+
+		img {
+			max-height: var(--image-height);
+			width: auto;
+			aspect-ratio: 3/4;
+			min-width: 0;
+			object-fit: contain;
+		}
+	}
 }
