@@ -2,6 +2,11 @@
 {% set title = "Map" %}
 {% set root = "" %}
 {% block extrahead %}
+    <link rel="stylesheet" href="./static/css/pottery_map.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
     {{ header|safe }}
 {% endblock extrahead %}
 {% block main %}

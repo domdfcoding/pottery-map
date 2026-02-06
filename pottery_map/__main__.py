@@ -65,17 +65,9 @@ if __name__ == "__main__":
 
 	js_libs = m.default_js
 	m.default_js = []
-	m.default_css = [
-			("leaflet_css", "https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"),
-			(
-					"awesome_markers_css",
-					"https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css",
-					),
-			]
+	m.default_css = []
 
-	scripts = []
-	for lib in js_libs:
-		scripts.append(JavascriptLink(lib[1]).render())
+	scripts = [JavascriptLink(lib[1]).render() for lib in js_libs]
 
 	for child in root._children.values():
 		child.render()
