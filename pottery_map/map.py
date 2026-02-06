@@ -27,11 +27,15 @@ The map itself.
 #
 
 # stdlib
+import sys
 from typing import Any
 
 # 3rd party
 import folium
 import folium.plugins
+from domdf_python_tools.compat import importlib_resources
+from domdf_python_tools.paths import clean_writer
+from folium.template import Template
 
 # this package
 from pottery_map.utils import make_id
@@ -39,26 +43,55 @@ from pottery_map.utils import make_id
 __all__ = ["make_map"]
 
 
-class MarkerCluster(folium.plugins.MarkerCluster):  # noqa: D101
+def embed_styles(m: folium.Map) -> folium.Element:
+	"""
+	Embed the map's custom CSS into the HTML.
+
+	:param m:
+	"""
+
+	css_content = importlib_resources.read_text("pottery_map.static", "pottery_map.css")
+
+	class EmbeddedStyles(folium.MacroElement):
+		_template = Template(
+				f"""
+			{{% macro header(this, kwargs) %}}
+				<style>
+					{css_content}
+				</style>
+			{{% endmacro %}}
+	""",
+				)
+
+	return EmbeddedStyles().add_to(m)
+
+
+class MarkerCluster(folium.plugins.MarkerCluster):
 	default_js = []
 
 
-class Map(folium.Map):  # noqa: D101
+class Map(folium.Map):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self._id = "pottery"
 
 
-def make_map(pottery_by_company: dict[str, Any]) -> Map:
+def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
 
 	:param pottery_by_company:
+	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
 	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
-	m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
+
+	if standalone:
+		embed_styles(m)
+	else:
+		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
+
 	m.add_js_link(
 			"markerclusterjs",
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
@@ -71,29 +104,57 @@ def make_map(pottery_by_company: dict[str, Any]) -> Map:
 		if "location" not in company_data or not company_data["location"]:
 			continue
 
-		popup_text = f"""
-<div class="item-details">
-<a href="companies/{make_id(company)}.html"><h2>{company}</h2></a>
-<h3><strong>{company_data['factory']}</strong></h3>
-		"""
+		popup_text = ['<div class="item-details">']
+
+		if standalone:
+			popup_text.append(f"<h2>{company}</h2>")
+		else:
+			popup_text.append(f'<a href="companies/{make_id(company)}.html"><h2>{company}</h2></a>')
+
+		popup_text.append(f"<h3><strong>{company_data['factory']}</strong></h3>")
 
 		for item in company_data["items"]:
 
-			popup_text += f"""
+			popup_text.append(
+					f"""
 <ul>
 	<li>{item['design']}</li>
 	<li>{item['type']} {item['item']}</li>
 	<li>{item['era']}</li>
 </ul>
 <img class="pottery-image" src="{item['photo_url']}" />
-	"""
+	""",
+					)
 
-		popup_text += "</div>"
+		popup_text.append("</div>")
 
 		folium.Marker(
 				location=[company_data["location"]["latitude"], company_data["location"]["longitude"]],
 				tooltip=company,
-				popup=folium.Popup(popup_text, max_width=400, min_width=245),
+				popup=folium.Popup('\n'.join(popup_text), max_width=400, min_width=245),
 				).add_to(marker_cluster)
 
 	return m
+
+
+def _create_standalone_map() -> None:
+
+	# this package
+	from pottery_map import load_pottery_collection
+	from pottery_map.companies import group_pottery_by_company, load_companies
+	from pottery_map.utils import set_branca_random_seed
+
+	set_branca_random_seed("WWRD")
+
+	pottery = load_pottery_collection("pottery.toml")
+	companies = load_companies("companies.toml")
+	pottery_by_company = group_pottery_by_company(pottery, companies)
+
+	m = make_map(pottery_by_company)
+
+	html = m.get_root().render()
+	clean_writer(html, sys.stdout)
+
+
+if __name__ == "__main__":
+	_create_standalone_map()
