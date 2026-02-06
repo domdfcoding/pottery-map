@@ -28,7 +28,7 @@ The map itself.
 
 # stdlib
 import sys
-from typing import Any
+from typing import Any, Union
 
 # 3rd party
 import folium
@@ -77,6 +77,16 @@ class Map(folium.Map):
 		self._id = "pottery"
 
 
+def _make_link(company: str, inner: str, item: str | None = None, standalone: bool = True) -> str:
+	if standalone:
+		return inner
+
+	if not item:
+		return f'<a href="companies/{make_id(company)}.html">{inner}</a>'
+
+	return f'<a href="companies/{make_id(company)}.html#{item}">{inner}</a>'
+
+
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -105,20 +115,22 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			continue
 
 		popup_text = ['<div class="item-details">']
-
-		if standalone:
-			popup_text.append(f"<h2>{company}</h2>")
-		else:
-			popup_text.append(f'<a href="companies/{make_id(company)}.html"><h2>{company}</h2></a>')
-
+		popup_text.append(_make_link(company, inner=f"<h2>{company}</h2>", standalone=standalone))
 		popup_text.append(f"<h3><strong>{company_data['factory']}</strong></h3>")
 
 		for item in company_data["items"]:
 
+			item_link = _make_link(
+					company,
+					item=item["id"],
+					inner=f"<li>{item['design']}</li>",
+					standalone=standalone,
+					)
+
 			popup_text.append(
 					f"""
 <ul>
-	<li>{item['design']}</li>
+	{item_link}
 	<li>{item['type']} {item['item']}</li>
 	<li>{item['era']}</li>
 </ul>

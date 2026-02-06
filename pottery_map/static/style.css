@@ -88,3 +88,7 @@ main p {
 .leaflet-control-attribution {
 	font-size: 11px !important;
 }
+
+.item:target {
+	border-color: pink !important;
+}
