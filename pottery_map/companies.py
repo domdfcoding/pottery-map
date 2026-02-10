@@ -30,10 +30,11 @@ Function for loading data about companies.
 import warnings
 from dataclasses import dataclass
 from typing import Any
+from collections.abc import Iterable
 
 # 3rd party
 import dom_toml
-import networkx  # type: ignore[import-untyped]
+import networkx
 from domdf_python_tools.typing import PathLike
 
 # this package
@@ -115,7 +116,7 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 	:param companies:
 	"""
 
-	graph = networkx.DiGraph()
+	graph: networkx.DiGraph = networkx.DiGraph()
 
 	for company, company_data in companies.items():
 		successor = company_data.get("successor")
@@ -127,14 +128,14 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 	return graph
 
 
-def _get_item_count(company_item_counts: dict[str, int], successors: list[str]) -> int:
+def _get_item_count(company_item_counts: dict[str, int], successors: Iterable[str]) -> int:
 	return sum([company_item_counts.get(x, 0) for x in successors])
 
 
 @dataclass
 class Companies:
 	#: Graph showing relationships between companies.
-	graph: networkx.graph
+	graph: networkx.DiGraph
 
 	#: The names of all companies.
 	all_companies: set[str]

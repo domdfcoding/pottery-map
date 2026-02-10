@@ -28,10 +28,10 @@ Jinja2 templates.
 
 # 3rd party
 import jinja2
-import networkx  # type: ignore[import-untyped]
+import networkx
 from domdf_python_tools.paths import PathPlus
 from jinja2 import Environment
-from jinja2_workarounds import MultiLineInclude
+from jinja2_workarounds import MultiLineInclude  # type: ignore[import-untyped]
 
 # this package
 from pottery_map.utils import make_id

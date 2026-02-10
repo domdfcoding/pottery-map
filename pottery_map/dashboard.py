@@ -32,7 +32,7 @@ from typing import Any
 
 # 3rd party
 import networkx
-from gradpyent import Gradient
+from gradpyent import Gradient  # type: ignore[import-untyped]
 
 # this package
 from pottery_map.companies import Companies, _get_item_count
