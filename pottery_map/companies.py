@@ -28,6 +28,7 @@ Function for loading data about companies.
 
 # stdlib
 import warnings
+from dataclasses import dataclass
 from typing import Any
 
 # 3rd party
@@ -36,7 +37,7 @@ import networkx  # type: ignore[import-untyped]
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pottery_map.templates import templates
+from pottery_map.templates import render_template
 
 __all__ = ["group_pottery_by_company", "load_companies", "make_company_pages", "make_successor_network"]
 
@@ -126,57 +127,89 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 	return graph
 
 
-def _get_item_count(company_item_counts: dict[str, int], ancestors: list[str]) -> int:
-	return sum([company_item_counts.get(x, 0) for x in ancestors])
+def _get_item_count(company_item_counts: dict[str, int], successors: list[str]) -> int:
+	return sum([company_item_counts.get(x, 0) for x in successors])
 
 
-def make_company_pages(
-		companies_data: dict[str, Any],
-		pottery_by_company: dict[str, Any],
-		) -> tuple[str, dict[str, str]]:
+@dataclass
+class Companies:
+	#: Graph showing relationships between companies.
+	graph: networkx.graph
+
+	#: The names of all companies.
+	all_companies: set[str]
+
+	companies_data: dict[str, Any]
+
+	pottery_by_company: dict[str, Any]
+
+	@classmethod
+	def from_raw_data(cls, pottery: list, companies: dict[str, Any]) -> "Companies":
+		"""
+
+		:param pottery: The pottery collection.
+		:param companies: Data about companies, giving factory locations.
+		"""
+
+		graph = make_successor_network(companies)
+		pottery_by_company = group_pottery_by_company(pottery, companies)
+		all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
+		return cls(
+				graph=graph,
+				all_companies=all_companies,
+				companies_data=companies,
+				pottery_by_company=pottery_by_company,
+				)
+
+	@property
+	def sorted_company_names(self) -> list[str]:
+		return sorted(self.all_companies)
+
+	@property
+	def company_item_counts(self) -> dict[str, int]:
+		company_item_counts: dict[str, int] = {}
+
+		for company, company_data in self.pottery_by_company.items():
+			company_item_counts[company] = len(company_data["items"])
+
+		return company_item_counts
+
+	@property
+	def top_level_companies(self) -> list[str]:
+		return [x for x in self.graph.nodes() if self.graph.out_degree(x) == 0]
+
+
+def make_company_pages(companies: Companies) -> tuple[str, dict[str, str]]:
 	"""
 	Create pages listing all items made by the company, and an index of all companies.
 
-	:param companies_data:
-	:param pottery_by_company:
+	:param companies:
 	"""
 
 	pages = {}
 
-	graph = make_successor_network(companies_data)
-
-	all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
-
-	for company in all_companies:
-		if company in pottery_by_company:
-			company_data = pottery_by_company[company]
+	for company in companies.all_companies:
+		if company in companies.pottery_by_company:
+			company_data = companies.pottery_by_company[company]
 		else:
-			company_data = {"items": [], **companies_data[company]}
+			company_data = {"items": [], **companies.companies_data[company]}
 
-		pages[company] = templates.get_template("company_page.jinja2").render(
+		pages[company] = render_template(
+				"company_page.jinja2",
 				company=company,
 				factory=company_data["factory"],
 				location=company_data["location"],
 				items=company_data["items"],
-				all_companies=sorted(all_companies),
+				all_companies=companies.sorted_company_names,
 				)
 
-	company_item_counts: dict[str, int] = {}
-
-	for company, company_data in pottery_by_company.items():
-		company_item_counts[company] = len(company_data["items"])
-
-	top_level_companies = [x for x in graph.nodes() if graph.out_degree(x) == 0]
-
-	index_page = templates.get_template("company_index.jinja2").render(
-			company_item_counts=company_item_counts,
-			top_level_companies=top_level_companies,
-			sorted=sorted,
+	index_page = render_template(
+			"company_index.jinja2",
+			company_item_counts=companies.company_item_counts,
+			top_level_companies=companies.top_level_companies,
+			all_companies=companies.sorted_company_names,
+			graph=companies.graph,
 			get_item_count=_get_item_count,
-			networkx=networkx,
-			graph=graph,
-			list=list,
-			all_companies=sorted(all_companies),
 			)
 
 	return index_page, pages

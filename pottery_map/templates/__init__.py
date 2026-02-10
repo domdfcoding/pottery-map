@@ -28,12 +28,16 @@ Jinja2 templates.
 
 # 3rd party
 import jinja2
+import networkx  # type: ignore[import-untyped]
 from domdf_python_tools.paths import PathPlus
 from jinja2 import Environment
-from jinja2_workarounds import MultiLineInclude  # type: ignore[import-untyped]
+from jinja2_workarounds import MultiLineInclude
 
 # this package
 from pottery_map.utils import make_id
+
+__all__ = ["render_template"]
+
 
 templates = Environment(  # nosec: B701
 		loader=jinja2.FileSystemLoader(str((PathPlus(__file__).parent).absolute())),
@@ -43,3 +47,17 @@ templates = Environment(  # nosec: B701
 
 templates.globals["make_id"] = make_id
 templates.globals["github_url"] = "https://github.com/domdfcoding/pottery-map"
+templates.globals["networkx"] = networkx
+templates.globals["list"] = list
+templates.globals["sorted"] = sorted
+
+
+def render_template(template: str, **kwargs) -> str:
+	r"""
+	Render the template with the given filename with the given parameters.
+
+	:param template:
+	:param \*\*kwargs:
+	"""
+
+	return templates.get_template(template).render(**kwargs)

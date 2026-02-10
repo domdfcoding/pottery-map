@@ -27,6 +27,8 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #
 
 if __name__ == "__main__":
+	# stdlib
+	import json
 
 	# 3rd party
 	from domdf_python_tools.paths import PathPlus
@@ -34,14 +36,10 @@ if __name__ == "__main__":
 
 	# this package
 	from pottery_map import load_pottery_collection
-	from pottery_map.companies import (
-			group_pottery_by_company,
-			load_companies,
-			make_company_pages,
-			make_successor_network
-			)
+	from pottery_map.companies import Companies, load_companies, make_company_pages
+	from pottery_map.dashboard import companies_bar_chart, groups_pie_chart
 	from pottery_map.map import make_map
-	from pottery_map.templates import templates
+	from pottery_map.templates import render_template
 	from pottery_map.utils import copy_static_files, make_id, set_branca_random_seed
 
 	set_branca_random_seed("WWRD")
@@ -54,12 +52,9 @@ if __name__ == "__main__":
 
 	pottery = load_pottery_collection("pottery.toml")
 	companies = load_companies("companies.toml")
-	pottery_by_company = group_pottery_by_company(pottery, companies)
+	c = Companies.from_raw_data(pottery, companies)
 
-	companies_dir = output_dir / "companies"
-	companies_dir.maybe_make()
-
-	m = make_map(pottery_by_company, standalone=False)
+	m = make_map(c.pottery_by_company, standalone=False)
 
 	root: Figure = m.get_root()  # type: ignore[assignment]
 
@@ -72,23 +67,32 @@ if __name__ == "__main__":
 	for child in root._children.values():
 		child.render()
 
-	graph = make_successor_network(companies)
-
-	all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
-
-	html = templates.get_template("map.jinja2").render(
+	html = render_template(
+			"map.jinja2",
 			header=root.header.render(),
 			body=root.html.render(),
 			script=root.script.render(),
 			scripts='\n'.join(scripts),
-			all_companies=sorted(all_companies),
+			all_companies=c.sorted_company_names,
 			)
 
 	(output_dir / "index.html").write_clean(html)
 
-	companies_index, company_pages = make_company_pages(companies, pottery_by_company)
+	companies_dir = output_dir / "companies"
+	companies_dir.maybe_make()
+
+	companies_index, company_pages = make_company_pages(c)
 
 	for company, page_content in company_pages.items():
 		companies_dir.joinpath(make_id(company) + ".html").write_clean(page_content)
 
 	companies_dir.joinpath("index.html").write_clean(companies_index)
+
+	output_dir.joinpath("dashboard.html").write_clean(
+			render_template(
+					"dashboard.jinja2",
+					groups_pie_chart_data=json.dumps(groups_pie_chart(c)),
+					companies_bar_chart_data=json.dumps(companies_bar_chart(c)),
+					all_companies=c.sorted_company_names,
+					),
+			)

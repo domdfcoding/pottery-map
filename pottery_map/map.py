@@ -28,7 +28,7 @@ The map itself.
 
 # stdlib
 import sys
-from typing import Any, Union
+from typing import Any
 
 # 3rd party
 import folium

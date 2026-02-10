@@ -85,6 +85,7 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	css_dir.maybe_make()
 
 	_copy_file("pottery_map.static", "sidebar.js", js_dir)
+	_copy_file("pottery_map.static", "dashboard.js", js_dir)
 	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
 	_copy_file("pottery_map.static", "sidebar.css", css_dir)
 	_copy_file("pottery_map.static", "style.css", css_dir)

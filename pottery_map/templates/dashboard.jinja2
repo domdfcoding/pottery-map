@@ -1,0 +1,45 @@
+{% extends "page.jinja2" %}
+{% set title = "Dashboard" %}
+{% set root = "./" %}
+{% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+
+
+
+{% endblock extrahead %}
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    <div class="gy-2">
+        <div class="d-flex flex-wrap gap-3 items-container">
+            <div class="item border p-1 min-vw-30">
+                <div class="container">
+                    <canvas id="groups-pie-chart"></canvas>
+                </div>
+            </div>
+            <div class="item border p-1 min-vw-30">
+                <div class="container h-100">
+                    <canvas id="companies-bar-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock body %}
+{% block scripts %}
+    {{ super() }}
+
+    <script>
+
+var groups_pie_chart_data = {{ groups_pie_chart_data }};
+var companies_bar_chart_data = {{ companies_bar_chart_data }};
+
+
+    </script>
+    <script type="text/javascript" src="{{ root }}static/js/dashboard.js" defer></script>
+
+{% endblock scripts %}
