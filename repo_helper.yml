@@ -24,3 +24,10 @@ python_versions:
 manifest_additional:
   - recursive-include pottery_map/static/ *
   - recursive-include pottery_map/templates/ *
+
+extra_formate_deps:
+ - formate-js>=0.1.0
+
+extra_formate_types:
+ - javascript
+ - ts
