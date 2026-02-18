@@ -28,9 +28,9 @@ Function for loading data about companies.
 
 # stdlib
 import warnings
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any
-from collections.abc import Iterable
 
 # 3rd party
 import dom_toml
