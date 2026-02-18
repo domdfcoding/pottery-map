@@ -30,7 +30,7 @@ Function for loading data about companies.
 import warnings
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any, cast
+from typing import Any
 
 # 3rd party
 import dom_toml
@@ -38,6 +38,7 @@ import networkx
 from domdf_python_tools.typing import PathLike
 
 # this package
+from pottery_map.pottery import PotteryItem
 from pottery_map.templates import render_template
 from pottery_map.types import CompanyData, PotteryData
 
@@ -71,7 +72,7 @@ def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Com
 
 
 def group_pottery_by_company(
-		pottery: list[PotteryData],
+		pottery: list[PotteryItem],
 		companies: dict[str, CompanyData],
 		) -> dict[str, CompanyData]:
 	"""
@@ -84,8 +85,8 @@ def group_pottery_by_company(
 	pottery_by_company: dict[str, CompanyData] = {}
 
 	for item in pottery:
-		new_item: PotteryData = cast(PotteryData, dict(item))
-		company = new_item.pop("company")
+		new_item: PotteryData = item.get_item_data()
+		company = item.company
 		if company not in pottery_by_company:
 			if company in companies:
 				factory = companies[company]["factory"]
@@ -93,10 +94,10 @@ def group_pottery_by_company(
 				successor = companies[company].get("successor")
 				defunct = companies[company].get("defunct", False)
 			else:
-				factory = new_item.get("factory", "Unknown")
-				location = new_item.get("location")
-				successor = new_item.get("successor")
-				defunct = new_item.get("defunct", False)
+				factory = item.factory
+				location = item.location
+				successor = item.successor
+				defunct = item.defunct
 			pottery_by_company[company] = {
 					"items": [],
 					"factory": factory,
@@ -105,14 +106,7 @@ def group_pottery_by_company(
 					"defunct": defunct,
 					}
 
-		if "location" in new_item:
-			del new_item["location"]
-		if "factory" in new_item:
-			del new_item["factory"]
-		if "successor" in new_item:
-			del new_item["successor"]
-
-		pottery_by_company[item["company"]]["items"].append(new_item)
+		pottery_by_company[company]["items"].append(new_item)
 
 	return pottery_by_company
 

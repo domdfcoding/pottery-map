@@ -33,10 +33,10 @@ if __name__ == "__main__":
 	from folium import Figure, JavascriptLink
 
 	# this package
-	from pottery_map import load_pottery_collection
 	from pottery_map.companies import Companies, load_companies, make_company_pages
 	from pottery_map.dashboard import create_dashboard_page
 	from pottery_map.map import make_map
+	from pottery_map.pottery import load_pottery_collection
 	from pottery_map.templates import render_template
 	from pottery_map.utils import copy_static_files, make_id, set_branca_random_seed
 	set_branca_random_seed("WWRD")
@@ -85,4 +85,4 @@ if __name__ == "__main__":
 
 	companies_dir.joinpath("index.html").write_clean(companies_index)
 
-	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, companies))
+	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, c))

@@ -38,8 +38,8 @@ from gradpyent import Gradient  # type: ignore[import-untyped]
 
 # this package
 from pottery_map.companies import Companies, _get_item_count
+from pottery_map.pottery import PotteryItem
 from pottery_map.templates import render_template
-from pottery_map.types import PotteryData
 
 __all__ = [
 		"colour_cycle",
@@ -161,7 +161,7 @@ def companies_bar_chart(companies: Companies) -> dict[str, Any]:
 	return companies_bar_chart_data
 
 
-def materials_pie_chart(pottery: list[PotteryData]) -> dict[str, Any]:
+def materials_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	"""
 	Returns data for the pie chart showing materials, such as ``Bone China``.
 
@@ -172,11 +172,11 @@ def materials_pie_chart(pottery: list[PotteryData]) -> dict[str, Any]:
 
 	materials = []
 	for item in pottery:
-		material = item["type"].strip().strip('?').strip()
+		material = item.material.strip().strip('?').strip()
 		if material:
 			materials.append(material)
 
-	# counts = Counter(map(itemgetter("type"), pottery))
+	# counts = Counter(map(itemgetter("material"), pottery))
 	counts = Counter(materials)
 
 	sorted_counts = dict(sorted(counts.items(), key=itemgetter(1), reverse=True))
@@ -195,7 +195,7 @@ def materials_pie_chart(pottery: list[PotteryData]) -> dict[str, Any]:
 	return materials_pie_chart_data
 
 
-def types_bar_chart(pottery: list[PotteryData]) -> dict[str, Any]:
+def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	"""
 	Returns data for the pie chart showing item types, such as ``Bowl``.
 
@@ -206,7 +206,7 @@ def types_bar_chart(pottery: list[PotteryData]) -> dict[str, Any]:
 
 	item_types = []
 	for item in pottery:
-		item_type = item["item"].strip().strip('?').strip()
+		item_type = item.type.strip().strip('?').strip()
 		if item_type:
 			item_types.append(item_type)
 
@@ -227,7 +227,7 @@ def types_bar_chart(pottery: list[PotteryData]) -> dict[str, Any]:
 	return types_bar_chart_data
 
 
-def create_dashboard_page(pottery: list[PotteryData], companies: Companies) -> str:
+def create_dashboard_page(pottery: list[PotteryItem], companies: Companies) -> str:
 	"""
 	Renders HTML for the dashboard page.
 
@@ -235,13 +235,11 @@ def create_dashboard_page(pottery: list[PotteryData], companies: Companies) -> s
 	:param companies:
 	"""
 
-	return (
-			render_template(
-					"dashboard.jinja2",
-					groups_pie_chart_data=json.dumps(groups_pie_chart(companies)),
-					companies_bar_chart_data=json.dumps(companies_bar_chart(companies)),
-					materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
-					types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
-					all_companies=companies.sorted_company_names,
-					),
+	return render_template(
+			"dashboard.jinja2",
+			groups_pie_chart_data=json.dumps(groups_pie_chart(companies)),
+			companies_bar_chart_data=json.dumps(companies_bar_chart(companies)),
+			materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
+			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
+			all_companies=companies.sorted_company_names,
 			)

@@ -20,16 +20,16 @@
                 {%- for item in items %}
                     <div class="item border p-1" id={{ item['id'] }}>
                         <h4>{{ item['design'] }}</h4>
-                        <p>{{ item['type'] }}</p>
+                        <p>{{ item['material'] }}</p>
                         <p>{{ item['era'] }}</p>
-                        {%- if "notes" in item %}
-                            <code>{{ item['notes'] }}</code>
+                        {%- for note in item["notes"] %}
+                            <code>{{ note }}</code>
                             <br>
-                        {%- endif %}
+                        {%- endfor %}
                         <div id="{{ item['id'] }}_carousel" class="carousel slide">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="{{ item['photo_url'] }}"
+                                    <img src="{{ item['photo_urls'][0] }}"
                                          class="d-block w-100"
                                          alt="Image 1 of the {{ item['design'] }} pottery" />
                                 </div>
@@ -66,7 +66,7 @@
                                         data-bs-slide-to="0"
                                         aria-current="true"
                                         aria-label="Slide 1">
-                                    <img class="d-block w-100" src="{{ item['photo_url'] }}" />
+                                    <img class="d-block w-100" src="{{ item['photo_urls'][0] }}" />
                                 </button>
                                 <button data-bs-target="#{{ item['id'] }}_carousel"
                                         role="button"

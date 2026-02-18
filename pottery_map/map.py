@@ -131,12 +131,13 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 					f"""
 <ul>
 	{item_link}
-	<li>{item['type']} {item['item']}</li>
+	<li>{item['material']} {item['type']}</li>
 	<li>{item['era']}</li>
-</ul>
-<img class="pottery-image" src="{item['photo_url']}" />
-	""",
+</ul>""",
 					)
+
+			if item["photo_urls"]:
+				popup_text.append(f'<img class="pottery-image" src="{item["photo_urls"][0]}" />\n\t')
 
 		popup_text.append("</div>")
 
@@ -152,8 +153,8 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 def _create_standalone_map() -> None:
 
 	# this package
-	from pottery_map import load_pottery_collection
 	from pottery_map.companies import group_pottery_by_company, load_companies
+	from pottery_map.pottery import load_pottery_collection
 	from pottery_map.utils import set_branca_random_seed
 
 	set_branca_random_seed("WWRD")

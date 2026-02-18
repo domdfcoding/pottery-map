@@ -2,3 +2,10 @@
 factory = "Eagle Pottery"
 location = { "latitude" = 53.02308684898784, "longitude" = -2.1629028183132877 }
 successor = "Wedgwood"
+
+["Wedgwood"]
+factory = "Wedgwood Barlaston"
+location = { "latitude" = 52.95429347186072, "longitude" = -2.1703569422826328 }
+successor = "WWRD"
+
+["WWRD"]

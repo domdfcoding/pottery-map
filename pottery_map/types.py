@@ -46,17 +46,15 @@ class PotteryData(TypedDict):
 	An item in the pottery collection.
 	"""
 
-	company: NotRequired[str]
-	factory: NotRequired[str]
-	type: Required[str]
-	item: Required[str]
+	id: Required[str]
+	material: Required[str]  # E.g. "Bone China"
+	type: Required[str]  # E.g. "Sandwich Plate"
 	design: Required[str]
-	era: Required[str]
+	designer: NotRequired[str]
+	category: NotRequired[str]  # E.g. "Plate", "Bowl", "Cup"
+	era: NotRequired[str]
 	notes: NotRequired[list[str]]
-	photo_url: NotRequired[str]  # TODO: multiple images
-	location: NotRequired[Coordinates | None]
-	successor: NotRequired[str | None]
-	defunct: Required[bool]
+	photo_urls: NotRequired[list[str]]
 
 
 class CompanyData(TypedDict):
