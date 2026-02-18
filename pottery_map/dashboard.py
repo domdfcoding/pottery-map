@@ -27,6 +27,7 @@ Dashboard charts.
 #
 
 # stdlib
+from collections import Counter
 from operator import itemgetter
 from typing import Any
 
@@ -36,6 +37,7 @@ from gradpyent import Gradient  # type: ignore[import-untyped]
 
 # this package
 from pottery_map.companies import Companies, _get_item_count
+from pottery_map.types import PotteryData
 
 __all__ = ["colour_cycle", "companies_bar_chart", "groups_pie_chart"]
 
@@ -148,3 +150,69 @@ def companies_bar_chart(companies: Companies) -> dict[str, Any]:
 			}
 
 	return companies_bar_chart_data
+
+
+def materials_pie_chart(pottery: list[PotteryData]) -> dict[str, Any]:
+	"""
+	Returns data for the pie chart showing materials, such as ``Bone China``.
+
+	For a chart powered by ChartJS.
+
+	:param pottery:
+	"""
+
+	materials = []
+	for item in pottery:
+		material = item["type"].strip().strip('?').strip()
+		if material:
+			materials.append(material)
+
+	# counts = Counter(map(itemgetter("type"), pottery))
+	counts = Counter(materials)
+
+	sorted_counts = dict(sorted(counts.items(), key=itemgetter(1), reverse=True))
+
+	materials_pie_chart_data = {
+			"labels":
+					list(sorted_counts.keys()),
+			"datasets": [{
+					"data": list(sorted_counts.values()),
+					"backgroundColor": colour_cycle,
+					"borderColor": "#8b8680",
+					"borderWidth": 1,
+					}],
+			}
+
+	return materials_pie_chart_data
+
+
+def types_bar_chart(pottery: list[PotteryData]) -> dict[str, Any]:
+	"""
+	Returns data for the pie chart showing item types, such as ``Bowl``.
+
+	For a chart powered by ChartJS.
+
+	:param pottery:
+	"""
+
+	item_types = []
+	for item in pottery:
+		item_type = item["item"].strip().strip('?').strip()
+		if item_type:
+			item_types.append(item_type)
+
+	counts = Counter(item_types)
+
+	sorted_counts = dict(sorted(counts.items(), key=itemgetter(1), reverse=True))
+
+	types_bar_chart_data = {
+			"labels":
+					list(sorted_counts.keys()),
+			"datasets": [{
+					"data": list(sorted_counts.values()),
+					"backgroundColor": colour_cycle,
+					"borderColor": "#fff",
+					}],
+			}
+
+	return types_bar_chart_data

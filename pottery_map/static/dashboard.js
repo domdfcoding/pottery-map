@@ -71,6 +71,63 @@ const companies_bar_chart_options = {
 		legend: {
 			display: false,
 		},
+		title: {
+			display: true,
+			text: 'Companies',
+		},
+	},
+};
+
+const materials_pie_chart_options = {
+	tooltips: {
+		enabled: false,
+	},
+
+	plugins: {
+		title: {
+			display: true,
+			text: 'Materials',
+		},
+		datalabels: {
+			formatter: (value, ctx) => {
+				const datapoints = ctx.chart.data.datasets[0].data;
+				const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
+				const percentage = (value / total) * 100;
+				return percentage.toFixed(2) + '%';
+			},
+			textStrokeColor: 'black',
+			textStrokeWidth: 2,
+			color: '#fff',
+			font: {
+				weight: 'bold',
+				size: 14,
+			},
+		},
+	},
+};
+
+const types_bar_chart_options = {
+	maintainAspectRatio: false,
+	aspectRatio: 1,
+	responsive: true,
+	indexAxis: 'y',
+	scales: {
+		y: {
+			beginAtZero: true,
+			ticks: {
+				autoSkip: false,
+				stepSize: 1,
+			},
+		},
+	},
+	plugins: {
+		legend: {
+			display: false,
+		},
+		title: {
+			display: true,
+			text: 'Item Types',
+		},
 	},
 };
 
@@ -89,4 +146,21 @@ var companies_bar_chart = new Chart(companies_bar_chart_ctx, {
 	data: companies_bar_chart_data,
 
 	options: companies_bar_chart_options,
+});
+
+var materials_pie_chart_ctx = document.getElementById('materials-pie-chart').getContext('2d');
+var materials_pie_chart = new Chart(materials_pie_chart_ctx, {
+	type: 'pie',
+	data: materials_pie_chart_data,
+
+	options: materials_pie_chart_options,
+	plugins: [ChartDataLabels],
+});
+
+var types_bar_chart_ctx = document.getElementById('types-bar-chart').getContext('2d');
+var types_bar_chart = new Chart(types_bar_chart_ctx, {
+	type: 'bar',
+	data: types_bar_chart_data,
+
+	options: types_bar_chart_options,
 });

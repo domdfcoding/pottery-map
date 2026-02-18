@@ -21,6 +21,16 @@
                     <canvas id="companies-bar-chart"></canvas>
                 </div>
             </div>
+            <div class="item border p-1 min-vw-30">
+                <div class="container">
+                    <canvas id="materials-pie-chart"></canvas>
+                </div>
+            </div>
+            <div class="item border p-1 min-vw-45">
+                <div class="container">
+                    <canvas id="types-bar-chart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -32,7 +42,8 @@
 
 var groups_pie_chart_data = {{ groups_pie_chart_data }};
 var companies_bar_chart_data = {{ companies_bar_chart_data }};
-
+var materials_pie_chart_data = {{ materials_pie_chart_data }};
+var types_bar_chart_data = {{ types_bar_chart_data }};
 
     </script>
     <script type="text/javascript" src="{{ root }}static/js/dashboard.js" defer></script>

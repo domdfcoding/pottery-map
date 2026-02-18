@@ -26,6 +26,9 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# this package
+from pottery_map.dashboard import materials_pie_chart, types_bar_chart
+
 if __name__ == "__main__":
 	# stdlib
 	import json
@@ -93,6 +96,8 @@ if __name__ == "__main__":
 					"dashboard.jinja2",
 					groups_pie_chart_data=json.dumps(groups_pie_chart(c)),
 					companies_bar_chart_data=json.dumps(companies_bar_chart(c)),
+					materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
+					types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 					all_companies=c.sorted_company_names,
 					),
 			)
