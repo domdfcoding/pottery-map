@@ -136,8 +136,12 @@ def companies_bar_chart(companies: Companies) -> dict[str, Any]:
 			))
 
 	unique_counts = sorted(set(companies.company_item_counts.values()))
-	step = 1 / (len(unique_counts) - 1)
-	input_list = [0 + (step * x) for x in range(len(unique_counts))]
+
+	if len(unique_counts) > 1:
+		step = 1 / (len(unique_counts) - 1)
+		input_list = [0 + (step * x) for x in range(len(unique_counts))]
+	else:
+		input_list = [0]
 
 	gg = Gradient(gradient_start="#0000FF", gradient_end="#00FF00")
 	count_colour_map = dict(zip(unique_counts, gg.get_gradient_series(series=input_list, fmt="html")))

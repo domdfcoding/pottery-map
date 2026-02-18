@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="../static/css/sidebar.css">
+        <title>Wedgwood – Pottery Collection</title>
+
+
+    </head>
+    <body>
+        <nav id="sidebar" class="close">
+            <ul class="text-decoration-none ps-0">
+                <li>
+                    <span class="logo">Pottery Collection</span>
+                    <button onclick=toggleSidebar() id="toggle-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 -960 960 960"
+                             width="24px"
+                             fill="#e8eaed">
+                            <path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z" />
+                        </svg>
+                    </button>
+                </li>
+                <li class="">
+                    <a title="Map" href="../">
+                        <!-- <i class="fas fa-map me-3"></i> -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 0 576 512"
+                             width="24px"
+                             fill="#e8eaed">
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M384 476.1L192 421.2V35.9L384 90.8V476.1zm32-1.2V88.4L543.1 37.5c15.8-6.3 32.9 5.3 32.9 22.3V394.6c0 9.8-6 18.6-15.1 22.3L416 474.8zM15.1 95.1L160 37.2V423.6L32.9 474.5C17.1 480.8 0 469.2 0 452.2V117.4c0-9.8 6-18.6 15.1-22.3z" />
+                        </svg>
+                        <span>Map</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a title="Items" href="../items.html">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="-5 -10 24 24"
+                             width="24px"
+                             id="svg8"
+                             version="1.1"
+                             xmlns:cc="http://creativecommons.org/ns#"
+                             xmlns:dc="http://purl.org/dc/elements/1.1/"
+                             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                            <metadata id="metadata14"><rdf:RDF><cc:Work rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata>
+                            <path id="path2" d="m10.472-2.3746c-0.1353-0.028384-0.27438-0.052035-0.41632-0.073797-0.91492-0.1353-1.9548-0.13719-3.056-0.13719-1.1013 0-2.1402 0.00185-3.056 0.13719-0.14192 0.020818-0.28102 0.045414-0.41632 0.073797-0.039737 0.016086-0.081374 0.024595-0.123 0.027439-0.62446 0.14192-1.1713 0.37279-1.6113 0.75692-0.75787 0.66326-1.1723 1.7731-1.1723 3.5955 0 3.1638 1.2641 7.7688 3.1943 10.561h6.3705c1.9302-2.792 3.1943-7.397 3.1943-10.561 0-1.8223-0.41441-2.932-1.1723-3.5955-0.43996-0.38413-0.98684-0.61501-1.6113-0.75692-0.04258-0.00282-0.08421-0.011353-0.123-0.027439zm-0.75881-0.91873c-0.81937-1.4779-0.15328-2.8763 0.41632-3.6778 0 0-6.2579 0-6.2579 9.606e-4 0.56959 0.80045 1.2357 2.1998 0.41535 3.6768 0.83262-0.085151 1.7504-0.088939 2.7126-0.088939 0.96319 0 1.88 0.0038 2.7126 0.088939zm-7.4973-4.4754h9.5695v-0.79762h-9.5695z" fill-rule="evenodd" />
+                        </svg>
+                        <span>Items</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a title="Dashboard" href="../dashboard.html">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 -960 960 960"
+                             width="24px"
+                             fill="#e8eaed">
+                            <path d="M520-640v-160q0-17 11.5-28.5T560-840h240q17 0 28.5 11.5T840-800v160q0 17-11.5 28.5T800-600H560q-17 0-28.5-11.5T520-640ZM120-480v-320q0-17 11.5-28.5T160-840h240q17 0 28.5 11.5T440-800v320q0 17-11.5 28.5T400-440H160q-17 0-28.5-11.5T120-480Zm400 320v-320q0-17 11.5-28.5T560-520h240q17 0 28.5 11.5T840-480v320q0 17-11.5 28.5T800-120H560q-17 0-28.5-11.5T520-160Zm-400 0v-160q0-17 11.5-28.5T160-360h240q17 0 28.5 11.5T440-320v160q0 17-11.5 28.5T400-120H160q-17 0-28.5-11.5T120-160Zm80-360h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <button title="Companies" onclick=toggleSubMenu(this) class="dropdown-btn">
+                        <!-- <i class="fas fa-industry me-3"></i> -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 0 576 512"
+                             width="24px">
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M64 32C46.3 32 32 46.3 32 64V304v48 80c0 26.5 21.5 48 48 48H496c26.5 0 48-21.5 48-48V304 152.2c0-18.2-19.4-29.7-35.4-21.1L352 215.4V152.2c0-18.2-19.4-29.7-35.4-21.1L160 215.4V64c0-17.7-14.3-32-32-32H64z" />
+                        </svg>
+                        <span>Companies</span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 -960 960 960"
+                             width="24px"
+                             fill="#e8eaed">
+                            <path d="M480-361q-8 0-15-2.5t-13-8.5L268-556q-11-11-11-28t11-28q11-11 28-11t28 11l156 156 156-156q11-11 28-11t28 11q11 11 11 28t-11 28L508-372q-6 6-13 8.5t-15 2.5Z" />
+                        </svg>
+                    </button>
+                    <ul class="text-decoration-none sub-menu ps-0">
+                        <div>
+
+                                <li class="border-bottom">
+                                    <a href="../companies">View All</a>
+                                </li>
+
+
+
+                                    <li>
+                                        <a href="../companies/j_g_meakin.html">J & G Meakin</a>
+                                    </li>
+
+
+
+                                    <li>
+                                        <a href="../companies/wwrd.html">WWRD</a>
+                                    </li>
+
+
+
+                                    <li class="active">
+                                        <a href="#">Wedgwood</a>
+                                    </li>
+
+
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="d-flex flex-column min-vh-100">
+
+                <main class="padded">
+
+    <h1>Wedgwood</h1>
+
+    <h2>Wedgwood Barlaston</h2>
+        <h6>
+            <a href='https://www.google.com/maps/place/52.95429347186072,-2.1703569422826328'>View On Map</a>
+        </h6>
+
+                </main>
+
+
+
+                <!-- Footer -->
+                <footer class="page-footer font-small blue pt-4 mt-auto">
+                    <!-- Footer Links -->
+                    <div class="container text-center">
+                        Powered by <a href="https://github.com/domdfcoding/pottery-map">pottery-map</a>.
+                        © 2026 Dominic Davis-Foster.
+                        <br>
+                        Maps from <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>. © OpenStreetMap contributors.
+                        Uses <a href="https://github.com/gravitystorm/openstreetmap-carto">OpenStreetMap Carto</a> style.
+                        Pottery icon by Singlar from <a href="https://thenounproject.com/icon/pottery-7911200/"
+    target="_blank">Noun Project</a> (CC BY 3.0).
+                    </div>
+                </footer>
+
+        </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+                    crossorigin="anonymous"></script>
+
+            <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
+
+    </body>
+</html>

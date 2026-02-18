@@ -7,18 +7,18 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    <link rel="stylesheet" href="./pottery_map.css"/>
 
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_c55299705188c0853fad0fbde9a56579 {
+                #map_pottery {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -51,21 +51,38 @@
             </script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+
+				<style>
+					img.pottery-image {
+	max-width: 240px;
+	height: auto;
+}
+
+.item-details {
+	max-height: 50vh;
+	overflow-y: scroll;
+}
+
+.item-details ul {
+	list-style-type: none;
+}
+
+				</style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
 </head>
 <body>
 
 
-            <div class="folium-map" id="map_c55299705188c0853fad0fbde9a56579" ></div>
+            <div class="folium-map" id="map_pottery" ></div>
 
 </body>
 <script>
 
 
-            var map_c55299705188c0853fad0fbde9a56579 = L.map(
-                "map_c55299705188c0853fad0fbde9a56579",
+            var map_pottery = L.map(
+                "map_pottery",
                 {
                     center: [53.02445128825057, -2.1834733161173445],
                     crs: L.CRS.EPSG3857,
@@ -99,42 +116,42 @@
             );
 
 
-            tile_layer_a1e45ab86eca35870bad11bc97f06336.addTo(map_c55299705188c0853fad0fbde9a56579);
+            tile_layer_a1e45ab86eca35870bad11bc97f06336.addTo(map_pottery);
 
 
-            var marker_cluster_8d45a7b642235f28936bf48810916072 = L.markerClusterGroup(
+            var marker_cluster_fc5358848cbd24afac431d78d8dcc7d5 = L.markerClusterGroup(
                 {
   "maxClusterRadius": 50,
 }
             );
 
 
-            var marker_3f0cfbd95dd1708c7d15becca73c7423 = L.marker(
+            var marker_ba6e74c479fe05d5a3c58b41446c339b = L.marker(
                 [53.02308684898784, -2.1629028183132877],
                 {
 }
-            ).addTo(marker_cluster_8d45a7b642235f28936bf48810916072);
+            ).addTo(marker_cluster_fc5358848cbd24afac431d78d8dcc7d5);
 
 
-        var popup_fc5358848cbd24afac431d78d8dcc7d5 = L.popup({
+        var popup_67303b9a1f9dbef7947d08f6dfe45f50 = L.popup({
   "maxWidth": 400,
   "minWidth": 245,
 });
 
 
 
-                var html_dfc0787d916fdc31b472d3ac55223617 = $(`<div id="html_dfc0787d916fdc31b472d3ac55223617" style="width: 100.0%; height: 100.0%;"> <div class="item-details"> <h2>J & G Meakin</h2> <h3><strong>Eagle Pottery</strong></h3> 		 <ul> 	<li>Strawberry Border</li> 	<li>Earthenware Plate</li> 	<li>c1970-c2000</li> </ul> <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" /> 	</div></div>`)[0];
-                popup_fc5358848cbd24afac431d78d8dcc7d5.setContent(html_dfc0787d916fdc31b472d3ac55223617);
+                var html_3f0cfbd95dd1708c7d15becca73c7423 = $(`<div id="html_3f0cfbd95dd1708c7d15becca73c7423" style="width: 100.0%; height: 100.0%;"><div class="item-details"> <h2>J & G Meakin</h2> <h3><strong>Eagle Pottery</strong></h3>  <ul> 	<li>Strawberry Border</li> 	<li>Earthenware Plate</li> 	<li>c1970-c2000</li> </ul> <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" /> 	 </div></div>`)[0];
+                popup_67303b9a1f9dbef7947d08f6dfe45f50.setContent(html_3f0cfbd95dd1708c7d15becca73c7423);
 
 
 
-        marker_3f0cfbd95dd1708c7d15becca73c7423.bindPopup(popup_fc5358848cbd24afac431d78d8dcc7d5)
+        marker_ba6e74c479fe05d5a3c58b41446c339b.bindPopup(popup_67303b9a1f9dbef7947d08f6dfe45f50)
         ;
 
 
 
 
-            marker_3f0cfbd95dd1708c7d15becca73c7423.bindTooltip(
+            marker_ba6e74c479fe05d5a3c58b41446c339b.bindTooltip(
                 `<div>
                      J & G Meakin
                  </div>`,
@@ -144,7 +161,7 @@
             );
 
 
-            marker_cluster_8d45a7b642235f28936bf48810916072.addTo(map_c55299705188c0853fad0fbde9a56579);
+            marker_cluster_fc5358848cbd24afac431d78d8dcc7d5.addTo(map_pottery);
 
 </script>
 </html>
