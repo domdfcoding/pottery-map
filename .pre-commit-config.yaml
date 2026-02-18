@@ -89,7 +89,7 @@ repos:
        - formate-js>=0.1.0
       types_or:
        - python
-       - js
+       - pyi
        - javascript
        - ts
 
