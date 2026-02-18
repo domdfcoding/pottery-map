@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #
-#  __init__.py
+#  types.py
 """
-Map showing where items in a pottery collection were manufactured.
+Base types.
 """
 #
 #  Copyright © 2025 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -27,32 +27,45 @@ Map showing where items in a pottery collection were manufactured.
 #
 
 # 3rd party
-import dom_toml
-from domdf_python_tools.typing import PathLike
+from typing_extensions import NotRequired, Required, TypedDict
 
-# this package
-from pottery_map.types import PotteryData
-from pottery_map.utils import make_id
-
-__all__ = ["load_pottery_collection"]
-
-__author__: str = "Dominic Davis-Foster"
-__copyright__: str = "2025 Dominic Davis-Foster"
-__license__: str = "MIT License"
-__version__: str = "0.0.0"
-__email__: str = "dominic@davis-foster.co.uk"
+__all__ = ["CompanyData", "Coordinates", "PotteryData"]
 
 
-def load_pottery_collection(pottery_file: PathLike = "pottery.toml") -> list[PotteryData]:
+class Coordinates(TypedDict):
 	"""
-	Load a pottery collection from a TOML file.
-
-	:param pottery_file:
+	The coordinates of a factory.
 	"""
 
-	pottery = []
-	for item_id, item in dom_toml.load(pottery_file).items():
-		item["id"] = make_id(item_id)
-		pottery.append(item)
+	latitude: float
+	longitude: float
 
-	return pottery
+
+class PotteryData(TypedDict):
+	"""
+	An item in the pottery collection.
+	"""
+
+	company: NotRequired[str]
+	factory: NotRequired[str]
+	type: Required[str]
+	item: Required[str]
+	design: Required[str]
+	era: Required[str]
+	notes: NotRequired[list[str]]
+	photo_url: NotRequired[str]  # TODO: multiple images
+	location: NotRequired[Coordinates | None]
+	successor: NotRequired[str | None]
+	defunct: Required[bool]
+
+
+class CompanyData(TypedDict):
+	"""
+	A company and the items made by it.
+	"""
+
+	factory: Required[str]
+	location: Required[Coordinates | None]
+	successor: Required[str | None]
+	defunct: Required[bool]
+	items: NotRequired[list[PotteryData]]

@@ -1,3 +1,8 @@
+{% macro defunct_dagger(company) %}
+    {% if company in companies.pottery_by_company %}
+        {% if companies.pottery_by_company[company]["defunct"] %}<abbr title="defunct">†</abbr>{% endif %}
+    {% endif %}
+{% endmacro %}
 {% extends "page.jinja2" %}
 {% set title = "Companies" %}
 {% set root = "../" %}
@@ -8,9 +13,10 @@
         <div class="col-sm-6">
             <h2>By Name</h2>
             <ul>
-                {% for company, item_count in sorted(company_item_counts.items()) %}
+                {% for company, item_count in sorted(companies.company_item_counts.items()) %}
                     <li>
                         <a href='{{ make_id(company) }}.html'>{{ company }}</a> ({{ item_count }})
+                        {{ defunct_dagger(company) }}
                     </li>
                 {% endfor %}
             </ul>
@@ -18,7 +24,7 @@
         <div class="col-sm-6">
             <h2>By Parent</h2>
             <ul>
-                {% for company in top_level_companies %}
+                {% for company in companies.top_level_companies %}
                     {%- include "write_company_entries.macro.jinja2" indent content -%}
                 {% endfor %}
             </ul>

@@ -30,7 +30,7 @@ Function for loading data about companies.
 import warnings
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 # 3rd party
 import dom_toml
@@ -39,22 +39,23 @@ from domdf_python_tools.typing import PathLike
 
 # this package
 from pottery_map.templates import render_template
+from pottery_map.types import CompanyData, PotteryData
 
 __all__ = ["group_pottery_by_company", "load_companies", "make_company_pages", "make_successor_network"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
 
-def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Any]:
+def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, CompanyData]:
 	"""
 	Load company data (name, factory, location) from file.
 
 	:param companies_file:
 	"""
 
-	companies = {}
+	companies: dict[str, CompanyData] = {}
 	existing_coordinates = []
-	company_data: dict
+	company_data: CompanyData
 	for company_name, company_data in dom_toml.load(companies_file).items():
 		if "location" in company_data:
 			if company_data["location"] in existing_coordinates:
@@ -62,13 +63,17 @@ def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Any
 			existing_coordinates.append(company_data["location"])
 		company_data.setdefault("factory", "Unknown")
 		company_data.setdefault("location", None)
+		company_data.setdefault("successor", None)
+		company_data.setdefault("defunct", False)
 		companies[company_name] = company_data
 
 	return companies
 
 
-# TODO: TypedDict etc.
-def group_pottery_by_company(pottery: list, companies: dict[str, Any]) -> dict[str, Any]:
+def group_pottery_by_company(
+		pottery: list[PotteryData],
+		companies: dict[str, CompanyData],
+		) -> dict[str, CompanyData]:
 	"""
 	Group items in the pottery collection by the company who made them.
 
@@ -76,25 +81,28 @@ def group_pottery_by_company(pottery: list, companies: dict[str, Any]) -> dict[s
 	:param companies: Data about companies, giving factory locations.
 	"""
 
-	pottery_by_company = {}
+	pottery_by_company: dict[str, CompanyData] = {}
 
 	for item in pottery:
-		new_item = dict(item)
+		new_item: PotteryData = cast(PotteryData, dict(item))
 		company = new_item.pop("company")
 		if company not in pottery_by_company:
 			if company in companies:
 				factory = companies[company]["factory"]
 				location = companies[company]["location"]
 				successor = companies[company].get("successor")
+				defunct = companies[company].get("defunct", False)
 			else:
 				factory = new_item.get("factory", "Unknown")
 				location = new_item.get("location")
 				successor = new_item.get("successor")
+				defunct = new_item.get("defunct", False)
 			pottery_by_company[company] = {
 					"items": [],
 					"factory": factory,
 					"location": location,
 					"successor": successor,
+					"defunct": defunct,
 					}
 
 		if "location" in new_item:
@@ -206,8 +214,7 @@ def make_company_pages(companies: Companies) -> tuple[str, dict[str, str]]:
 
 	index_page = render_template(
 			"company_index.jinja2",
-			company_item_counts=companies.company_item_counts,
-			top_level_companies=companies.top_level_companies,
+			companies=companies,
 			all_companies=companies.sorted_company_names,
 			graph=companies.graph,
 			get_item_count=_get_item_count,

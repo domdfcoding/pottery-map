@@ -1,8 +1,9 @@
 {% set ancestors = networkx.ancestors(graph, company) %}
 {{ ancestors.add(company) |default("", True) -}}
-{% set item_count = get_item_count(company_item_counts, ancestors) -%}
+{% set item_count = get_item_count(companies.company_item_counts, ancestors) -%}
 <li>
     <a href='{{ make_id(company) }}.html'>{{ company }}</a> ({{ item_count }})
+    {{ defunct_dagger(company) }}
 </li>
 {%- set predecessors = list(graph.predecessors(company)) %}
 {% if predecessors -%}
