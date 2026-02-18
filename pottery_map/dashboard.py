@@ -27,6 +27,7 @@ Dashboard charts.
 #
 
 # stdlib
+import json
 from collections import Counter
 from operator import itemgetter
 from typing import Any
@@ -37,9 +38,17 @@ from gradpyent import Gradient  # type: ignore[import-untyped]
 
 # this package
 from pottery_map.companies import Companies, _get_item_count
+from pottery_map.templates import render_template
 from pottery_map.types import PotteryData
 
-__all__ = ["colour_cycle", "companies_bar_chart", "groups_pie_chart"]
+__all__ = [
+		"colour_cycle",
+		"companies_bar_chart",
+		"create_dashboard_page",
+		"groups_pie_chart",
+		"materials_pie_chart",
+		"types_bar_chart",
+		]
 
 colour_cycle = [
 		"blue",
@@ -216,3 +225,23 @@ def types_bar_chart(pottery: list[PotteryData]) -> dict[str, Any]:
 			}
 
 	return types_bar_chart_data
+
+
+def create_dashboard_page(pottery: list[PotteryData], companies: Companies) -> str:
+	"""
+	Renders HTML for the dashboard page.
+
+	:param pottery:
+	:param companies:
+	"""
+
+	return (
+			render_template(
+					"dashboard.jinja2",
+					groups_pie_chart_data=json.dumps(groups_pie_chart(companies)),
+					companies_bar_chart_data=json.dumps(companies_bar_chart(companies)),
+					materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
+					types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
+					all_companies=companies.sorted_company_names,
+					),
+			)

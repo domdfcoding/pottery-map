@@ -26,12 +26,7 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-# this package
-from pottery_map.dashboard import materials_pie_chart, types_bar_chart
-
 if __name__ == "__main__":
-	# stdlib
-	import json
 
 	# 3rd party
 	from domdf_python_tools.paths import PathPlus
@@ -40,11 +35,10 @@ if __name__ == "__main__":
 	# this package
 	from pottery_map import load_pottery_collection
 	from pottery_map.companies import Companies, load_companies, make_company_pages
-	from pottery_map.dashboard import companies_bar_chart, groups_pie_chart
+	from pottery_map.dashboard import create_dashboard_page
 	from pottery_map.map import make_map
 	from pottery_map.templates import render_template
 	from pottery_map.utils import copy_static_files, make_id, set_branca_random_seed
-
 	set_branca_random_seed("WWRD")
 
 	output_dir = PathPlus("output")
@@ -91,13 +85,4 @@ if __name__ == "__main__":
 
 	companies_dir.joinpath("index.html").write_clean(companies_index)
 
-	output_dir.joinpath("dashboard.html").write_clean(
-			render_template(
-					"dashboard.jinja2",
-					groups_pie_chart_data=json.dumps(groups_pie_chart(c)),
-					companies_bar_chart_data=json.dumps(companies_bar_chart(c)),
-					materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
-					types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
-					all_companies=c.sorted_company_names,
-					),
-			)
+	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, companies))

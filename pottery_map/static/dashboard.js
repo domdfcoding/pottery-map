@@ -25,7 +25,23 @@ Dashboard charts.
 //  OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-var groups_pie_chart_options = {
+const pie_datalabels_options = {
+	formatter: (value, ctx) => {
+		const datapoints = ctx.chart.data.datasets[0].data;
+		const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
+		const percentage = (value / total) * 100;
+		return percentage.toFixed(2) + '%';
+	},
+	textStrokeColor: 'black',
+	textStrokeWidth: 2,
+	color: '#fff',
+	font: {
+		weight: 'bold',
+		size: 14,
+	},
+};
+
+const groups_pie_chart_options = {
 	tooltips: {
 		enabled: false,
 	},
@@ -35,21 +51,7 @@ var groups_pie_chart_options = {
 			display: true,
 			text: 'Company Groups',
 		},
-		datalabels: {
-			formatter: (value, ctx) => {
-				const datapoints = ctx.chart.data.datasets[0].data;
-				const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
-				const percentage = (value / total) * 100;
-				return percentage.toFixed(2) + '%';
-			},
-			textStrokeColor: 'black',
-			textStrokeWidth: 2,
-			color: '#fff',
-			font: {
-				weight: 'bold',
-				size: 14,
-			},
-		},
+		datalabels: pie_datalabels_options,
 	},
 };
 
@@ -88,21 +90,7 @@ const materials_pie_chart_options = {
 			display: true,
 			text: 'Materials',
 		},
-		datalabels: {
-			formatter: (value, ctx) => {
-				const datapoints = ctx.chart.data.datasets[0].data;
-				const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
-				const percentage = (value / total) * 100;
-				return percentage.toFixed(2) + '%';
-			},
-			textStrokeColor: 'black',
-			textStrokeWidth: 2,
-			color: '#fff',
-			font: {
-				weight: 'bold',
-				size: 14,
-			},
-		},
+		datalabels: pie_datalabels_options,
 	},
 };
 
@@ -135,7 +123,6 @@ var groups_pie_chart_ctx = document.getElementById('groups-pie-chart').getContex
 var groups_pie_chart = new Chart(groups_pie_chart_ctx, {
 	type: 'pie',
 	data: groups_pie_chart_data,
-
 	options: groups_pie_chart_options,
 	plugins: [ChartDataLabels],
 });
@@ -144,7 +131,6 @@ var companies_bar_chart_ctx = document.getElementById('companies-bar-chart').get
 var companies_bar_chart = new Chart(companies_bar_chart_ctx, {
 	type: 'bar',
 	data: companies_bar_chart_data,
-
 	options: companies_bar_chart_options,
 });
 
@@ -152,7 +138,6 @@ var materials_pie_chart_ctx = document.getElementById('materials-pie-chart').get
 var materials_pie_chart = new Chart(materials_pie_chart_ctx, {
 	type: 'pie',
 	data: materials_pie_chart_data,
-
 	options: materials_pie_chart_options,
 	plugins: [ChartDataLabels],
 });
@@ -161,6 +146,5 @@ var types_bar_chart_ctx = document.getElementById('types-bar-chart').getContext(
 var types_bar_chart = new Chart(types_bar_chart_ctx, {
 	type: 'bar',
 	data: types_bar_chart_data,
-
 	options: types_bar_chart_options,
 });
