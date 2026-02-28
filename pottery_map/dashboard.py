@@ -29,6 +29,7 @@ Dashboard charts.
 # stdlib
 import json
 from collections import Counter
+from collections.abc import Mapping
 from operator import itemgetter
 from typing import Any
 
@@ -98,17 +99,17 @@ def groups_pie_chart(companies: Companies) -> dict[str, Any]:
 		else:
 			other_count += item_count
 
-	print(company_counts)
-
 	sorted_company_counts = dict(
 			sorted(company_counts.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)],
 			)
 
+	labels, data = list(zip(*sorted_company_counts.items()))
+
 	groups_pie_chart_data = {
 			"labels":
-					list(sorted_company_counts.keys()),
+					labels,
 			"datasets": [{
-					"data": list(sorted_company_counts.values()),
+					"data": data,
 					"backgroundColor": colour_cycle,
 					"borderColor": "#8b8680",
 					"borderWidth": 1,
@@ -116,6 +117,49 @@ def groups_pie_chart(companies: Companies) -> dict[str, Any]:
 			}
 
 	return groups_pie_chart_data
+
+
+def gradient_for_data(
+		data: list[float],
+		gradient_start: str = "#0000FF",
+		gradient_end: str = "#00FF00",
+		) -> list[str]:
+	"""
+	Construct a colour gradient for the given values.
+
+	:param data:
+	:param gradient_start:
+	:param gradient_end:
+	"""
+
+	unique_values = sorted(set(data))
+
+	if len(unique_values) > 1:
+		step = 1 / (len(unique_values) - 1)
+		input_list = [0 + (step * x) for x in range(len(unique_values))]
+	else:
+		input_list = [0]
+
+	gg = Gradient(gradient_start=gradient_start, gradient_end=gradient_end)
+	count_colour_map = dict(zip(unique_values, gg.get_gradient_series(series=input_list, fmt="html")))
+
+	background_colour = []
+
+	for count in data:
+		background_colour.append(count_colour_map[count])
+
+	return background_colour
+
+
+def sort_counts(counts: Mapping[str, float]) -> tuple[list[str], list[float]]:
+	sorted_counts = dict(sorted(
+			counts.items(),
+			key=itemgetter(1),
+			reverse=True,
+			))
+
+	labels, data = list(zip(*sorted_counts.items()))
+	return list(labels), list(data)
 
 
 def companies_bar_chart(companies: Companies) -> dict[str, Any]:
@@ -127,37 +171,13 @@ def companies_bar_chart(companies: Companies) -> dict[str, Any]:
 	:param companies:
 	"""
 
-	print(companies.company_item_counts)
-
-	sorted_item_counts = dict(sorted(
-			companies.company_item_counts.items(),
-			key=itemgetter(1),
-			reverse=True,
-			))
-
-	unique_counts = sorted(set(companies.company_item_counts.values()))
-
-	if len(unique_counts) > 1:
-		step = 1 / (len(unique_counts) - 1)
-		input_list = [0 + (step * x) for x in range(len(unique_counts))]
-	else:
-		input_list = [0]
-
-	gg = Gradient(gradient_start="#0000FF", gradient_end="#00FF00")
-	count_colour_map = dict(zip(unique_counts, gg.get_gradient_series(series=input_list, fmt="html")))
-
-	data = []
-	background_colour = []
-
-	for count in sorted_item_counts.values():
-		data.append(count)
-		background_colour.append(count_colour_map[count])
+	labels, data = sort_counts(companies.company_item_counts)
 
 	companies_bar_chart_data = {
-			"labels": list(sorted_item_counts.keys()),
+			"labels": labels,
 			"datasets": [{
 					"data": data,
-					"backgroundColor": background_colour,
+					"backgroundColor": gradient_for_data(data),
 					"borderColor": "#fff",
 					}],
 			}
@@ -180,16 +200,13 @@ def materials_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 		if material:
 			materials.append(material)
 
-	# counts = Counter(map(itemgetter("material"), pottery))
-	counts = Counter(materials)
-
-	sorted_counts = dict(sorted(counts.items(), key=itemgetter(1), reverse=True))
+	labels, data = sort_counts(Counter(materials))
 
 	materials_pie_chart_data = {
 			"labels":
-					list(sorted_counts.keys()),
+					labels,
 			"datasets": [{
-					"data": list(sorted_counts.values()),
+					"data": data,
 					"backgroundColor": colour_cycle,
 					"borderColor": "#8b8680",
 					"borderWidth": 1,
@@ -214,16 +231,13 @@ def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 		if item_type:
 			item_types.append(item_type)
 
-	counts = Counter(item_types)
-
-	sorted_counts = dict(sorted(counts.items(), key=itemgetter(1), reverse=True))
+	labels, data = sort_counts(Counter(item_types))
 
 	types_bar_chart_data = {
-			"labels":
-					list(sorted_counts.keys()),
+			"labels": labels,
 			"datasets": [{
-					"data": list(sorted_counts.values()),
-					"backgroundColor": colour_cycle,
+					"data": data,
+					"backgroundColor": gradient_for_data(data),
 					"borderColor": "#fff",
 					}],
 			}
