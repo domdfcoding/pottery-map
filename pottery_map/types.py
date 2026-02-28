@@ -55,6 +55,7 @@ class PotteryData(TypedDict):
 	era: NotRequired[str]
 	notes: NotRequired[list[str]]
 	photo_urls: NotRequired[list[str]]
+	area: NotRequired[str]
 
 
 class CompanyData(TypedDict):
@@ -66,4 +67,5 @@ class CompanyData(TypedDict):
 	location: Required[Coordinates | None]
 	successor: Required[str | None]
 	defunct: Required[bool]
+	area: NotRequired[str | None]
 	items: NotRequired[list[PotteryData]]

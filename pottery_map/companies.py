@@ -91,11 +91,13 @@ def group_pottery_by_company(
 			if company in companies:
 				factory = companies[company]["factory"]
 				location = companies[company]["location"]
+				area = companies[company].get("area")
 				successor = companies[company].get("successor")
 				defunct = companies[company].get("defunct", False)
 			else:
 				factory = item.factory
 				location = item.location
+				area = item.area
 				successor = item.successor
 				defunct = item.defunct
 			pottery_by_company[company] = {
@@ -104,6 +106,7 @@ def group_pottery_by_company(
 					"location": location,
 					"successor": successor,
 					"defunct": defunct,
+					"area": area,
 					}
 
 		pottery_by_company[company]["items"].append(new_item)
