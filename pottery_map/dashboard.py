@@ -28,7 +28,7 @@ Dashboard charts.
 
 # stdlib
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Mapping
 from operator import itemgetter
 from typing import Any
@@ -44,10 +44,13 @@ from pottery_map.templates import render_template
 
 __all__ = [
 		"colour_cycle",
+		"areas_pie_chart",
 		"companies_bar_chart",
 		"create_dashboard_page",
+		"gradient_for_data",
 		"groups_pie_chart",
 		"materials_pie_chart",
+		"sort_counts",
 		"types_bar_chart",
 		]
 
@@ -85,7 +88,7 @@ def groups_pie_chart(companies: Companies) -> dict[str, Any]:
 
 	For a chart powered by ChartJS.
 
-	:param companies:
+	:param companies: Companies
 	"""
 
 	other_count = 0
@@ -258,6 +261,50 @@ def create_dashboard_page(pottery: list[PotteryItem], companies: Companies) -> s
 			groups_pie_chart_data=json.dumps(groups_pie_chart(companies)),
 			companies_bar_chart_data=json.dumps(companies_bar_chart(companies)),
 			materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
+			areas_pie_chart_data=json.dumps(areas_pie_chart(companies)),
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			all_companies=companies.sorted_company_names,
 			)
+
+
+def areas_pie_chart(companies: Companies) -> dict[str, Any]:
+	"""
+	Returns data for the pie chart showing areas factories are locted in, such as ``Tunstall``.
+
+	For a chart powered by ChartJS.
+
+	:param companies: Companies
+	"""
+
+	areas = defaultdict(int)
+	for company_name, company_data in companies.companies_data.items():
+		area = company_data.get("area", None)
+		if area is None:
+			continue
+		# 	warnings.warn(f"No area specified for {company_name} at {company_data['factory']}")
+		# 	area = "Unknown"
+		areas[area] += 1
+
+	# labels, data = sort_counts(areas)
+
+	other_count = 0
+	for company_name in list(areas.keys()):
+		if areas[company_name] < 2:
+			other_count += areas.pop(company_name)
+
+	sorted_counts = dict(sorted(areas.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)])
+
+	labels, data = list(zip(*sorted_counts.items()))
+
+	areas_pie_chart_data = {
+			"labels":
+					labels,
+			"datasets": [{
+					"data": data,
+					"backgroundColor": colour_cycle,
+					"borderColor": "#8b8680",
+					"borderWidth": 1,
+					}],
+			}
+
+	return areas_pie_chart_data

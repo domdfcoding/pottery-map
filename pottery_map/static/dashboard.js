@@ -119,6 +119,20 @@ const types_bar_chart_options = {
 	},
 };
 
+const areas_pie_chart_options = {
+	tooltips: {
+		enabled: false,
+	},
+
+	plugins: {
+		title: {
+			display: true,
+			text: 'Areas',
+		},
+		datalabels: pie_datalabels_options,
+	},
+};
+
 var groups_pie_chart_ctx = document.getElementById('groups-pie-chart').getContext('2d');
 var groups_pie_chart = new Chart(groups_pie_chart_ctx, {
 	type: 'pie',
@@ -147,4 +161,12 @@ var types_bar_chart = new Chart(types_bar_chart_ctx, {
 	type: 'bar',
 	data: types_bar_chart_data,
 	options: types_bar_chart_options,
+});
+
+var areas_pie_chart_ctx = document.getElementById('areas-pie-chart').getContext('2d');
+var areas_pie_chart = new Chart(areas_pie_chart_ctx, {
+	type: 'pie',
+	data: areas_pie_chart_data,
+	options: areas_pie_chart_options,
+	plugins: [ChartDataLabels],
 });

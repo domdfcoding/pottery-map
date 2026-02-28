@@ -108,3 +108,7 @@ main p {
 .min-vw-30 {
 	min-width: 30vw;
 }
+
+.min-vw-45 {
+	min-width: 45vw;
+}
