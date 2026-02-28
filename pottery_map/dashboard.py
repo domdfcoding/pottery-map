@@ -155,6 +155,12 @@ def gradient_for_data(
 
 
 def sort_counts(counts: Mapping[str, float]) -> tuple[list[str], list[float]]:
+	"""
+	Sort a dictionary of items and frequencies by the frequency (highest to lowest) and return as two separate lists.
+
+	:param counts:
+	"""
+
 	sorted_counts = dict(sorted(
 			counts.items(),
 			key=itemgetter(1),
@@ -276,7 +282,8 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 	:param companies: Companies
 	"""
 
-	areas = defaultdict(int)
+	areas: dict[str, int] = defaultdict(int)
+
 	for company_name, company_data in companies.companies_data.items():
 		area = company_data.get("area", None)
 		if area is None:
