@@ -45,6 +45,7 @@ from pottery_map.templates import render_template
 __all__ = [
 		"colour_cycle",
 		"areas_pie_chart",
+		"categories_pie_chart",
 		"companies_bar_chart",
 		"create_dashboard_page",
 		"gradient_for_data",
@@ -269,6 +270,7 @@ def create_dashboard_page(pottery: list[PotteryItem], companies: Companies) -> s
 			materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
 			areas_pie_chart_data=json.dumps(areas_pie_chart(companies)),
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
+			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
 			all_companies=companies.sorted_company_names,
 			)
 
@@ -315,3 +317,42 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 			}
 
 	return areas_pie_chart_data
+
+
+def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
+	"""
+	Returns data for the pie chart showing number of items in each category, such as ``Bowl``.
+
+	For a chart powered by ChartJS.
+
+
+	:param pottery:
+	"""
+
+	category_counts: dict[str, int] = defaultdict(int)
+
+	for item in pottery:
+		item_type = item.category.strip().lower().title()
+		if item_type:
+			category_counts[item_type] += 1
+
+	other_count = category_counts.pop("Other", 0)
+
+	sorted_counts = dict(
+			sorted(category_counts.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)],
+			)
+
+	labels, data = list(zip(*sorted_counts.items()))
+
+	categories_pie_chart_data = {
+			"labels":
+					labels,
+			"datasets": [{
+					"data": data,
+					"backgroundColor": colour_cycle,
+					"borderColor": "#8b8680",
+					"borderWidth": 1,
+					}],
+			}
+
+	return categories_pie_chart_data

@@ -133,6 +133,20 @@ const areas_pie_chart_options = {
 	},
 };
 
+const categories_pie_chart_options = {
+	tooltips: {
+		enabled: false,
+	},
+
+	plugins: {
+		title: {
+			display: true,
+			text: 'Categories',
+		},
+		datalabels: pie_datalabels_options,
+	},
+};
+
 var groups_pie_chart_ctx = document.getElementById('groups-pie-chart').getContext('2d');
 var groups_pie_chart = new Chart(groups_pie_chart_ctx, {
 	type: 'pie',
@@ -168,5 +182,13 @@ var areas_pie_chart = new Chart(areas_pie_chart_ctx, {
 	type: 'pie',
 	data: areas_pie_chart_data,
 	options: areas_pie_chart_options,
+	plugins: [ChartDataLabels],
+});
+
+var categories_pie_chart_ctx = document.getElementById('categories-pie-chart').getContext('2d');
+var categories_pie_chart = new Chart(categories_pie_chart_ctx, {
+	type: 'pie',
+	data: categories_pie_chart_data,
+	options: categories_pie_chart_options,
 	plugins: [ChartDataLabels],
 });
