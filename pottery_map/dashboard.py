@@ -103,11 +103,7 @@ def groups_pie_chart(companies: Companies) -> dict[str, Any]:
 		else:
 			other_count += item_count
 
-	sorted_company_counts = dict(
-			sorted(company_counts.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)],
-			)
-
-	labels, data = list(zip(*sorted_company_counts.items()))
+	labels, data = sort_counts(company_counts, other_count)
 
 	groups_pie_chart_data = {
 			"labels":
@@ -155,20 +151,27 @@ def gradient_for_data(
 	return background_colour
 
 
-def sort_counts(counts: Mapping[str, float]) -> tuple[list[str], list[float]]:
+def sort_counts(counts: Mapping[str, float], other_count: float | None = None) -> tuple[list[str], list[float]]:
 	"""
 	Sort a dictionary of items and frequencies by the frequency (highest to lowest) and return as two separate lists.
 
 	:param counts:
+	:param other_count: Optional value to show as "Other"
 	"""
 
-	sorted_counts = dict(sorted(
+	sorted_counts = sorted(
 			counts.items(),
 			key=itemgetter(1),
 			reverse=True,
-			))
+			)
 
-	labels, data = list(zip(*sorted_counts.items()))
+	if other_count is not None:
+		# TODO: hide if 0
+		sorted_counts += [("Other", other_count)]
+
+	sorted_counts_dict = dict(sorted_counts)
+
+	labels, data = list(zip(*sorted_counts_dict.items()))
 	return list(labels), list(data)
 
 
@@ -301,9 +304,7 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 		if areas[company_name] < 2:
 			other_count += areas.pop(company_name)
 
-	sorted_counts = dict(sorted(areas.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)])
-
-	labels, data = list(zip(*sorted_counts.items()))
+	labels, data = sort_counts(areas, other_count)
 
 	areas_pie_chart_data = {
 			"labels":
@@ -338,11 +339,7 @@ def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 
 	other_count = category_counts.pop("Other", 0)
 
-	sorted_counts = dict(
-			sorted(category_counts.items(), key=itemgetter(1), reverse=True) + [("Other", other_count)],
-			)
-
-	labels, data = list(zip(*sorted_counts.items()))
+	labels, data = sort_counts(category_counts, other_count)
 
 	categories_pie_chart_data = {
 			"labels":
