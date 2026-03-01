@@ -105,16 +105,7 @@ def groups_pie_chart(companies: Companies) -> dict[str, Any]:
 
 	labels, data = sort_counts(company_counts, other_count)
 
-	groups_pie_chart_data = {
-			"labels":
-					labels,
-			"datasets": [{
-					"data": data,
-					"backgroundColor": colour_cycle,
-					"borderColor": "#8b8680",
-					"borderWidth": 1,
-					}],
-			}
+	groups_pie_chart_data = pie_chart_data(labels, data, colour_cycle)
 
 	return groups_pie_chart_data
 
@@ -209,23 +200,13 @@ def materials_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 
 	materials = []
 	for item in pottery:
-		material = item.material.strip().strip('?').strip()
+		material = _strip(item.material)
 		if material:
 			materials.append(material)
 
 	labels, data = sort_counts(Counter(materials))
 
-	materials_pie_chart_data = {
-			"labels":
-					labels,
-			"datasets": [{
-					"data": data,
-					"backgroundColor": colour_cycle,
-					"borderColor": "#8b8680",
-					"borderWidth": 1,
-					}],
-			}
-
+	materials_pie_chart_data = pie_chart_data(labels, data, colour_cycle)
 	return materials_pie_chart_data
 
 
@@ -240,7 +221,7 @@ def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 
 	item_types = []
 	for item in pottery:
-		item_type = item.type.strip().strip('?').strip()
+		item_type = _strip(item.type)
 		if item_type:
 			item_types.append(item_type)
 
@@ -306,18 +287,7 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 
 	labels, data = sort_counts(areas, other_count)
 
-	areas_pie_chart_data = {
-			"labels":
-					labels,
-			"datasets": [{
-					"data": data,
-					"backgroundColor": colour_cycle,
-					"borderColor": "#8b8680",
-					"borderWidth": 1,
-					}],
-			}
-
-	return areas_pie_chart_data
+	return pie_chart_data(labels, data, colour_cycle)
 
 
 def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
@@ -341,15 +311,28 @@ def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 
 	labels, data = sort_counts(category_counts, other_count)
 
-	categories_pie_chart_data = {
-			"labels":
-					labels,
+	return pie_chart_data(labels, data, colour_cycle)
+
+
+def pie_chart_data(labels: list[str], data: list[float], colours: list[str]) -> dict[str, Any]:
+	"""
+	Returns data for a pie chart in the format expected by ChartJS.
+
+	:param labels:
+	:param data:
+	:param colours:
+	"""
+
+	return {
+			"labels": labels,
 			"datasets": [{
 					"data": data,
-					"backgroundColor": colour_cycle,
+					"backgroundColor": colours,
 					"borderColor": "#8b8680",
 					"borderWidth": 1,
 					}],
 			}
 
-	return categories_pie_chart_data
+
+def _strip(string: str) -> str:
+	return string.strip().strip('?').strip()
