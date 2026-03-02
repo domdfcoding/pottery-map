@@ -50,6 +50,7 @@ templates.globals["github_url"] = "https://github.com/domdfcoding/pottery-map"
 templates.globals["networkx"] = networkx
 templates.globals["list"] = list
 templates.globals["sorted"] = sorted
+templates.globals["enumerate"] = enumerate
 
 
 def render_template(template: str, **kwargs) -> str:

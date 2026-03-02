@@ -28,21 +28,13 @@
                         {%- endfor %}
                         <div id="{{ item['id'] }}_carousel" class="carousel slide">
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="{{ item['photo_urls'][0] }}"
-                                         class="d-block w-100"
-                                         alt="Image 1 of the {{ item['design'] }} pottery" />
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
-                                         class="d-block w-100"
-                                         alt="Image 2 of the {{ item['design'] }} pottery" />
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
-                                         class="d-block w-100"
-                                         alt="Image 3 of the {{ item['design'] }} pottery" />
-                                </div>
+                                {%- for idx, photo_url in enumerate(item['photo_urls']) %}
+                                    <div class="carousel-item{% if idx == 0 %} active{% endif %}">
+                                        <img src="{{ photo_url }}"
+                                             class="d-block w-100"
+                                             alt="Image {{ idx + 1 }} of the {{ item['design'] }} pottery" />
+                                    </div>
+                                {%- endfor %}
                             </div>
                             <button class="carousel-control-prev"
                                     type="button"
@@ -60,28 +52,15 @@
                             </button>
 
                             <div class="carousel-indicators">
-                                <button class="active"
-                                        data-bs-target="#{{ item['id'] }}_carousel"
-                                        role="button"
-                                        data-bs-slide-to="0"
-                                        aria-current="true"
-                                        aria-label="Slide 1">
-                                    <img class="d-block w-100" src="{{ item['photo_urls'][0] }}" />
-                                </button>
-                                <button data-bs-target="#{{ item['id'] }}_carousel"
-                                        role="button"
-                                        data-bs-slide-to="1"
-                                        aria-label="Slide 2">
-                                    <img class="d-block w-100"
-                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
-                                </button>
-                                <button data-bs-target="#{{ item['id'] }}_carousel"
-                                        role="button"
-                                        data-bs-slide-to="2"
-                                        aria-label="Slide 3">
-                                    <img class="d-block w-100"
-                                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
-                                </button>
+                                {%- for idx, photo_url in enumerate(item['photo_urls']) %}
+                                    <button {% if idx == 0 %}class="active" aria-current="true"{% endif %}
+                                            data-bs-target="#{{ item['id'] }}_carousel"
+                                            role="button"
+                                            data-bs-slide-to="{{ idx }}"
+                                            aria-label="Slide {{ idx + 1 }}">
+                                        <img class="d-block w-100" src="{{ photo_url }}" />
+                                    </button>
+                                {%- endfor %}
                             </div>
                         </div>
                     </div>
