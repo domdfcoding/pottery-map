@@ -30,9 +30,13 @@
                             <div class="carousel-inner">
                                 {%- for idx, photo_url in enumerate(item['photo_urls']) %}
                                     <div class="carousel-item{% if idx == 0 %} active{% endif %}">
+                                        {# TODO: force lightbox to match image size or always be 4:3 #}
                                         <img src="{{ photo_url }}"
                                              class="d-block w-100"
-                                             alt="Image {{ idx + 1 }} of the {{ item['design'] }} pottery" />
+                                             alt="Image {{ idx + 1 }} of the {{ item['design'] }} pottery"
+                                             data-toggle="lightbox"
+                                             data-remote="{{ photo_url }}"
+                                             data-size="lg" />
                                     </div>
                                 {%- endfor %}
                             </div>
@@ -69,3 +73,8 @@
         </div>
     {%- endif %}
 {% endblock body %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
+{% endblock scripts %}

@@ -60,7 +60,8 @@ main p {
 	}
 } */
 
-.carousel {
+/* TODO: bottom few pixels of image disappear when switching images */
+.item .carousel {
 	--image-height: 50px;
 
 	max-width: 330px;
