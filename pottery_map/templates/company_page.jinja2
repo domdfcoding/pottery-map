@@ -14,11 +14,11 @@
         </h6>
     {%- endif %}
     {%- if items %}
-        <div class="wares gy-2" id={{ make_id(company) }}-wares>
+        <div class="wares gy-2" id="{{ make_id(company) }}-wares">
             <h3>Wares</h3>
             <div class="d-flex flex-wrap gap-3 items-container">
                 {%- for item in items %}
-                    <div class="item border p-1" id={{ item['id'] }}>
+                    <div class="item border p-1" id="{{ item['id'] }}">
                         <h4>{{ item['design'] }}</h4>
                         <p>{{ item['material'] }}</p>
                         <p>{{ item['era'] }}</p>
