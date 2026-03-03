@@ -7,18 +7,18 @@
     <div class="wares gy-2" id="wares">
         <div class="d-flex flex-wrap gap-3 items-container">
             {%- for item in items %}
-                <div class="item border p-1" id="{{ item['id'] }}">
-                    <h3>{{ item['design'] }}</h3>
-                    <h4>
+                <div class="item border p-1 d-flex flex-column" id="{{ item['id'] }}">
+                    <h4>{{ item['design'] }}</h4>
+                    <h5>
                         <a href="{{ root }}companies/{{ make_id(item["company"]) }}.html">{{ item["company"] }}, {{ item["factory"] }}</a>
-                    </h4>
+                    </h5>
                     <p>{{ item['material'] }}</p>
                     <p>{{ item['era'] }}</p>
                     {%- for note in item["notes"] %}
                         <code>{{ note }}</code>
                         <br>
                     {%- endfor %}
-                    {% include "carousel.jinja2" %}
+                    <div class="mt-auto mx-auto pt-1">{% include "carousel.jinja2" %}</div>
                 </div>
             {%- endfor %}
         </div>

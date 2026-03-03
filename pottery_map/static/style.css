@@ -90,6 +90,10 @@ main p {
 	font-size: 11px !important;
 }
 
+.item {
+	max-width: 340px;
+}
+
 .item:target {
 	border-color: pink !important;
 }
