@@ -26,6 +26,9 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from operator import attrgetter
+
 if __name__ == "__main__":
 
 	# 3rd party
@@ -90,7 +93,7 @@ if __name__ == "__main__":
 	output_dir.joinpath("items.html").write_clean(
 			render_template(
 					"items_page.jinja2",
-					items=pottery,
+					items=sorted(pottery, key=attrgetter("design")),
 					all_companies=c.sorted_company_names,
 					),
 			)
