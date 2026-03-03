@@ -86,3 +86,11 @@ if __name__ == "__main__":
 	companies_dir.joinpath("index.html").write_clean(companies_index)
 
 	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, c))
+
+	output_dir.joinpath("items.html").write_clean(
+			render_template(
+					"items_page.jinja2",
+					items=pottery,
+					all_companies=c.sorted_company_names,
+					),
+			)
