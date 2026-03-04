@@ -21,7 +21,7 @@
         <nav id="sidebar" class="close">
             <ul class="text-decoration-none ps-0">
                 {# djlint:off #}
-                {%- macro single_file_link(expected_title, href) %}
+                {%- macro page_link(expected_title, href) %}
                     {%- if title == expected_title %}#{% else %}{{ href }}{% endif -%}
                 {% endmacro -%}
                 {# djlint:on #}
@@ -38,32 +38,25 @@
                     </button>
                 </li>
                 <li class="{% if title == 'Map' %}active{% endif %}">
-                    <a title="Map" href="{{ single_file_link('Map', root) }}">
+                    <a title="Map" href="{{ page_link('Map', root) }}">
                         <!-- <i class="fas fa-map me-3"></i> -->
                         {% include "sidebar_icons/map.svg" indent content %}
                         <span>Map</span>
                     </a>
                 </li>
                 <li class="{% if title == 'Items' %}active{% endif %}">
-                    <a title="Items" href="{{ single_file_link('Items', root + 'items.html') }}">
+                    <a title="Items" href="{{ page_link('Items', root + 'items.html') }}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="-5 -10 24 24"
-                             width="24px"
-                             id="svg8"
-                             version="1.1"
-                             xmlns:cc="http://creativecommons.org/ns#"
-                             xmlns:dc="http://purl.org/dc/elements/1.1/"
-                             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-                            <metadata id="metadata14"><rdf:RDF><cc:Work rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata>
-                            <path id="path2" d="m10.472-2.3746c-0.1353-0.028384-0.27438-0.052035-0.41632-0.073797-0.91492-0.1353-1.9548-0.13719-3.056-0.13719-1.1013 0-2.1402 0.00185-3.056 0.13719-0.14192 0.020818-0.28102 0.045414-0.41632 0.073797-0.039737 0.016086-0.081374 0.024595-0.123 0.027439-0.62446 0.14192-1.1713 0.37279-1.6113 0.75692-0.75787 0.66326-1.1723 1.7731-1.1723 3.5955 0 3.1638 1.2641 7.7688 3.1943 10.561h6.3705c1.9302-2.792 3.1943-7.397 3.1943-10.561 0-1.8223-0.41441-2.932-1.1723-3.5955-0.43996-0.38413-0.98684-0.61501-1.6113-0.75692-0.04258-0.00282-0.08421-0.011353-0.123-0.027439zm-0.75881-0.91873c-0.81937-1.4779-0.15328-2.8763 0.41632-3.6778 0 0-6.2579 0-6.2579 9.606e-4 0.56959 0.80045 1.2357 2.1998 0.41535 3.6768 0.83262-0.085151 1.7504-0.088939 2.7126-0.088939 0.96319 0 1.88 0.0038 2.7126 0.088939zm-7.4973-4.4754h9.5695v-0.79762h-9.5695z" fill-rule="evenodd" />
+                             width="24px">
+                            <path d="m10.472-2.3746c-0.1353-0.028384-0.27438-0.052035-0.41632-0.073797-0.91492-0.1353-1.9548-0.13719-3.056-0.13719-1.1013 0-2.1402 0.00185-3.056 0.13719-0.14192 0.020818-0.28102 0.045414-0.41632 0.073797-0.039737 0.016086-0.081374 0.024595-0.123 0.027439-0.62446 0.14192-1.1713 0.37279-1.6113 0.75692-0.75787 0.66326-1.1723 1.7731-1.1723 3.5955 0 3.1638 1.2641 7.7688 3.1943 10.561h6.3705c1.9302-2.792 3.1943-7.397 3.1943-10.561 0-1.8223-0.41441-2.932-1.1723-3.5955-0.43996-0.38413-0.98684-0.61501-1.6113-0.75692-0.04258-0.00282-0.08421-0.011353-0.123-0.027439zm-0.75881-0.91873c-0.81937-1.4779-0.15328-2.8763 0.41632-3.6778 0 0-6.2579 0-6.2579 9.606e-4 0.56959 0.80045 1.2357 2.1998 0.41535 3.6768 0.83262-0.085151 1.7504-0.088939 2.7126-0.088939 0.96319 0 1.88 0.0038 2.7126 0.088939zm-7.4973-4.4754h9.5695v-0.79762h-9.5695z" fill-rule="evenodd" />
                         </svg>
                         <span>Items</span>
                     </a>
                 </li>
                 <li class="{% if title == 'Dashboard' %}active{% endif %}">
-                    <a title="Dashboard"
-                       href="{{ single_file_link('Dashboard', root + 'dashboard.html') }}">
+                    <a title="Dashboard" href="{{ page_link('Dashboard', root + 'dashboard.html') }}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="0 -960 960 960"
@@ -158,8 +151,7 @@
                         <br>
                         Maps from <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>. © OpenStreetMap contributors.
                         Uses <a href="https://github.com/gravitystorm/openstreetmap-carto">OpenStreetMap Carto</a> style.
-                        Pottery icon by Singlar from <a href="https://thenounproject.com/icon/pottery-7911200/"
-    target="_blank">Noun Project</a> (CC BY 3.0).
+                        Pottery icon by Singlar from <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Noun Project</a> (CC BY 3.0).
                     </div>
                 </footer>
             {% endblock footer %}
