@@ -117,3 +117,19 @@ main p {
 .min-vw-45 {
 	min-width: 45vw;
 }
+
+.accordion.notes {
+	margin: 4px 1px 2px;
+
+	.accordion-header button {
+		padding: 2px 0;
+	}
+
+	.accordion-body {
+		padding: 2px;
+	}
+
+	.accordion-button:not(.collapsed) {
+		background-color: unset !important;
+	}
+}
