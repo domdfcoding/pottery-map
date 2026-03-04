@@ -28,13 +28,16 @@ Utility functions.
 
 # stdlib
 import re
+from collections import defaultdict
+from collections.abc import Callable, Iterable
 from random import Random
+from typing import TypeVar
 
 # 3rd party
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 
-__all__ = ["copy_static_files", "make_id", "set_branca_random_seed"]
+__all__ = ["copy_static_files", "groupby", "make_id", "set_branca_random_seed"]
 
 
 def set_branca_random_seed(seed: str | int) -> None:
@@ -89,3 +92,32 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
 	_copy_file("pottery_map.static", "sidebar.css", css_dir)
 	_copy_file("pottery_map.static", "style.css", css_dir)
+
+
+_T1 = TypeVar("_T1")
+_T2 = TypeVar("_T2")
+
+
+def groupby(iterable: Iterable[_T1], key: Callable[[_T1], _T2]) -> dict[_T2, list[_T1]]:
+	"""
+	Group the given items using the given key function.
+
+	Like :func:`itertools.groupby` but returns a dictionary with list values instead.
+
+	:param iterable:
+	:param key:
+	"""
+
+	keyfunc = (lambda x: x) if key is None else key
+
+	grouper: dict[_T2, list[_T1]] = defaultdict(list)
+
+	for value in iter(iterable):
+		curr_key = keyfunc(value)
+		grouper[curr_key].append(value)
+
+	return dict(grouper)
+
+
+def _normalise_category(category: str) -> str:
+	return category.lower().title()

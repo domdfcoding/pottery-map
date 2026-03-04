@@ -41,6 +41,7 @@ from gradpyent import Gradient  # type: ignore[import-untyped]
 from pottery_map.companies import Companies, _get_item_count
 from pottery_map.pottery import PotteryItem
 from pottery_map.templates import render_template
+from pottery_map.types import SidebarData
 
 __all__ = [
 		"colour_cycle",
@@ -239,12 +240,13 @@ def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	return types_bar_chart_data
 
 
-def create_dashboard_page(pottery: list[PotteryItem], companies: Companies) -> str:
+def create_dashboard_page(pottery: list[PotteryItem], companies: Companies, sidebar_data: SidebarData) -> str:
 	"""
 	Renders HTML for the dashboard page.
 
 	:param pottery:
 	:param companies:
+	:param sidebar_data:
 	"""
 
 	return render_template(
@@ -255,7 +257,7 @@ def create_dashboard_page(pottery: list[PotteryItem], companies: Companies) -> s
 			areas_pie_chart_data=json.dumps(areas_pie_chart(companies)),
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
-			all_companies=companies.sorted_company_names,
+			sidebar_data=sidebar_data,
 			)
 
 

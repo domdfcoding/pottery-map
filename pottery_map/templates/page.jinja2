@@ -8,8 +8,8 @@
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
               crossorigin="anonymous">
         <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"
-              integrity="sha384-SOnAn/m2fVJCwnbEYgD4xzrPtvsXdElhOVvR8ND1YjB5nhGNwwf7nBQlhfAwHAZC"
+              href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"
+              integrity="sha384-EXatlQyrOJgDaM9/a74ArMzy7/2bTMSrZj8ID1IPeVmc3GncfCugefCFWSLj8JL/"
               crossorigin="anonymous">
         <link rel="stylesheet" href="{{ root }}static/css/style.css">
         <link rel="stylesheet" href="{{ root }}static/css/sidebar.css">
@@ -105,7 +105,7 @@
                                     <a href="{{ root }}companies">View All</a>
                                 </li>
                             {% endif %}
-                            {% for company_name in all_companies %}
+                            {% for company_name in sidebar_data.all_companies %}
                                 {% if title == company_name %}
                                     <li class="active">
                                         <a href="#">{{ company_name }}</a>
@@ -113,6 +113,49 @@
                                 {% else %}
                                     <li>
                                         <a href="{{ root }}companies/{{ make_id(company_name) }}.html">{{ company_name }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </ul>
+                </li>
+                <li class="{% if category_page | default(False, boolean=True) %}active{% endif %}">
+                    <button title="Categories" onclick=toggleSubMenu(this) class="dropdown-btn">
+                        <!-- <i class="fas fa-industry me-3"></i> -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 0 576 512"
+                             width="24px">
+                            <path d="M80 32C53.5 32 32 53.5 32 80s21.5 48 48 48l152 0 0 40-48 48-72 0c-39.8 0-72 32.2-72 72l0 64-8 0c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32l-8 0 0-64c0-13.3 10.7-24 24-24l72 0 48 48 0 40-8 0c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32l-8 0 0-40 48-48 72 0c13.3 0 24 10.7 24 24l0 64-8 0c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l64 0c17.7 0 32-14.3 32-32l0-64c0-17.7-14.3-32-32-32l-8 0 0-64c0-39.8-32.2-72-72-72l-72 0-48-48 0-40 152 0c26.5 0 48-21.5 48-48s-21.5-48-48-48L80 32z" />
+                        </svg>
+                        <span>Categories</span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 -960 960 960"
+                             width="24px"
+                             fill="#e8eaed">
+                            <path d="M480-361q-8 0-15-2.5t-13-8.5L268-556q-11-11-11-28t11-28q11-11 28-11t28 11l156 156 156-156q11-11 28-11t28 11q11 11 11 28t-11 28L508-372q-6 6-13 8.5t-15 2.5Z" />
+                        </svg>
+                    </button>
+                    <ul class="text-decoration-none sub-menu ps-0">
+                        <div>
+                            {% if title == "Categories" %}
+                                <li class="border-bottom active">
+                                    <a href="#">View All</a>
+                                </li>
+                            {% else %}
+                                <li class="border-bottom">
+                                    <a href="{{ root }}categories">View All</a>
+                                </li>
+                            {% endif %}
+                            {% for category_name in sidebar_data.all_categories %}
+                                {% if title == category_name %}
+                                    <li class="active">
+                                        <a href="#">{{ category_name }}</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{{ root }}categories/{{ make_id(category_name) }}.html">{{ category_name }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}

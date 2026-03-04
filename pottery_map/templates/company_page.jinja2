@@ -34,6 +34,11 @@
                                     <span><i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}</span>
                                 </div>
                             {% endif %}
+                            {% if item['category'] %}
+                                <div class="row">
+                                    <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}/categories/{{ make_id(item['category']) }}.html"></a>{{ item['category'] }}</a></span>
+                                </div>
+                            {% endif %}
                         </div>
 
                         {# djlint:off #}

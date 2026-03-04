@@ -26,10 +26,9 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-# stdlib
-from operator import attrgetter
-
 if __name__ == "__main__":
+	# stdlib
+	from operator import attrgetter
 
 	# 3rd party
 	from domdf_python_tools.paths import PathPlus
@@ -39,9 +38,10 @@ if __name__ == "__main__":
 	from pottery_map.companies import Companies, load_companies, make_company_pages
 	from pottery_map.dashboard import create_dashboard_page
 	from pottery_map.map import make_map
-	from pottery_map.pottery import load_pottery_collection
+	from pottery_map.pottery import PotteryItem, load_pottery_collection
 	from pottery_map.templates import render_template
-	from pottery_map.utils import copy_static_files, make_id, set_branca_random_seed
+	from pottery_map.types import SidebarData
+	from pottery_map.utils import _normalise_category, copy_static_files, groupby, make_id, set_branca_random_seed
 	set_branca_random_seed("WWRD")
 
 	output_dir = PathPlus("output")
@@ -53,6 +53,13 @@ if __name__ == "__main__":
 	pottery = load_pottery_collection("pottery.toml")
 	companies = load_companies("companies.toml")
 	c = Companies.from_raw_data(pottery, companies)
+
+	category_data: dict[str, list[PotteryItem]] = groupby(pottery, lambda p: _normalise_category(p.category))
+
+	sidebar_data = SidebarData(
+			all_companies=tuple(c.sorted_company_names),
+			all_categories=tuple(sorted(category_data.keys())),
+			)
 
 	m = make_map(c.pottery_by_company, standalone=False)
 
@@ -73,7 +80,7 @@ if __name__ == "__main__":
 			body=root.html.render(),
 			script=root.script.render(),
 			scripts='\n'.join(scripts),
-			all_companies=c.sorted_company_names,
+			sidebar_data=sidebar_data,
 			)
 
 	(output_dir / "index.html").write_clean(html)
@@ -81,19 +88,33 @@ if __name__ == "__main__":
 	companies_dir = output_dir / "companies"
 	companies_dir.maybe_make()
 
-	companies_index, company_pages = make_company_pages(c)
+	companies_index, company_pages = make_company_pages(c, sidebar_data)
 
 	for company, page_content in company_pages.items():
 		companies_dir.joinpath(make_id(company) + ".html").write_clean(page_content)
 
 	companies_dir.joinpath("index.html").write_clean(companies_index)
 
-	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, c))
+	output_dir.joinpath("dashboard.html").write_clean(create_dashboard_page(pottery, c, sidebar_data))
 
 	output_dir.joinpath("items.html").write_clean(
 			render_template(
 					"items_page.jinja2",
 					items=sorted(pottery, key=attrgetter("design")),
-					all_companies=c.sorted_company_names,
+					sidebar_data=sidebar_data,
 					),
 			)
+
+	categories_dir = output_dir / "categories"
+	categories_dir.maybe_make()
+
+	for category, items in category_data.items():
+
+		categories_dir.joinpath(f"{make_id(category)}.html").write_clean(
+				render_template(
+						"category_page.jinja2",
+						category=category,
+						items=sorted(items, key=attrgetter("design")),
+						sidebar_data=sidebar_data,
+						),
+				)

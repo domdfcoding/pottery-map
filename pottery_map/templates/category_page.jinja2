@@ -1,6 +1,7 @@
 {% extends "page.jinja2" %}
-{% set title = "Items" %}
-{% set root = "./" %}
+{% set title = category %}
+{% set root = "../" %}
+{% set category_page = True %}
 {% block body %}
     <h1>{{ title }}</h1>
 
@@ -26,11 +27,6 @@
                                 <span><i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}</span>
                             </div>
                         {% endif %}
-                        {% if item['category'] %}
-                            <div class="row">
-                                <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}/categories/{{ make_id(item['category']) }}.html"></a>{{ item['category'] }}</a></span>
-                            </div>
-                        {% endif %}
                     </div>
 
                     {# djlint:off #}
@@ -48,5 +44,7 @@
 
 {% block scripts %}
     {{ super() }}
-    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"
+            integrity="sha384-hmO927BeGpSftObswxhZUK8wHu+kAA9eqZX4frVKbcAzbhVd+hMTv57SECK5k8de"
+            crossorigin="anonymous"></script>
 {% endblock scripts %}

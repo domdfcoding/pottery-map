@@ -26,6 +26,9 @@ Base types.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from typing import NamedTuple
+
 # 3rd party
 from typing_extensions import NotRequired, Required, TypedDict
 
@@ -69,3 +72,8 @@ class CompanyData(TypedDict):
 	defunct: Required[bool]
 	area: NotRequired[str | None]
 	items: NotRequired[list[PotteryData]]
+
+
+class SidebarData(NamedTuple):
+	all_companies: tuple[str, ...]
+	all_categories: tuple[str, ...]
