@@ -1,4 +1,4 @@
-{% extends "page.jinja2" %}
+{% extends "collection_page.jinja2" %}
 {% set title = company %}
 {% set root = "../" %}
 {% set companies_page = True %}
@@ -54,8 +54,3 @@
         </div>
     {%- endif %}
 {% endblock body %}
-
-{% block scripts %}
-    {{ super() }}
-    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
-{% endblock scripts %}
