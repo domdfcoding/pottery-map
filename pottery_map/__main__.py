@@ -41,7 +41,7 @@ if __name__ == "__main__":
 	from pottery_map.pottery import PotteryItem, load_pottery_collection
 	from pottery_map.templates import render_template
 	from pottery_map.types import SidebarData
-	from pottery_map.utils import _normalise_category, copy_static_files, groupby, make_id, set_branca_random_seed
+	from pottery_map.utils import copy_static_files, groupby, make_id, normalise_category, set_branca_random_seed
 	set_branca_random_seed("WWRD")
 
 	output_dir = PathPlus("output")
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 	companies = load_companies("companies.toml")
 	c = Companies.from_raw_data(pottery, companies)
 
-	category_data: dict[str, list[PotteryItem]] = groupby(pottery, lambda p: _normalise_category(p.category))
+	category_data: dict[str, list[PotteryItem]] = groupby(pottery, lambda p: normalise_category(p.category))
 
 	sidebar_data = SidebarData(
 			all_companies=tuple(c.sorted_company_names),
@@ -118,3 +118,11 @@ if __name__ == "__main__":
 						sidebar_data=sidebar_data,
 						),
 				)
+
+	categories_dir.joinpath("index.html").write_clean(
+			render_template(
+					"categories_index.jinja2",
+					category_data=category_data,
+					sidebar_data=sidebar_data,
+					),
+			)

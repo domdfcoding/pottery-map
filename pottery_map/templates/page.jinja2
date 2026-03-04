@@ -33,7 +33,8 @@
                     </button>
                 </li>
                 <li class="{% if title == 'Map' %}active{% endif %}">
-                    <a title="Map" href="{{ root }}">
+                    <a title="Map"
+                       href="{% if title == 'Map' %}#{% else %}{{ root }}{% endif %}">
                         <!-- <i class="fas fa-map me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -47,7 +48,8 @@
                     </a>
                 </li>
                 <li class="{% if title == 'Items' %}active{% endif %}">
-                    <a title="Items" href="{{ root }}items.html">
+                    <a title="Items"
+                       href="{% if title == 'Items' %}#{% else %}{{ root }}items.html{% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="-5 -10 24 24"
@@ -64,7 +66,8 @@
                     </a>
                 </li>
                 <li class="{% if title == 'Dashboard' %}active{% endif %}">
-                    <a title="Dashboard" href="{{ root }}dashboard.html">
+                    <a title="Dashboard"
+                       href="{% if title == 'Dashboard' %}#{% else %}{{ root }}dashboard.html{% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="0 -960 960 960"

@@ -37,7 +37,7 @@ from typing import TypeVar
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 
-__all__ = ["copy_static_files", "groupby", "make_id", "set_branca_random_seed"]
+__all__ = ["copy_static_files", "groupby", "make_id", "normalise_category", "set_branca_random_seed"]
 
 
 def set_branca_random_seed(seed: str | int) -> None:
@@ -119,5 +119,15 @@ def groupby(iterable: Iterable[_T1], key: Callable[[_T1], _T2]) -> dict[_T2, lis
 	return dict(grouper)
 
 
-def _normalise_category(category: str) -> str:
-	return category.lower().title()
+def normalise_category(category: str) -> str:
+	"""
+	Normalise a category name.
+
+	:param category:
+	"""
+
+	category = category.lower()
+	if category != "other":
+		category += 's'
+
+	return category.title()

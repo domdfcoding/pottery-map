@@ -36,7 +36,7 @@
                             {% endif %}
                             {% if item['category'] %}
                                 <div class="row">
-                                    <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}/categories/{{ make_id(item['category']) }}.html"></a>{{ item['category'] }}</a></span>
+                                    <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}categories/{{ make_id(normalise_category(item['category']) ) }}.html">{{ item['category'] }}</a></span>
                                 </div>
                             {% endif %}
                         </div>

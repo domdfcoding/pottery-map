@@ -34,7 +34,7 @@ from jinja2 import Environment
 from jinja2_workarounds import MultiLineInclude  # type: ignore[import-untyped]
 
 # this package
-from pottery_map.utils import make_id
+from pottery_map.utils import make_id, normalise_category
 
 __all__ = ["render_template"]
 
@@ -46,11 +46,13 @@ templates = Environment(  # nosec: B701
 		)
 
 templates.globals["make_id"] = make_id
+templates.globals["normalise_category"] = normalise_category
 templates.globals["github_url"] = "https://github.com/domdfcoding/pottery-map"
 templates.globals["networkx"] = networkx
 templates.globals["list"] = list
 templates.globals["sorted"] = sorted
 templates.globals["enumerate"] = enumerate
+templates.globals["len"] = len
 
 
 def render_template(template: str, **kwargs) -> str:
