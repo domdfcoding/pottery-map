@@ -1,3 +1,9 @@
+{% macro make_link(company, inner, item=none, standalone=True) %}
+    {%- if standalone %}{{ inner }}
+        {%- elif not item %}<a href="companies/{{ make_id(company) }}.html">{{ inner }}</a>
+        {%- else %}<a href="companies/{{ make_id(company) }}.html#{{ item }}">{{ inner }}</a>
+    {%- endif -%}
+{% endmacro -%}
 <div class="item-details">
     <h2>{{ make_link(company, inner=company, standalone=standalone) }}</h2>
     <h3>
@@ -7,7 +13,16 @@
         <ul>
             <li>{{ make_link(company, item=item["id"], inner=item['design'], standalone=standalone) }}</li>
             <li>{{ item['material'] }} {{ item['type'] }}</li>
-            <li>{{ item['era'] }}</li>
+            {% if item['designer'] %}
+                <li>
+                    <i class="fa-solid fa-user"></i> {{ item['designer'] }}
+                </li>
+            {% endif %}
+            {% if item['era'] %}
+                <li>
+                    <i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}
+                </li>
+            {% endif %}
         </ul>
         {% if item["photo_urls"] %}<img class="pottery-image" src="{{ item['photo_urls'][0] }}" />{% endif %}
     {% endfor %}

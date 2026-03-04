@@ -78,16 +78,6 @@ class Map(folium.Map):
 		self._id = "pottery"
 
 
-def _make_link(company: str, inner: str, item: str | None = None, standalone: bool = True) -> str:
-	if standalone:
-		return inner
-
-	if not item:
-		return f'<a href="companies/{make_id(company)}.html">{inner}</a>'
-
-	return f'<a href="companies/{make_id(company)}.html#{item}">{inner}</a>'
-
-
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -120,7 +110,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				company=company,
 				company_data=company_data,
 				standalone=standalone,
-				make_link=_make_link,
+				make_id=make_id,
 				).splitlines()
 
 		folium.Marker(
