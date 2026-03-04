@@ -38,6 +38,7 @@ from domdf_python_tools.paths import clean_writer
 from folium.template import Template
 
 # this package
+from pottery_map.templates import render_template
 from pottery_map.utils import make_id
 
 __all__ = ["make_map"]
@@ -114,32 +115,13 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 		if "location" not in company_data or not company_data["location"]:
 			continue
 
-		popup_text = ['<div class="item-details">']
-		popup_text.append(_make_link(company, inner=f"<h2>{company}</h2>", standalone=standalone))
-		popup_text.append(f"<h3><strong>{company_data['factory']}</strong></h3>")
-
-		for item in company_data["items"]:
-
-			item_link = _make_link(
-					company,
-					item=item["id"],
-					inner=f"<li>{item['design']}</li>",
-					standalone=standalone,
-					)
-
-			popup_text.append(
-					f"""
-<ul>
-	{item_link}
-	<li>{item['material']} {item['type']}</li>
-	<li>{item['era']}</li>
-</ul>""",
-					)
-
-			if item["photo_urls"]:
-				popup_text.append(f'<img class="pottery-image" src="{item["photo_urls"][0]}" />\n\t')
-
-		popup_text.append("</div>")
+		popup_text = render_template(
+				"map_popup.jinja2",
+				company=company,
+				company_data=company_data,
+				standalone=standalone,
+				make_link=_make_link,
+				).splitlines()
 
 		folium.Marker(
 				location=[company_data["location"]["latitude"], company_data["location"]["longitude"]],

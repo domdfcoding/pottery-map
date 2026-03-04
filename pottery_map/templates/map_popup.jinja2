@@ -1,0 +1,14 @@
+<div class="item-details">
+    <h2>{{ make_link(company, inner=company, standalone=standalone) }}</h2>
+    <h3>
+        <strong>{{ company_data['factory'] }}</strong>
+    </h3>
+    {% for item in company_data["items"] %}
+        <ul>
+            <li>{{ make_link(company, item=item["id"], inner=item['design'], standalone=standalone) }}</li>
+            <li>{{ item['material'] }} {{ item['type'] }}</li>
+            <li>{{ item['era'] }}</li>
+        </ul>
+        {% if item["photo_urls"] %}<img class="pottery-image" src="{{ item['photo_urls'][0] }}" />{% endif %}
+    {% endfor %}
+</div>
