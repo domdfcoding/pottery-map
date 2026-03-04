@@ -30,12 +30,10 @@
 
                     {# djlint:off #}
                     {% include "notes.jinja2" indent content %}
-                    {# djlint:on #}
 
-                    {# djlint:off #}
-                        <div class="mt-auto mx-auto pt-1">
-                            {% include "carousel.jinja2" indent content %}
-                        </div>
+                    <div class="mt-auto mx-auto pt-1">
+                        {% include "carousel.jinja2" indent content %}
+                    </div>
                     {# djlint:on #}
                 </div>
             {%- endfor %}
