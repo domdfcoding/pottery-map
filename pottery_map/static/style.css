@@ -133,3 +133,7 @@ main p {
 		background-color: unset !important;
 	}
 }
+
+nav > .breadcrumb {
+	--bs-breadcrumb-divider: ">";
+}

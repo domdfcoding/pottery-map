@@ -2,3 +2,17 @@
 {% set title = category %}
 {% set root = "../" %}
 {% set category_page = True %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ root }}">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ root }}categories">Categories</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}

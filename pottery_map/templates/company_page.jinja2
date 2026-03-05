@@ -3,7 +3,6 @@
 {% set root = "../" %}
 {% set companies_page = True %}
 {% block body %}
-    <h1>{{ title }}</h1>
 
     <h2>{{ factory }}</h2>
     {%- if location %}
@@ -54,3 +53,17 @@
         </div>
     {%- endif %}
 {% endblock body %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ root }}">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ root }}companies">Companies</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+        </ol>
+    </nav>
+{% endblock breadcrumbs %}
