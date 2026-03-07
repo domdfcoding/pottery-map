@@ -9,7 +9,16 @@
         {%- set factory_lat = location["latitude"] %}
         {%- set factory_lng = location["longitude"] %}
         <h6>
-            <a href='https://www.google.com/maps/place/{{ factory_lat }},{{ factory_lng }}'>View On Map</a>
+            Show On
+            <a href='{{ root }}?zoom=16&lat={{ factory_lat }}&lng={{ factory_lng }}'>
+                <i class="fas fa-map"></i>
+                Map
+            </a>
+            or
+            <a href='https://www.google.com/maps/place/{{ factory_lat }},{{ factory_lng }}'>
+                {% include "sidebar_icons/google_maps_icon.svg" indent content %}
+                Google Maps
+            </a>
         </h6>
     {%- endif %}
     {%- if items %}
