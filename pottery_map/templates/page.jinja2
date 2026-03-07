@@ -68,12 +68,16 @@
                     </a>
                 </li>
                 <li class="{% if companies_page | default(False, boolean=True) %}active{% endif %}">
-                    <button title="Companies" onclick=toggleSubMenu(this) class="dropdown-btn">
+                    <a role="button"
+                       title="Companies"
+                       onclick="toggleSubMenu(this); event.preventDefault()"
+                       class="dropdown-btn"
+                       href="{{ page_link('Companies', root + 'companies') }}">
                         <!-- <i class="fas fa-industry me-3"></i> -->
                         {% include "sidebar_icons/industry.svg" indent content %}
                         <span>Companies</span>
                         {% include "sidebar_icons/collapse_arrow.svg" indent content %}
-                    </button>
+                    </a>
                     <ul class="text-decoration-none sub-menu ps-0">
                         <div>
                             {% if title == "Companies" %}
@@ -100,12 +104,16 @@
                     </ul>
                 </li>
                 <li class="{% if category_page | default(False, boolean=True) %}active{% endif %}">
-                    <button title="Categories" onclick=toggleSubMenu(this) class="dropdown-btn">
+                    <a role="button"
+                       title="Categories"
+                       onclick="toggleSubMenu(this); event.preventDefault()"
+                       class="dropdown-btn"
+                       href="{{ page_link('Categories', root + 'categories') }}">
                         <!-- <i class="fas fa-industry me-3"></i> -->
                         {% include "sidebar_icons/chart-diagram.svg" indent content %}
                         <span>Categories</span>
                         {% include "sidebar_icons/collapse_arrow.svg" indent content %}
-                    </button>
+                    </a>
                     <ul class="text-decoration-none sub-menu ps-0">
                         <div>
                             {% if title == "Categories" %}
