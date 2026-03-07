@@ -36,6 +36,7 @@ import folium.plugins
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.template import Template
+from folium_zoom_state import ZoomStateJS, ZoomStateMap
 
 # this package
 from pottery_map.templates import render_template
@@ -71,7 +72,7 @@ class MarkerCluster(folium.plugins.MarkerCluster):
 	default_js = []
 
 
-class Map(folium.Map):
+class Map(ZoomStateMap):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -88,10 +89,13 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 
 	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
 
+	ZoomStateJS().add_to(m, embed_script=standalone)
+
 	if standalone:
 		embed_styles(m)
 	else:
 		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
+		m.add_js_link("zoom_state.js", "static/js/zoom_state.js")
 
 	m.add_js_link(
 			"markerclusterjs",

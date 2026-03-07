@@ -34,6 +34,7 @@ from random import Random
 from typing import TypeVar
 
 # 3rd party
+import folium_zoom_state
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 
@@ -92,6 +93,8 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
 	_copy_file("pottery_map.static", "sidebar.css", css_dir)
 	_copy_file("pottery_map.static", "style.css", css_dir)
+
+	(js_dir / "zoom_state.js").write_text(folium_zoom_state.get_js_script())
 
 
 _T1 = TypeVar("_T1")
