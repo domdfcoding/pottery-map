@@ -26,6 +26,9 @@ Jinja2 templates.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+import base64
+
 # 3rd party
 import jinja2
 import networkx
@@ -36,7 +39,17 @@ from jinja2_workarounds import MultiLineInclude  # type: ignore[import-untyped]
 # this package
 from pottery_map.utils import make_id, normalise_category
 
-__all__ = ["render_template"]
+__all__ = ["base64_encode", "render_template"]
+
+
+def base64_encode(value: str) -> str:
+	"""
+	Encode the given string as base64.
+
+	:param value:
+	"""
+
+	return base64.b64encode(value.encode("utf-8")).decode("utf-8")
 
 
 templates = Environment(  # nosec: B701
@@ -53,6 +66,8 @@ templates.globals["list"] = list
 templates.globals["sorted"] = sorted
 templates.globals["enumerate"] = enumerate
 templates.globals["len"] = len
+
+templates.filters["base64_encode"] = base64_encode
 
 
 def render_template(template: str, **kwargs) -> str:
