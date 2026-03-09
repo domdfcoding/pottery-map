@@ -6,7 +6,6 @@
 	--hover-colour: #222533;
 	--text-colour: #e6e6ef;
 	--accent-colour: #5e63ff;
-	--secondary-text-colour: #b0b3c1;
 }
 
 html {
@@ -30,7 +29,6 @@ main.padded {
 }
 
 main p {
-	color: var(--secondary-text-colour);
 	margin-top: 5px;
 	margin-bottom: 15px;
 }

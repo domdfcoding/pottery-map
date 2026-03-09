@@ -6,5 +6,6 @@ folium-zoom-state @ git+https://github.com/domdfcoding/folium-zoom-state
 gradpyent>=0.9.5
 jinja2>=3.1.6
 jinja2-workarounds @ git+https://github.com/domdfcoding/jinja2_workarounds
+markdown>=3.3.4
 networkx>=3.4
 typing-extensions>=4.15.0

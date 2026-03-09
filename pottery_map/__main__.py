@@ -38,6 +38,7 @@ if __name__ == "__main__":
 	from pottery_map.companies import Companies, load_companies, make_company_pages
 	from pottery_map.dashboard import create_dashboard_page
 	from pottery_map.map import make_map
+	from pottery_map.notes import render_markdown
 	from pottery_map.pottery import PotteryItem, load_pottery_collection
 	from pottery_map.templates import render_template
 	from pottery_map.types import SidebarData
@@ -124,5 +125,22 @@ if __name__ == "__main__":
 					"categories_index.jinja2",
 					category_data=category_data,
 					sidebar_data=sidebar_data,
+					),
+			)
+
+	output_dir.joinpath("notes.html").write_clean(
+			render_template(
+					"markdown_page.jinja2",
+					sidebar_data=sidebar_data,
+					title="Notes",
+					body=render_markdown(PathPlus("notes.md").read_text()),
+					),
+			)
+	output_dir.joinpath("wishlist.html").write_clean(
+			render_template(
+					"markdown_page.jinja2",
+					sidebar_data=sidebar_data,
+					title="Wishlist",
+					body=render_markdown(PathPlus("wishlist.md").read_text()),
 					),
 			)
