@@ -28,7 +28,7 @@ The map itself.
 
 # stdlib
 import sys
-from typing import Any
+from typing import Any, TypeVar
 
 # 3rd party
 import folium
@@ -36,6 +36,7 @@ import folium.plugins
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.template import Template
+from folium.utilities import escape_backticks
 from folium_zoom_state import ZoomStateJS, ZoomStateMap
 
 # this package
@@ -79,6 +80,36 @@ class Map(ZoomStateMap):
 		self._id = "pottery"
 
 
+class Popup(folium.Popup):
+
+	def __init__(
+			self,
+			html: str,
+			id: str,  # noqa: A002  # pylint: disable=redefined-builtin
+			max_width: str | int = 400,
+			min_width: str | int = 245,
+			**kwargs,
+			):
+		html_element = folium.Html(escape_backticks(html), script=True)
+		html_element._id = id
+
+		super().__init__(html=html_element, max_width=max_width, min_width=min_width, **kwargs)
+		self._id = id
+
+
+_E = TypeVar("_E", bound=folium.Element)
+
+
+def _add_to(
+		element: _E,
+		parent: folium.Element,
+		id: str,  # noqa: A002  # pylint: disable=redefined-builtin
+		) -> _E:
+	element._id = id
+	element.add_to(parent)
+	return element
+
+
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -102,7 +133,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
-	marker_cluster = MarkerCluster(options={"maxClusterRadius": 50}).add_to(m)
+	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}), m, id="collection")
 
 	for company, company_data in pottery_by_company.items():
 
@@ -117,11 +148,14 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				make_id=make_id,
 				).splitlines()
 
-		folium.Marker(
+		company_id = make_id(company)
+
+		marker = folium.Marker(
 				location=[company_data["location"]["latitude"], company_data["location"]["longitude"]],
 				tooltip=company,
-				popup=folium.Popup('\n'.join(popup_text), max_width=400, min_width=245),
-				).add_to(marker_cluster)
+				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
+				)
+		_add_to(marker, marker_cluster, id=company_id)
 
 	return m
 
