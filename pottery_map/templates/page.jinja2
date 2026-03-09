@@ -45,29 +45,16 @@
                         <span>Map</span>
                     </a>
                 </li>
-                <li class="{% if title == 'Items' %}active{% endif %}">
-                    <a title="Items" href="{{ page_link('Items', root + 'items.html') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             height="24px"
-                             viewBox="-5 -10 24 24"
-                             width="24px">
-                            <path d="m10.472-2.3746c-0.1353-0.028384-0.27438-0.052035-0.41632-0.073797-0.91492-0.1353-1.9548-0.13719-3.056-0.13719-1.1013 0-2.1402 0.00185-3.056 0.13719-0.14192 0.020818-0.28102 0.045414-0.41632 0.073797-0.039737 0.016086-0.081374 0.024595-0.123 0.027439-0.62446 0.14192-1.1713 0.37279-1.6113 0.75692-0.75787 0.66326-1.1723 1.7731-1.1723 3.5955 0 3.1638 1.2641 7.7688 3.1943 10.561h6.3705c1.9302-2.792 3.1943-7.397 3.1943-10.561 0-1.8223-0.41441-2.932-1.1723-3.5955-0.43996-0.38413-0.98684-0.61501-1.6113-0.75692-0.04258-0.00282-0.08421-0.011353-0.123-0.027439zm-0.75881-0.91873c-0.81937-1.4779-0.15328-2.8763 0.41632-3.6778 0 0-6.2579 0-6.2579 9.606e-4 0.56959 0.80045 1.2357 2.1998 0.41535 3.6768 0.83262-0.085151 1.7504-0.088939 2.7126-0.088939 0.96319 0 1.88 0.0038 2.7126 0.088939zm-7.4973-4.4754h9.5695v-0.79762h-9.5695z" fill-rule="evenodd" />
-                        </svg>
-                        <span>Items</span>
-                    </a>
-                </li>
-                <li class="{% if title == 'Dashboard' %}active{% endif %}">
-                    <a title="Dashboard" href="{{ page_link('Dashboard', root + 'dashboard.html') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             height="24px"
-                             viewBox="0 -960 960 960"
-                             width="24px"
-                             fill="#e8eaed">
-                            <path d="M520-640v-160q0-17 11.5-28.5T560-840h240q17 0 28.5 11.5T840-800v160q0 17-11.5 28.5T800-600H560q-17 0-28.5-11.5T520-640ZM120-480v-320q0-17 11.5-28.5T160-840h240q17 0 28.5 11.5T440-800v320q0 17-11.5 28.5T400-440H160q-17 0-28.5-11.5T120-480Zm400 320v-320q0-17 11.5-28.5T560-520h240q17 0 28.5 11.5T840-480v320q0 17-11.5 28.5T800-120H560q-17 0-28.5-11.5T520-160Zm-400 0v-160q0-17 11.5-28.5T160-360h240q17 0 28.5 11.5T440-320v160q0 17-11.5 28.5T400-120H160q-17 0-28.5-11.5T120-160Zm80-360h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
-                        </svg>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
+                {%- set link_title = "Items" %}
+                {%- set link_target = root + "items.html" %}
+                {%- set icon_name = "noun-pottery-7911200" %}
+                {% include "sidebar_button.jinja2" indent content %}
+                {#-  #}
+                {%- set link_title = "Dashboard" %}
+                {%- set link_target = root + "dashboard.html" %}
+                {%- set icon_name = "dashboard" %}
+                {% include "sidebar_button.jinja2" indent content %}
+                {#-  #}
                 <li class="{% if companies_page | default(False, boolean=True) %}active{% endif %}">
                     <a role="button"
                        title="Companies"
@@ -140,6 +127,15 @@
                         </div>
                     </ul>
                 </li>
+                {%- set link_title = "Wishlist" %}
+                {%- set link_target = root + "wishlist.html" %}
+                {%- set icon_name = "star" %}
+                {% include "sidebar_button.jinja2" indent content %}
+                {#-  #}
+                {%- set link_title = "Notes" %}
+                {%- set link_target = root + "notes.html" %}
+                {%- set icon_name = "note-sticky" %}
+                {% include "sidebar_button.jinja2" indent content %}
             </ul>
         </nav>
         <div class="d-flex flex-column min-vh-100">

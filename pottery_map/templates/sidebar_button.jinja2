@@ -1,0 +1,6 @@
+<li class="{% if title == link_title %}active{% endif %}">
+    <a title="{{ link_title }}" href="{{ page_link(link_title,  link_target) }}">
+        {% include "sidebar_icons/" + icon_name + ".svg" indent content %}
+        <span>{{ link_title }}</span>
+    </a>
+</li>
