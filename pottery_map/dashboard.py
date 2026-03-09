@@ -258,6 +258,8 @@ def create_dashboard_page(pottery: list[PotteryItem], companies: Companies, side
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
 			sidebar_data=sidebar_data,
+			items_count=len(pottery),
+			companies_count=len(companies.all_companies),
 			)
 
 

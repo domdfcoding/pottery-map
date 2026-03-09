@@ -69,6 +69,11 @@ const pie_datalabels_options = {
 		weight: 'bold',
 		size: 14,
 	},
+	display: function(context) {
+		var dataset = context.dataset;
+		var value = dataset.data[context.dataIndex];
+		return value > 1;
+	},
 };
 
 const pie_rich_datalabels_options = {
