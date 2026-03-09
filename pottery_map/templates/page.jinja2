@@ -127,15 +127,19 @@
                         </div>
                     </ul>
                 </li>
-                {%- set link_title = "Wishlist" %}
-                {%- set link_target = root + "wishlist.html" %}
-                {%- set icon_name = "star" %}
-                {% include "sidebar_button.jinja2" indent content %}
+                {%- if has_wishlist %}
+                    {%- set link_title = "Wishlist" %}
+                    {%- set link_target = root + "wishlist.html" %}
+                    {%- set icon_name = "star" %}
+                    {% include "sidebar_button.jinja2" indent content %}
+                {%- endif %}
                 {#-  #}
-                {%- set link_title = "Notes" %}
-                {%- set link_target = root + "notes.html" %}
-                {%- set icon_name = "note-sticky" %}
-                {% include "sidebar_button.jinja2" indent content %}
+                {%- if has_notes %}
+                    {%- set link_title = "Notes" %}
+                    {%- set link_target = root + "notes.html" %}
+                    {%- set icon_name = "note-sticky" %}
+                    {% include "sidebar_button.jinja2" indent content %}
+                {%- endif %}
             </ul>
         </nav>
         <div class="d-flex flex-column min-vh-100">

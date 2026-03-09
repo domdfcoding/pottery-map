@@ -40,18 +40,17 @@ from gradpyent import Gradient  # type: ignore[import-untyped]
 # this package
 from pottery_map.companies import Companies, _get_item_count
 from pottery_map.pottery import PotteryItem
-from pottery_map.templates import render_template
-from pottery_map.types import SidebarData
 
 __all__ = [
 		"colour_cycle",
 		"areas_pie_chart",
 		"categories_pie_chart",
 		"companies_bar_chart",
-		"create_dashboard_page",
+		"get_dashboard_data",
 		"gradient_for_data",
 		"groups_pie_chart",
 		"materials_pie_chart",
+		"pie_chart_data",
 		"sort_counts",
 		"types_bar_chart",
 		]
@@ -240,24 +239,21 @@ def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	return types_bar_chart_data
 
 
-def create_dashboard_page(pottery: list[PotteryItem], companies: Companies, sidebar_data: SidebarData) -> str:
+def get_dashboard_data(pottery: list[PotteryItem], companies: Companies) -> dict[str, str | int]:
 	"""
-	Renders HTML for the dashboard page.
+	Generate data for the dashboard charts, as JSON strings.
 
 	:param pottery:
 	:param companies:
-	:param sidebar_data:
 	"""
 
-	return render_template(
-			"dashboard.jinja2",
+	return dict(
 			groups_pie_chart_data=json.dumps(groups_pie_chart(companies)),
 			companies_bar_chart_data=json.dumps(companies_bar_chart(companies)),
 			materials_pie_chart_data=json.dumps(materials_pie_chart(pottery)),
 			areas_pie_chart_data=json.dumps(areas_pie_chart(companies)),
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
-			sidebar_data=sidebar_data,
 			items_count=len(pottery),
 			companies_count=len(companies.all_companies),
 			)
