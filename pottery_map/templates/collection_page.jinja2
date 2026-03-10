@@ -18,12 +18,12 @@
                             <div class="row">
                                 <span><i class="fa-solid fa-user"></i> {{ item['designer'] }}</span>
                             </div>
-                        {% endif %}
+                        {%- endif %}
                         {% if item['era'] %}
                             <div class="row">
                                 <span><i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}</span>
                             </div>
-                        {% endif %}
+                        {%- endif %}
                         {% if item['category'] and not category_page %}
                             <div class="row">
                                 <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}categories/{{ make_id(normalise_category(item['category']) ) }}.html">{{ item['category'] }}</a></span>
