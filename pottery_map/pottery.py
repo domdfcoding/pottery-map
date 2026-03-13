@@ -54,6 +54,7 @@ class PotteryItem:
 	category: str = "Other"  # E.g. "Plate", "Bowl", "Cup"
 	era: str = ''
 	notes: list[str] = attrs.field(factory=list)
+	links: dict[str, str] = attrs.field(factory=dict)
 	photo_urls: list[str] = attrs.field(factory=list)
 	location: Coordinates | None = None
 	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
@@ -92,6 +93,7 @@ class PotteryItem:
 				"category": self.category,
 				"era": self.era,
 				"notes": self.notes,
+				"links": self.links,
 				"photo_urls": self.photo_urls,
 				}
 

@@ -26,6 +26,8 @@ Function for loading data about companies.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# TODO: notes and links for the company itself (including to thepotteries.org and Wikipedia where available)
+
 # stdlib
 import warnings
 from collections.abc import Iterable

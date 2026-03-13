@@ -57,6 +57,7 @@ class PotteryData(TypedDict):
 	category: NotRequired[str]  # E.g. "Plate", "Bowl", "Cup"
 	era: NotRequired[str]
 	notes: NotRequired[list[str]]
+	links: NotRequired[dict[str, str]]
 	photo_urls: NotRequired[list[str]]
 	area: NotRequired[str]
 

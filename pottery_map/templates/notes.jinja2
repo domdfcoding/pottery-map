@@ -1,4 +1,4 @@
-{% if item['notes'] %}
+{% if item['notes'] or item['links'] %}
     <div class="accordion row notes" id="{{ item['id'] }}-notes">
         <div class="accordion-item">
             <h2 class="accordion-header" id="{{ item['id'] }}-note">
@@ -17,6 +17,10 @@
                 <div class="accordion-body">
                     {%- for note in item["notes"] %}
                         <code>{{ note }}</code>
+                        <br>
+                    {%- endfor %}
+                    {%- for link_text, link_target in item["links"].items() %}
+                        <a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
                         <br>
                     {%- endfor %}
                 </div>
