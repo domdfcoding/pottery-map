@@ -135,3 +135,13 @@ main p {
 nav > .breadcrumb {
 	--bs-breadcrumb-divider: ">";
 }
+
+
+.leaflet-minimap-label {
+	box-sizing: content-box;
+}
+
+.leaflet-minimap-container .leaflet-minimap-label .leaflet-control-layers-selector {
+	top: unset !important;
+}
+

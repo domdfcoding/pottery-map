@@ -93,6 +93,7 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
 	_copy_file("pottery_map.static", "sidebar.css", css_dir)
 	_copy_file("pottery_map.static", "style.css", css_dir)
+	_copy_file("pottery_map.static", "L.Control.Layers.Minimap.js", js_dir)
 
 	(js_dir / "zoom_state.js").write_text(folium_zoom_state.get_js_script())
 

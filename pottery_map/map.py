@@ -35,6 +35,7 @@ import folium
 import folium.plugins
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
+from folium.elements import JSCSSMixin
 from folium.template import Template
 from folium.utilities import escape_backticks
 from folium_zoom_state import ZoomStateJS, ZoomStateMap
@@ -131,6 +132,53 @@ class NLSTileLayer(folium.TileLayer):
 				)
 
 
+class MinimapLayerControl(JSCSSMixin, folium.LayerControl):
+
+	default_js = [
+			(
+					"layerscontrol-minimap-js",
+					"https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js",
+					),
+			]
+
+	default_js = []
+
+	default_css = [
+			(
+					"layerscontrol-minimap-css",
+					"https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/control.layers.minimap.min.css",
+					),
+			]
+	_template = Template(
+			"""
+        {% macro script(this,kwargs) %}
+            var {{ this.get_name() }}_layers = {
+                base_layers : {
+                    {%- for key, val in this.base_layers.items() %}
+                    {{ key|tojson }} : {{val}},
+                    {%- endfor %}
+                },
+                overlays :  {
+                    {%- for key, val in this.overlays.items() %}
+                    {{ key|tojson }} : {{val}},
+                    {%- endfor %}
+                },
+            };
+            let {{ this.get_name() }} = L.control.layers.minimap(
+                {{ this.get_name() }}_layers.base_layers,
+                {{ this.get_name() }}_layers.overlays,
+                {{ this.options|tojavascript }}
+            ).addTo({{this._parent.get_name()}});
+
+            {%- if this.draggable %}
+            new L.Draggable({{ this.get_name() }}.getContainer()).enable();
+            {%- endif %}
+
+        {% endmacro %}
+        """,
+			)
+
+
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -139,7 +187,14 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
-	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
+	m = Map(
+			location=(53.02445128825057, -2.1834733161173445),
+			font_size="16px",
+			tiles=folium.TileLayer(
+					tiles="OpenStreetMap",
+					name="OpenStreetMap",
+					),
+			)
 
 	NLSTileLayer(
 			"OS 1:10,000 1949-1972",
@@ -173,6 +228,12 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
+	m.add_js_link(
+			"layerscontrol-minimap-js",
+			# "https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js",
+			"static/js/L.Control.Layers.Minimap.js",
+			)
+
 	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
 
 	for company, company_data in pottery_by_company.items():
@@ -197,7 +258,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				)
 		_add_to(marker, marker_cluster, id=company_id)
 
-	folium.LayerControl().add_to(m)
+	MinimapLayerControl().add_to(m)
 
 	return m
 
