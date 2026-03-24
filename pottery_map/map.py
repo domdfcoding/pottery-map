@@ -164,7 +164,7 @@ class MinimapLayerControl(JSCSSMixin, folium.LayerControl):
                     {%- endfor %}
                 },
             };
-            let {{ this.get_name() }} = L.control.layers.minimap(
+            let {{ this.get_name() }} = L.control.layers.minimap.toggle(
                 {{ this.get_name() }}_layers.base_layers,
                 {{ this.get_name() }}_layers.overlays,
                 {{ this.options|tojavascript }}
@@ -230,7 +230,10 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 
 	m.add_js_link(
 			"layerscontrol-minimap-js",
-			# "https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js",
+			"https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js",
+			)
+	m.add_js_link(
+			"layerscontrol-minimap-js-custom",
 			"static/js/L.Control.Layers.Minimap.js",
 			)
 
