@@ -110,6 +110,27 @@ def _add_to(
 	return element
 
 
+class NLSTileLayer(folium.TileLayer):
+	r"""
+	Folium TileLayer for National Library of Scotland's old Ordnance Survey Maps.
+
+	:param name: The map name.
+	:param url: The XYZ tiles URL.
+	:param \*\*kwargs: Other keyword arguments for :class:`folium.TileLayer`.
+	"""
+
+	def __init__(self, name: str, url: str, **kwargs):
+		attr = f"{name} | <a href='https://maps.nls.uk'>maps.nls.uk</a> | CC-BY"
+		super().__init__(
+				url,
+				name=name,
+				min_zoom=1,
+				max_zoom=20,
+				attr=attr,
+				**kwargs,
+				)
+
+
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -119,6 +140,25 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	"""
 
 	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
+
+	NLSTileLayer(
+			"OS 1:10,000 1949-1972",
+			"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
+			max_native_zoom=16,
+			show=False,
+			).add_to(m)
+	NLSTileLayer(
+			"OS 1:1,250 1949-1975",
+			"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
+			max_native_zoom=20,
+			show=False,
+			).add_to(m)
+	NLSTileLayer(
+			"OS 1:2,500 1948-1975",
+			"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
+			max_native_zoom=18,
+			show=False,
+			).add_to(m)
 
 	ZoomStateJS().add_to(m, embed_script=standalone)
 
@@ -133,7 +173,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
-	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}), m, id="collection")
+	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
 
 	for company, company_data in pottery_by_company.items():
 
@@ -156,6 +196,8 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
 				)
 		_add_to(marker, marker_cluster, id=company_id)
+
+	folium.LayerControl().add_to(m)
 
 	return m
 
