@@ -148,5 +148,14 @@ nav > .breadcrumb {
 .leaflet-control-layers-toggle {
 	margin-left: auto;
 	display: block !important;
-	/* TODO: finish button position */
+}
+
+.leaflet-control-layers.leaflet-control-layers-minimap.leaflet-control {
+	border-width: 2px;
+	padding: 2px;
+
+	.leaflet-control-layers-expanded {
+		border-width: 4px;
+		padding: 0;
+	}
 }
