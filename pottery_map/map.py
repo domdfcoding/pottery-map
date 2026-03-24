@@ -234,7 +234,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			)
 	m.add_js_link(
 			"layerscontrol-minimap-js-custom",
-			"static/js/L.Control.Layers.Minimap.js",
+			"static/js/L.Control.Layers.Minimap.Toggle.js",
 			)
 
 	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
