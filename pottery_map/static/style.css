@@ -145,3 +145,8 @@ nav > .breadcrumb {
 	top: unset !important;
 }
 
+.leaflet-control-layers-toggle {
+	margin-left: auto;
+	display: block !important;
+	/* TODO: finish button position */
+}

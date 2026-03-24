@@ -105,6 +105,28 @@
 
 		_initLayout: function() {
 			L.Control.Layers.prototype._initLayout.call(this);
+			L.DomEvent.off(this._container, 'mouseleave', this.collapse, this);
+			L.DomEvent.off(this._container, 'mouseenter', this._expandSafely, this);
+
+			L.DomEvent.off(this._layersLink);
+			L.DomEvent.on(this._layersLink, {
+				keydown: function(e) {
+					if (e.keyCode === 13) {
+						this._expandSafely();
+					}
+				},
+				click: function(e) {
+					console.log('Layer button clicked');
+					L.DomEvent.preventDefault(e);
+					// L.DomEvent.stopPropagation(e);
+					if (L.DomUtil.hasClass(this._container, 'leaflet-control-layers-expanded')) {
+						this.collapse();
+					} else {
+						this._expandSafely();
+					}
+				},
+			}, this);
+
 			L.DomUtil.addClass(this._container, 'leaflet-control-layers-minimap');
 
 			var scrollContainer = this._scrollContainer();
