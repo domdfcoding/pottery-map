@@ -30,18 +30,10 @@ Base types.
 from typing import NamedTuple
 
 # 3rd party
+from domdf_folium_tools import Coordinates
 from typing_extensions import NotRequired, Required, TypedDict
 
-__all__ = ["CompanyData", "Coordinates", "PotteryData"]
-
-
-class Coordinates(TypedDict):
-	"""
-	The coordinates of a factory.
-	"""
-
-	latitude: float
-	longitude: float
+__all__ = ["CompanyData", "PotteryData"]
 
 
 class PotteryData(TypedDict):

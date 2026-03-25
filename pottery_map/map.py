@@ -28,15 +28,16 @@ The map itself.
 
 # stdlib
 import sys
-from typing import Any, TypeVar
+from typing import Any
 
 # 3rd party
 import folium
 import folium.plugins
 import folium_layerscontrol_minimap
+from domdf_folium_tools import embed_styles
+from domdf_folium_tools.elements import NLSTileLayer, add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
-from folium.template import Template
 from folium.utilities import escape_backticks
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
@@ -47,29 +48,6 @@ from pottery_map.utils import make_id
 __all__ = ["make_map"]
 
 
-def embed_styles(m: folium.Map) -> folium.Element:
-	"""
-	Embed the map's custom CSS into the HTML.
-
-	:param m:
-	"""
-
-	css_content = importlib_resources.read_text("pottery_map.static", "pottery_map.css")
-
-	class EmbeddedStyles(folium.MacroElement):
-		_template = Template(
-				f"""
-			{{% macro header(this, kwargs) %}}
-				<style>
-					{css_content}
-				</style>
-			{{% endmacro %}}
-	""",
-				)
-
-	return EmbeddedStyles().add_to(m)
-
-
 class MarkerCluster(folium.plugins.MarkerCluster):
 	default_js = []
 
@@ -78,7 +56,7 @@ class Map(ZoomStateMap):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self._id = "pottery"
+		set_id(self, "pottery")
 		self.options["maxZoom"] = kwargs["max_zoom"]
 
 
@@ -99,40 +77,6 @@ class Popup(folium.Popup):
 		self._id = id
 
 
-_E = TypeVar("_E", bound=folium.Element)
-
-
-def _add_to(
-		element: _E,
-		parent: folium.Element,
-		id: str,  # noqa: A002  # pylint: disable=redefined-builtin
-		) -> _E:
-	element._id = id
-	element.add_to(parent)
-	return element
-
-
-class NLSTileLayer(folium.TileLayer):
-	r"""
-	Folium TileLayer for National Library of Scotland's old Ordnance Survey Maps.
-
-	:param name: The map name.
-	:param url: The XYZ tiles URL.
-	:param \*\*kwargs: Other keyword arguments for :class:`folium.TileLayer`.
-	"""
-
-	def __init__(self, name: str, url: str, **kwargs):
-		attr = f"{name} | <a href='https://maps.nls.uk'>maps.nls.uk</a> | CC-BY"
-		super().__init__(
-				url,
-				name=name,
-				min_zoom=1,
-				max_zoom=20,
-				attr=attr,
-				**kwargs,
-				)
-
-
 class MinimapLayerControl(folium_layerscontrol_minimap.MinimapLayerControl):
 	default_js = []
 	control_class_name = "L.control.layers.minimap.toggle"
@@ -146,12 +90,10 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
-	osm_tiles = folium.TileLayer(
-			tiles="OpenStreetMap",
-			name="OpenStreetMap",
-			show=False,
+	osm_tiles = set_id(
+			folium.TileLayer(tiles="OpenStreetMap", name="OpenStreetMap", show=False),
+			"osm_carto",
 			)
-	osm_tiles._id = "osm_carto"
 
 	m = Map(
 			location=(53.02445128825057, -2.1834733161173445),
@@ -160,51 +102,41 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			max_zoom=20,
 			)
 
-	_add_to(
-			NLSTileLayer(
-					"OS 1:10,000 1949-1972",
-					"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
-					max_native_zoom=16,
-					show=False,
-					),
-			m,
-			id="os10k",
+	os10k = NLSTileLayer(
+			"OS 1:10,000 1949-1972",
+			"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
+			max_native_zoom=16,
+			show=False,
 			)
-	_add_to(
-			NLSTileLayer(
-					"OS 1:1,250 1949-1975",
-					"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
-					max_native_zoom=20,
-					show=False,
-					),
-			m,
-			id="os1250",
+
+	os1250 = NLSTileLayer(
+			"OS 1:1,250 1949-1975",
+			"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
+			max_native_zoom=20,
+			show=False,
 			)
-	_add_to(
-			NLSTileLayer(
-					"OS 1:2,500 1948-1975",
-					"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
-					max_native_zoom=18,
-					show=False,
-					),
-			m,
-			id="os2500",
+
+	os2500 = NLSTileLayer(
+			"OS 1:2,500 1948-1975",
+			"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
+			max_native_zoom=18,
+			show=False,
 			)
+
+	set_id(os10k, "os10k").add_to(m)
+	set_id(os1250, "os1250").add_to(m)
+	set_id(os2500, "os2500").add_to(m)
 
 	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
 
 	if standalone:
-		embed_styles(m)
+		embed_styles(m, importlib_resources.read_text("pottery_map.static", "pottery_map.css"))
 	else:
 		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
 		m.add_js_link("zoom_state.js", "static/js/zoom_state.js")
 
-	m.add_js_link(
-			"markerclusterjs",
-			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
-			)
-
-	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
+	m.add_js_link(*folium.plugins.MarkerCluster.default_js[0])
+	marker_cluster = add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, "collection")
 
 	for company, company_data in pottery_by_company.items():
 
@@ -226,12 +158,12 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				tooltip=company,
 				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
 				)
-		_add_to(marker, marker_cluster, id=company_id)
+		add_to(marker, marker_cluster, company_id)
 
 	if standalone:
-		layer_control = _add_to(folium.LayerControl(), m, id="basemap")
+		layer_control = folium.LayerControl()
 	else:
-		layer_control = _add_to(MinimapLayerControl(), m, id="basemap")
+		layer_control = MinimapLayerControl()
 
 		m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
 
@@ -240,6 +172,8 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				"static/js/L.Control.Layers.Minimap.Toggle.js",
 				)
 
+	add_to(layer_control, m, "basemap")
+
 	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
 
 	return m
@@ -247,10 +181,12 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 
 def _create_standalone_map() -> None:
 
+	# 3rd party
+	from domdf_folium_tools import set_branca_random_seed
+
 	# this package
 	from pottery_map.companies import group_pottery_by_company, load_companies
 	from pottery_map.pottery import load_pottery_collection
-	from pottery_map.utils import set_branca_random_seed
 
 	set_branca_random_seed("WWRD")
 

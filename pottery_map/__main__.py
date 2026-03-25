@@ -27,9 +27,11 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #
 
 if __name__ == "__main__":
+	# 3rd party
+	from domdf_folium_tools import set_branca_random_seed
+
 	# this package
 	from pottery_map import PotteryMap
-	from pottery_map.utils import set_branca_random_seed
 
 	set_branca_random_seed("WWRD")
 

@@ -29,10 +29,11 @@ Classes to represent pottery collection.
 # 3rd party
 import attrs
 import dom_toml
+from domdf_folium_tools import Coordinates
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pottery_map.types import Coordinates, PotteryData
+from pottery_map.types import PotteryData
 from pottery_map.utils import make_id
 
 __all__ = ["PotteryItem", "load_pottery_collection"]

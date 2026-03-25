@@ -30,7 +30,6 @@ Utility functions.
 import re
 from collections import defaultdict
 from collections.abc import Callable, Iterable
-from random import Random
 from typing import TypeVar
 
 # 3rd party
@@ -38,26 +37,7 @@ import folium_zoom_state
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 
-__all__ = ["copy_static_files", "groupby", "make_id", "normalise_category", "set_branca_random_seed"]
-
-
-def set_branca_random_seed(seed: str | int) -> None:
-	"""
-	Use a fixed random number generator seed for branca (affects element IDs e.g. folium's ``map_{id}``).
-
-	:param seed:
-	"""
-
-	# 3rd party
-	from branca import element  # nodep
-
-	rand = Random(seed)
-
-	def urandom(size: int) -> bytes:
-		return rand.randbytes(size)
-
-	element.urandom = urandom
-
+__all__ = ["copy_static_files", "groupby", "make_id", "normalise_category"]
 
 _id_regex = re.compile("[^0-9a-zA-Z]+")
 
