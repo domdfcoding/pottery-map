@@ -144,33 +144,48 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
+	osm_tiles = folium.TileLayer(
+			tiles="OpenStreetMap",
+			name="OpenStreetMap",
+			)
+	osm_tiles._id = "osm_carto"
+
 	m = Map(
 			location=(53.02445128825057, -2.1834733161173445),
 			font_size="16px",
-			tiles=folium.TileLayer(
-					tiles="OpenStreetMap",
-					name="OpenStreetMap",
-					),
+			tiles=osm_tiles,
 			)
 
-	NLSTileLayer(
-			"OS 1:10,000 1949-1972",
-			"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
-			max_native_zoom=16,
-			show=False,
-			).add_to(m)
-	NLSTileLayer(
-			"OS 1:1,250 1949-1975",
-			"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
-			max_native_zoom=20,
-			show=False,
-			).add_to(m)
-	NLSTileLayer(
-			"OS 1:2,500 1948-1975",
-			"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
-			max_native_zoom=18,
-			show=False,
-			).add_to(m)
+	_add_to(
+			NLSTileLayer(
+					"OS 1:10,000 1949-1972",
+					"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
+					max_native_zoom=16,
+					show=False,
+					),
+			m,
+			id="os10k",
+			)
+	_add_to(
+			NLSTileLayer(
+					"OS 1:1,250 1949-1975",
+					"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
+					max_native_zoom=20,
+					show=False,
+					),
+			m,
+			id="os1250",
+			)
+	_add_to(
+			NLSTileLayer(
+					"OS 1:2,500 1948-1975",
+					"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
+					max_native_zoom=18,
+					show=False,
+					),
+			m,
+			id="os2500",
+			)
 
 	ZoomStateJS().add_to(m, embed_script=standalone)
 
@@ -215,7 +230,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				)
 		_add_to(marker, marker_cluster, id=company_id)
 
-	MinimapLayerControl().add_to(m)
+	_add_to(MinimapLayerControl(), m, id="basemap")
 
 	return m
 
