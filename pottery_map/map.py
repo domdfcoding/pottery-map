@@ -38,7 +38,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
-from folium_zoom_state import ZoomStateJS, ZoomStateMap
+from folium_zoom_state import ZoomStateJS, ZoomStateMap, BasemapFromURL
 
 # this package
 from pottery_map.templates import render_template
@@ -187,7 +187,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			id="os2500",
 			)
 
-	ZoomStateJS().add_to(m, embed_script=standalone)
+	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
 
 	if standalone:
 		embed_styles(m)
@@ -237,6 +237,8 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"layerscontrol-minimap-js-custom",
 			"static/js/L.Control.Layers.Minimap.Toggle.js",
 			)
+
+	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
 
 	return m
 
