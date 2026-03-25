@@ -79,6 +79,7 @@ class Map(ZoomStateMap):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self._id = "pottery"
+		self.options["maxZoom"] = kwargs["max_zoom"]
 
 
 class Popup(folium.Popup):
@@ -134,6 +135,7 @@ class NLSTileLayer(folium.TileLayer):
 
 class MinimapLayerControl(folium_layerscontrol_minimap.MinimapLayerControl):
 	default_js = []
+	control_class_name = "L.control.layers.minimap.toggle"
 
 
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
@@ -147,6 +149,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	osm_tiles = folium.TileLayer(
 			tiles="OpenStreetMap",
 			name="OpenStreetMap",
+			show=False,
 			)
 	osm_tiles._id = "osm_carto"
 
@@ -154,6 +157,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			location=(53.02445128825057, -2.1834733161173445),
 			font_size="16px",
 			tiles=osm_tiles,
+			max_zoom=20,
 			)
 
 	_add_to(
