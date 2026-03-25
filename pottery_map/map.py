@@ -200,11 +200,6 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
-	m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
-	m.add_js_link(
-			"layerscontrol-minimap-js-custom",
-			"static/js/L.Control.Layers.Minimap.Toggle.js",
-			)
 
 	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
 
@@ -230,7 +225,18 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				)
 		_add_to(marker, marker_cluster, id=company_id)
 
-	_add_to(MinimapLayerControl(), m, id="basemap")
+	
+	if standalone:
+		layer_control = _add_to(folium.LayerControl(), m, id="basemap")
+	else:
+		layer_control = _add_to(MinimapLayerControl(), m, id="basemap")
+
+		m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
+
+		m.add_js_link(
+			"layerscontrol-minimap-js-custom",
+			"static/js/L.Control.Layers.Minimap.Toggle.js",
+			)
 
 	return m
 
