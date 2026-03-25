@@ -33,11 +33,12 @@ from typing import Any, TypeVar
 # 3rd party
 import folium
 import folium.plugins
+import folium_layerscontrol_minimap
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
-from folium_zoom_state import ZoomStateJS, ZoomStateMap
+from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
 from pottery_map.templates import render_template
@@ -78,6 +79,7 @@ class Map(ZoomStateMap):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self._id = "pottery"
+		self.options["maxZoom"] = kwargs["max_zoom"]
 
 
 class Popup(folium.Popup):
@@ -110,6 +112,32 @@ def _add_to(
 	return element
 
 
+class NLSTileLayer(folium.TileLayer):
+	r"""
+	Folium TileLayer for National Library of Scotland's old Ordnance Survey Maps.
+
+	:param name: The map name.
+	:param url: The XYZ tiles URL.
+	:param \*\*kwargs: Other keyword arguments for :class:`folium.TileLayer`.
+	"""
+
+	def __init__(self, name: str, url: str, **kwargs):
+		attr = f"{name} | <a href='https://maps.nls.uk'>maps.nls.uk</a> | CC-BY"
+		super().__init__(
+				url,
+				name=name,
+				min_zoom=1,
+				max_zoom=20,
+				attr=attr,
+				**kwargs,
+				)
+
+
+class MinimapLayerControl(folium_layerscontrol_minimap.MinimapLayerControl):
+	default_js = []
+	control_class_name = "L.control.layers.minimap.toggle"
+
+
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
 	Map the pottery collection folium map.
@@ -118,9 +146,52 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
-	m = Map(location=(53.02445128825057, -2.1834733161173445), font_size="16px")
+	osm_tiles = folium.TileLayer(
+			tiles="OpenStreetMap",
+			name="OpenStreetMap",
+			show=False,
+			)
+	osm_tiles._id = "osm_carto"
 
-	ZoomStateJS().add_to(m, embed_script=standalone)
+	m = Map(
+			location=(53.02445128825057, -2.1834733161173445),
+			font_size="16px",
+			tiles=osm_tiles,
+			max_zoom=20,
+			)
+
+	_add_to(
+			NLSTileLayer(
+					"OS 1:10,000 1949-1972",
+					"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
+					max_native_zoom=16,
+					show=False,
+					),
+			m,
+			id="os10k",
+			)
+	_add_to(
+			NLSTileLayer(
+					"OS 1:1,250 1949-1975",
+					"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
+					max_native_zoom=20,
+					show=False,
+					),
+			m,
+			id="os1250",
+			)
+	_add_to(
+			NLSTileLayer(
+					"OS 1:2,500 1948-1975",
+					"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
+					max_native_zoom=18,
+					show=False,
+					),
+			m,
+			id="os2500",
+			)
+
+	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
 
 	if standalone:
 		embed_styles(m)
@@ -133,7 +204,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
-	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}), m, id="collection")
+	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
 
 	for company, company_data in pottery_by_company.items():
 
@@ -156,6 +227,20 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
 				)
 		_add_to(marker, marker_cluster, id=company_id)
+
+	if standalone:
+		layer_control = _add_to(folium.LayerControl(), m, id="basemap")
+	else:
+		layer_control = _add_to(MinimapLayerControl(), m, id="basemap")
+
+		m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
+
+		m.add_js_link(
+				"layerscontrol-minimap-js-custom",
+				"static/js/L.Control.Layers.Minimap.Toggle.js",
+				)
+
+	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
 
 	return m
 
