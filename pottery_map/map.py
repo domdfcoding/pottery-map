@@ -38,7 +38,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
-from folium_zoom_state import ZoomStateJS, ZoomStateMap, BasemapFromURL
+from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
 from pottery_map.templates import render_template
@@ -204,7 +204,6 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js",
 			)
 
-
 	marker_cluster = _add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, id="collection")
 
 	for company, company_data in pottery_by_company.items():
@@ -229,7 +228,6 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 				)
 		_add_to(marker, marker_cluster, id=company_id)
 
-	
 	if standalone:
 		layer_control = _add_to(folium.LayerControl(), m, id="basemap")
 	else:
@@ -238,9 +236,9 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 		m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
 
 		m.add_js_link(
-			"layerscontrol-minimap-js-custom",
-			"static/js/L.Control.Layers.Minimap.Toggle.js",
-			)
+				"layerscontrol-minimap-js-custom",
+				"static/js/L.Control.Layers.Minimap.Toggle.js",
+				)
 
 	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
 
