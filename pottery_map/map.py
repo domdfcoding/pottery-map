@@ -123,9 +123,17 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			show=False,
 			)
 
+	os25inch = NLSTileLayer(
+			"OS 25 Inch, 1892-1914",
+			"https://mapseries-tilesets.s3.amazonaws.com/25_inch/stafford/{z}/{x}/{y}.png",
+			max_native_zoom=18,
+			show=False,
+			)
+
 	set_id(os10k, "os10k").add_to(m)
 	set_id(os1250, "os1250").add_to(m)
 	set_id(os2500, "os2500").add_to(m)
+	set_id(os25inch, "os25inch").add_to(m)
 
 	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
 
