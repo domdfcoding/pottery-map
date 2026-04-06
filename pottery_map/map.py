@@ -100,6 +100,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 					show=False,
 					max_zoom=MAX_ZOOM,
 					max_native_zoom=19,
+					referrerPolicy="strict-origin-when-cross-origin",
 					),
 			"osm_carto",
 			)
