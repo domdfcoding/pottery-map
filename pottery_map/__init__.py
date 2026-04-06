@@ -32,9 +32,9 @@ from operator import attrgetter
 
 # 3rd party
 from branca.element import Figure  # nodep
+from domdf_folium_tools.elements import render_figure
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from folium import JavascriptLink
 
 # this package
 from pottery_map.companies import Companies, _get_item_count, load_companies
@@ -131,21 +131,9 @@ class PotteryMap:
 
 		root: Figure = m.get_root()  # type: ignore[assignment]
 
-		js_libs = m.default_js
-		m.default_js = []
-		m.default_css = []
-
-		scripts = [JavascriptLink(lib[1]).render() for lib in js_libs]
-
-		for child in root._children.values():
-			child.render()
-
 		return self.render_page(
 				"map.jinja2",
-				header=root.header.render(),
-				body=root.html.render(),
-				script=root.script.render(),
-				scripts='\n'.join(scripts),
+				**render_figure(root)._asdict(),
 				)
 
 	def render_dashboard(self) -> str:

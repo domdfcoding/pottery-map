@@ -33,12 +33,12 @@ from typing import Any
 # 3rd party
 import folium
 import folium.plugins
-import folium_layerscontrol_minimap
 from domdf_folium_tools import embed_styles
 from domdf_folium_tools.elements import NLSTileLayer, add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.utilities import escape_backticks
+from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
@@ -48,16 +48,22 @@ from pottery_map.utils import make_id
 __all__ = ["make_map"]
 
 
-class MarkerCluster(folium.plugins.MarkerCluster):
-	default_js = []
-
-
 class Map(ZoomStateMap):
+
+	# Remove outdated bootstrap and unused glyphicons and awesome markers
+
+	default_js = [
+			("leaflet", "https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"),
+			("jquery", "https://code.jquery.com/jquery-3.7.1.min.js"),
+			]
+
+	default_css = [
+			("leaflet_css", "https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"),
+			]
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		set_id(self, "pottery")
-		self.options["maxZoom"] = kwargs["max_zoom"]
 
 
 class Popup(folium.Popup):
@@ -77,21 +83,24 @@ class Popup(folium.Popup):
 		self._id = id
 
 
-class MinimapLayerControl(folium_layerscontrol_minimap.MinimapLayerControl):
-	default_js = []
-	control_class_name = "L.control.layers.minimap.toggle"
-
-
 def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
 	"""
-	Map the pottery collection folium map.
+	Make the pottery collection folium map.
 
 	:param pottery_by_company:
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
+	MAX_ZOOM = 20
+
 	osm_tiles = set_id(
-			folium.TileLayer(tiles="OpenStreetMap", name="OpenStreetMap", show=False),
+			folium.TileLayer(
+					tiles="OpenStreetMap",
+					name="OpenStreetMap",
+					show=False,
+					max_zoom=MAX_ZOOM,
+					max_native_zoom=19,
+					),
 			"osm_carto",
 			)
 
@@ -99,7 +108,8 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			location=(53.02445128825057, -2.1834733161173445),
 			font_size="16px",
 			tiles=osm_tiles,
-			max_zoom=20,
+			maxZoom=MAX_ZOOM,
+			wheelPxPerZoomLevel=80,
 			)
 
 	os10k = NLSTileLayer(
@@ -143,8 +153,11 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
 		m.add_js_link("zoom_state.js", "static/js/zoom_state.js")
 
-	m.add_js_link(*folium.plugins.MarkerCluster.default_js[0])
-	marker_cluster = add_to(MarkerCluster(options={"maxClusterRadius": 50}, control=False), m, "collection")
+	marker_cluster = add_to(
+			folium.plugins.MarkerCluster(options={"maxClusterRadius": 50}, control=False),
+			m,
+			"collection",
+			)
 
 	for company, company_data in pottery_by_company.items():
 
@@ -171,14 +184,7 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	if standalone:
 		layer_control = folium.LayerControl()
 	else:
-		layer_control = MinimapLayerControl()
-
-		m.add_js_link(*folium_layerscontrol_minimap.MinimapLayerControl.default_js[0])
-
-		m.add_js_link(
-				"layerscontrol-minimap-js-custom",
-				"static/js/L.Control.Layers.Minimap.Toggle.js",
-				)
+		layer_control = ToggleMinimapLayerControl()
 
 	add_to(layer_control, m, "basemap")
 
@@ -203,6 +209,8 @@ def _create_standalone_map() -> None:
 	pottery_by_company = group_pottery_by_company(pottery, companies)
 
 	m = make_map(pottery_by_company)
+	m.add_css_link("bootstrap_css", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")
+	m.add_js_link("bootstrap_js", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js")
 
 	html = m.get_root().render()
 	clean_writer(html, sys.stdout)
