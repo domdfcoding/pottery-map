@@ -99,7 +99,7 @@ def groups_pie_chart(companies: Companies) -> ChartJSData:
 	for company in companies.top_level_companies:
 		ancestors: set[str] = networkx.ancestors(companies.graph, company)
 		ancestors.add(company)
-		item_count = _get_item_count(companies.company_item_counts, ancestors)
+		item_count = _get_item_count(companies.get_company_item_counts(), ancestors)
 		if item_count > 1:
 			company_counts[company] = item_count
 		else:
@@ -159,8 +159,8 @@ def sort_counts(counts: Mapping[str, float], other_count: float | None = None) -
 			)
 
 	if other_count is not None:
-		# TODO: hide if 0
-		sorted_counts += [("Other", other_count)]
+		if other_count > 0:
+			sorted_counts += [("Other", other_count)]
 
 	sorted_counts_dict = dict(sorted_counts)
 
@@ -177,7 +177,7 @@ def companies_bar_chart(companies: Companies) -> ChartJSData:
 	:param companies:
 	"""
 
-	labels, data = sort_counts(companies.company_item_counts)
+	labels, data = sort_counts(companies.get_company_item_counts(include_unrepresented=False))
 
 	companies_bar_chart_data = {
 			"labels": labels,

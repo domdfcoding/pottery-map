@@ -165,16 +165,20 @@ class Companies:
 
 		return sorted(self.pottery_by_company)
 
-	@property
-	def company_item_counts(self) -> dict[str, int]:
+	def get_company_item_counts(self, include_unrepresented: bool = True) -> dict[str, int]:
 		"""
 		Mapping of company names to the number of items by that company in the collecton.
+
+		:param include_unrepresented: Exclude successors for which metadata exists but no items of theirs are in the collection.
 		"""
 
 		company_item_counts: dict[str, int] = {}
 
 		for company_name, company_data in self.pottery_by_company.items():
-			company_item_counts[company_name] = len(company_data.items)
+			count = len(company_data.items)
+
+			if include_unrepresented or count > 0:
+				company_item_counts[company_name] = count
 
 		return company_item_counts
 
@@ -190,8 +194,8 @@ class Companies:
 	def represented_companies(self) -> list[str]:
 		"""
 		List of companies represented in the collection.
-		
+
 		Excludes successors for which metadata exists but no items of theirs are in the collection.
 		"""
 
-		return [k for k, v in self.company_item_counts.items() if v > 0]
+		return list(self.get_company_item_counts(include_unrepresented=False))
