@@ -29,14 +29,14 @@ Utility functions.
 # stdlib
 import re
 from collections import defaultdict
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Collection, Iterable
 from typing import TypeVar
 
 # 3rd party
 import domdf_folium_tools.static_files
 from domdf_python_tools.paths import PathPlus
 
-__all__ = ["copy_static_files", "groupby", "make_id", "normalise_category"]
+__all__ = ["copy_static_files", "filter_keys", "groupby", "make_id", "normalise_category"]
 
 _id_regex = re.compile("[^0-9a-zA-Z]+")
 
@@ -109,3 +109,36 @@ def normalise_category(category: str) -> str:
 		category += 's'
 
 	return category.title()
+
+
+KT = TypeVar("KT")
+VT = TypeVar("VT")
+
+
+def filter_keys(
+		dictionary: dict[KT, VT],
+		keep_keys: Collection[KT] = (),
+		remove_keys: Collection[KT] = (),
+		) -> dict[KT, VT]:
+	"""
+	Filter dictionaries by key.
+
+	:param dictionary:
+	:param keep_keys:
+	:param remove_keys:
+	"""
+
+	new_dict: list[tuple[KT, VT]] = []
+
+	for key, value in dictionary.items():
+		if keep_keys:
+			if key not in keep_keys:
+				continue
+
+		if remove_keys:
+			if key in remove_keys:
+				continue
+
+		new_dict.append((key, value))
+
+	return dict(new_dict)

@@ -5,13 +5,13 @@
     {%- endif -%}
 {% endmacro -%}
 <div class="item-details">
-    <h2>{{ make_link(company, inner=company, standalone=standalone) }}</h2>
+    <h2>{{ make_link(company_data.company.name, inner=company_data.company.name, standalone=standalone) }}</h2>
     <h3>
-        <strong>{{ company_data['factory'] }}</strong>
+        <strong>{{ company_data.company.factory }}</strong>
     </h3>
-    {% for item in company_data["items"] %}
+    {% for item in company_data.items %}
         <ul>
-            <li>{{ make_link(company, item=item.id, inner=item.design, standalone=standalone) }}</li>
+            <li>{{ make_link(company_data.company.name, item=item.id, inner=item.design, standalone=standalone) }}</li>
             <li>{{ item.description }}</li>
             {% if item.designer %}
                 <li>

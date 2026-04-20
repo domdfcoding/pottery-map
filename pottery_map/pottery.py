@@ -29,11 +29,11 @@ Classes to represent pottery collection.
 # 3rd party
 import attrs
 import dom_toml
-from domdf_folium_tools import Coordinates
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pottery_map.utils import make_id
+from pottery_map.company import Company
+from pottery_map.utils import filter_keys, make_id
 
 __all__ = ["PotteryItem", "load_pottery_collection"]
 
@@ -47,21 +47,16 @@ class PotteryItem:
 	# TODO: move company parts into an instance of the Company class.
 
 	id: str
-	company: str
+	company: Company
 	material: str  # E.g. "Bone China"
 	type: str  # E.g. "Sandwich Plate"
 	design: str
-	factory: str = "Unknown"
 	designer: str = ''
 	category: str = "Other"  # E.g. "Plate", "Bowl", "Cup"
 	era: str = ''
 	notes: list[str] = attrs.field(factory=list)
 	links: dict[str, str] = attrs.field(factory=dict)
 	photo_urls: list[str] = attrs.field(factory=list)
-	location: Coordinates | None = None
-	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
-	successor: str | None = None
-	defunct: bool = False
 	diameter: str | None = None
 
 	@property
@@ -99,8 +94,15 @@ class PotteryItem:
 		:param \*\*data:
 		"""
 
+		company_arg_names = {"factory", "location", "area", "successor", "defunct"}
+		company_data = filter_keys(data, keep_keys=company_arg_names)
+		company = Company(name=data["company"], **company_data)
+
+		data = filter_keys(data, remove_keys={"company", *company_arg_names})
+
 		return cls(
 				id=make_id(id),
+				company=company,
 				**data,
 				)
 

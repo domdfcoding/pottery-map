@@ -35,53 +35,18 @@ from dataclasses import dataclass
 from typing import NamedTuple
 
 # 3rd party
-import attrs
 import dom_toml
 import networkx
-from domdf_folium_tools import Coordinates
 from domdf_python_tools.typing import PathLike
 
 # this package
+from pottery_map.company import Company
 from pottery_map.pottery import PotteryItem
 from pottery_map.types import CompanyData
 
 __all__ = ["Companies", "group_pottery_by_company", "load_companies", "make_successor_network"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
-
-
-@attrs.define
-class Company:
-	"""
-	A pottery manufacturer represented in the collection.
-	"""
-
-	name: str
-	factory: str = "Unknown"
-	# TODO: notes: list[str] = attrs.field(factory=list)
-	# TODO: links: dict[str, str] = attrs.field(factory=dict)
-	location: Coordinates | None = None
-	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
-	successor: str | None = None
-	defunct: bool = False
-
-	@classmethod
-	def from_toml_dict(
-			cls,
-			name: str,
-			**data,
-			) -> "Company":
-		r"""
-		Create from a table in a TOML file.
-
-		:param name: The company name.
-		:param \*\*data:
-		"""
-
-		return cls(
-				name=name,
-				**data,
-				)
 
 
 def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Company]:
@@ -138,20 +103,14 @@ def group_pottery_by_company(
 	pottery_by_company: dict[str, CompanyItems] = {}
 
 	for item in pottery:
-		company_name = item.company
+		company_name = item.company.name
 		if company_name not in pottery_by_company:
 			if company_name in companies:
 				company = companies[company_name]
 			else:
 				# "Ad-hoc" company that only exists in pottery.toml, not in companies.toml
-				company = Company(
-						name=company_name,
-						factory=item.factory,
-						location=item.location,
-						area=item.area,
-						successor=item.successor,
-						defunct=item.defunct,
-						)
+				company = item.company
+
 			pottery_by_company[company_name] = CompanyItems(company, [])
 
 		pottery_by_company[company_name].add_item(item)
