@@ -33,7 +33,7 @@ from collections.abc import Callable, Iterable
 from typing import TypeVar
 
 # 3rd party
-from domdf_python_tools.compat import importlib_resources
+import domdf_folium_tools.static_files
 from domdf_python_tools.paths import PathPlus
 
 __all__ = ["copy_static_files", "groupby", "make_id", "normalise_category"]
@@ -51,10 +51,6 @@ def make_id(string: str) -> str:
 	return _id_regex.sub('_', string.lower())
 
 
-def _copy_file(module: str, filename: str, target_dir: PathPlus) -> None:
-	(target_dir / filename).write_text(importlib_resources.read_text(module, filename))
-
-
 def copy_static_files(static_dir: PathPlus) -> None:
 	"""
 	Copy CSS and JS files into the given directory.
@@ -62,16 +58,18 @@ def copy_static_files(static_dir: PathPlus) -> None:
 	:param static_dir:
 	"""
 
-	js_dir = static_dir / "js"
-	css_dir = static_dir / "css"
-	js_dir.maybe_make(parents=True)
-	css_dir.maybe_make()
-
-	_copy_file("pottery_map.static", "sidebar.js", js_dir)
-	_copy_file("pottery_map.static", "dashboard.js", js_dir)
-	_copy_file("pottery_map.static", "pottery_map.css", css_dir)
-	_copy_file("pottery_map.static", "sidebar.css", css_dir)
-	_copy_file("pottery_map.static", "style.css", css_dir)
+	domdf_folium_tools.static_files.copy_static_files(
+			static_dir=static_dir,
+			js_files=[
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "sidebar.js"),
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "dashboard.js"),
+					],
+			css_files=[
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "pottery_map.css"),
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "sidebar.css"),
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "style.css"),
+					],
+			)
 
 
 _T1 = TypeVar("_T1")
