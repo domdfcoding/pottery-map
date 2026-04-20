@@ -39,6 +39,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.utilities import escape_backticks
 from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
+from folium_map_search import MapSearchControl, MapSearchProvider
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
@@ -152,6 +153,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 				location=[company.location["latitude"], company.location["longitude"]],
 				tooltip=company.name,
 				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
+				search_name=company.name,
 				)
 		add_to(marker, marker_cluster, company_id)
 
@@ -164,6 +166,15 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 
 	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
 	# TODO: about dialog
+	MapSearchControl(
+			provider=MapSearchProvider(layer=marker_cluster, map=m, feature_type="settlement"),
+			auto_complete_delay=1000,  # Effectively turns off autocomplete to comply with Nominatum TOS
+			show_marker=False,
+			max_suggestions=15,
+			search_label="Enter town or manufacturer name",
+			disable_enter_search=True,  # Otherwise markers don't appear 🤷
+			close_on_submit=True,
+			).add_to(m)
 
 	return m
 
