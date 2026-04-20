@@ -6,7 +6,6 @@
 	--hover-colour: #222533;
 	--text-colour: #e6e6ef;
 	--accent-colour: #5e63ff;
-	--secondary-text-colour: #b0b3c1;
 }
 
 html {
@@ -30,7 +29,6 @@ main.padded {
 }
 
 main p {
-	color: var(--secondary-text-colour);
 	margin-top: 5px;
 	margin-bottom: 15px;
 }
@@ -60,7 +58,8 @@ main p {
 	}
 } */
 
-.carousel {
+/* TODO: bottom few pixels of image disappear when switching images */
+.item .carousel {
 	--image-height: 50px;
 
 	max-width: 330px;
@@ -89,6 +88,10 @@ main p {
 	font-size: 11px !important;
 }
 
+.item {
+	max-width: 340px;
+}
+
 .item:target {
 	border-color: pink !important;
 }
@@ -111,4 +114,48 @@ main p {
 
 .min-vw-45 {
 	min-width: 45vw;
+}
+
+.accordion.notes {
+	margin: 4px 1px 2px;
+
+	.accordion-header button {
+		padding: 2px 0;
+	}
+
+	.accordion-body {
+		padding: 2px;
+	}
+
+	.accordion-button:not(.collapsed) {
+		background-color: unset !important;
+	}
+}
+
+nav > .breadcrumb {
+	--bs-breadcrumb-divider: ">";
+}
+
+
+.leaflet-minimap-label {
+	box-sizing: content-box;
+}
+
+.leaflet-minimap-container .leaflet-minimap-label .leaflet-control-layers-selector {
+	top: unset !important;
+}
+
+.leaflet-control-layers-toggle {
+	margin-left: auto;
+	display: block !important;
+}
+
+.leaflet-control-layers.leaflet-control-layers-minimap.leaflet-control {
+	border-width: 2px;
+	padding: 2px;
+
+	.leaflet-control-layers-expanded {
+		border-width: 4px;
+		padding: 0;
+	}
 }

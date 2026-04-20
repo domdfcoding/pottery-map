@@ -12,56 +12,10 @@
               href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"
               integrity="sha384-EXatlQyrOJgDaM9/a74ArMzy7/2bTMSrZj8ID1IPeVmc3GncfCugefCFWSLj8JL/"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="static/css/style.css">
-        <link rel="stylesheet" href="static/css/sidebar.css">
-        <title>Map – Pottery Collection</title>
+        <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="../static/css/sidebar.css">
+        <title>Other – Pottery Collection</title>
 
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="./static/css/pottery_map.css"/>
-
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_pottery {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 16px; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/control.layers.minimap.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/control.layers.minimap.min.css"/>
 
     </head>
     <body>
@@ -80,8 +34,8 @@
                         </svg>
                     </button>
                 </li>
-                <li class="active">
-                    <a title="Map" href="#">
+                <li class="">
+                    <a title="Map" href="../">
                         <!-- <i class="fas fa-map me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -95,7 +49,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a title="Items" href="items.html">
+                    <a title="Items" href="../items.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="-5 -10 24 24"
@@ -106,7 +60,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a title="Dashboard" href="dashboard.html">
+                    <a title="Dashboard" href="../dashboard.html">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
                              viewBox="0 -960 960 960"
@@ -122,7 +76,7 @@
                        title="Companies"
                        onclick="toggleSubMenu(this); event.preventDefault()"
                        class="dropdown-btn"
-                       href="companies">
+                       href="../companies">
                         <!-- <i class="fas fa-industry me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -144,37 +98,37 @@
                         <div>
 
                                 <li class="border-bottom">
-                                    <a href="companies">View All</a>
+                                    <a href="../companies">View All</a>
                                 </li>
 
 
 
                                     <li>
-                                        <a href="companies/j_g_meakin.html">J & G Meakin</a>
+                                        <a href="../companies/j_g_meakin.html">J & G Meakin</a>
                                     </li>
 
 
 
                                     <li>
-                                        <a href="companies/wwrd.html">WWRD</a>
+                                        <a href="../companies/wwrd.html">WWRD</a>
                                     </li>
 
 
 
                                     <li>
-                                        <a href="companies/wedgwood.html">Wedgwood</a>
+                                        <a href="../companies/wedgwood.html">Wedgwood</a>
                                     </li>
 
 
                         </div>
                     </ul>
                 </li>
-                <li class="">
+                <li class="active">
                     <a role="button"
                        title="Categories"
                        onclick="toggleSubMenu(this); event.preventDefault()"
                        class="dropdown-btn"
-                       href="categories">
+                       href="../categories">
                         <!-- <i class="fas fa-industry me-3"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"
                              height="24px"
@@ -196,13 +150,13 @@
                         <div>
 
                                 <li class="border-bottom">
-                                    <a href="categories">View All</a>
+                                    <a href="../categories">View All</a>
                                 </li>
 
 
 
-                                    <li>
-                                        <a href="categories/other.html">Other</a>
+                                    <li class="active">
+                                        <a href="#">Other</a>
                                     </li>
 
 
@@ -213,17 +167,105 @@
         </nav>
         <div class="d-flex flex-column min-vh-100">
 
-    <main class="min-vh-100 min-vw-75">
+                <main class="padded">
+                    <h1>Other</h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="../">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../categories">Categories</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Other</li>
+        </ol>
+    </nav>
 
 
 
-            <div class="folium-map" id="map_pottery" ></div>
+    <div class="wares gy-2" id="wares">
+        <div class="d-flex flex-wrap gap-3 items-container">
+                <div class="item border p-1 d-flex flex-column" id="j_g_meakin_libelle_marjolein_bastin">
+                    <h4>Strawberry Border</h4>
+                    <h5>
+                        <a href="../companies/j_g_meakin.html">J & G Meakin, Eagle Pottery</a>
+                    </h5>
+                    <div class="container properties">
+                        <div class="row">
+                            <span>Earthenware Plate</span>
+                        </div>
 
 
-    </main>
+                            <div class="row">
+                                <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
+                            </div>
+
+                    </div>
 
 
 
+
+                    <div class="mt-auto mx-auto pt-1">
+                        <div id="j_g_meakin_libelle_marjolein_bastin_carousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                    <div class="carousel-item active">
+
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
+                                             class="d-block w-100"
+                                             alt="Image 1 of the Strawberry Border pottery"
+                                             data-toggle="lightbox"
+                                             data-remote="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg"
+                                             data-size="lg" />
+                                    </div>
+                            </div>
+                            <button class="carousel-control-prev"
+                                    type="button"
+                                    data-bs-target="#j_g_meakin_libelle_marjolein_bastin_carousel"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next"
+                                    type="button"
+                                    data-bs-target="#j_g_meakin_libelle_marjolein_bastin_carousel"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+
+                            <div class="carousel-indicators">
+                                    <button class="active" aria-current="true"
+                                            data-bs-target="#j_g_meakin_libelle_marjolein_bastin_carousel"
+                                            role="button"
+                                            data-bs-slide-to="0"
+                                            aria-label="Slide 1">
+                                        <img class="d-block w-100" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+
+                </main>
+
+
+
+                <!-- Footer -->
+                <footer class="page-footer font-small blue pt-4 mt-auto">
+                    <!-- Footer Links -->
+                    <div class="container text-center">
+                        Powered by <a href="https://github.com/domdfcoding/pottery-map">pottery-map</a>.
+                        © 2026 Dominic Davis-Foster.
+                        <br>
+                        Maps from <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, under <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>. © OpenStreetMap contributors.
+                        Uses <a href="https://github.com/gravitystorm/openstreetmap-carto">OpenStreetMap Carto</a> style.
+                        Pottery icon by Singlar from <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Noun Project</a> (CC BY 3.0).
+                    </div>
+                </footer>
 
         </div>
 
@@ -232,244 +274,11 @@
                     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
                     crossorigin="anonymous"></script>
 
-            <script type="text/javascript" src="static/js/sidebar.js" defer></script>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/L.Control.Layers.Minimap.Toggle.min.js"></script>
-    <script>
-
-            var mapOptions = {
-  "zoom": 10,
-  "zoomControl": true,
-  "preferCanvas": false,
-  "maxZoom": 20,
-  "wheelPxPerZoomLevel": 80,
-};
-            var defaultZoom = mapOptions["zoom"] ?? 0;
-            var urlZoomState = zoomStateFromURL(defaultZoom, L.latLng([53.02445128825057, -2.1834733161173445]));
-            mapOptions["zoom"] = urlZoomState["zoomLvl"]
-
-            var map_pottery = L.map(
-                "map_pottery",
-                {
-                    center: urlZoomState["centre"],
-                    crs: L.CRS.EPSG3857,
-                    ...mapOptions
-
-                }
-            );
-
-
-
-
-
-            var tile_layer_osm_carto = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-  "referrerPolicy": "strict-origin-when-cross-origin",
-}
-
-            );
-
-
-            var tile_layer_os10k = L.tileLayer(
-                "https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
-                {
-  "minZoom": 1,
-  "maxZoom": 20,
-  "maxNativeZoom": 16,
-  "noWrap": false,
-  "attribution": "OS 1:10,000 1949-1972 | \u003ca href=\u0027https://maps.nls.uk\u0027\u003emaps.nls.uk\u003c/a\u003e | CC-BY",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-
-
-            var tile_layer_os1250 = L.tileLayer(
-                "https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
-                {
-  "minZoom": 1,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
-  "noWrap": false,
-  "attribution": "OS 1:1,250 1949-1975 | \u003ca href=\u0027https://maps.nls.uk\u0027\u003emaps.nls.uk\u003c/a\u003e | CC-BY",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-
-
-            var tile_layer_os2500 = L.tileLayer(
-                "https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
-                {
-  "minZoom": 1,
-  "maxZoom": 20,
-  "maxNativeZoom": 18,
-  "noWrap": false,
-  "attribution": "OS 1:2,500 1948-1975 | \u003ca href=\u0027https://maps.nls.uk\u0027\u003emaps.nls.uk\u003c/a\u003e | CC-BY",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-
-
-            var tile_layer_os25inch = L.tileLayer(
-                "https://mapseries-tilesets.s3.amazonaws.com/25_inch/stafford/{z}/{x}/{y}.png",
-                {
-  "minZoom": 1,
-  "maxZoom": 20,
-  "maxNativeZoom": 18,
-  "noWrap": false,
-  "attribution": "OS 25 Inch, 1892-1914 | \u003ca href=\u0027https://maps.nls.uk\u0027\u003emaps.nls.uk\u003c/a\u003e | CC-BY",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-
-
-
-			setupZoomState(map_pottery);
-
-			setupBasemapState(map_pottery);
-
-
-
-            var marker_cluster_collection = L.markerClusterGroup(
-                {
-  "maxClusterRadius": 50,
-}
-            );
-
-
-            var marker_j_g_meakin = L.marker(
-                [53.02308684898784, -2.1629028183132877],
-                {
-}
-            ).addTo(marker_cluster_collection);
-
-
-        var popup_j_g_meakin = L.popup({
-  "maxWidth": 400,
-  "minWidth": 245,
-});
-
-
-
-                var html_j_g_meakin = $(`<div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">     <h2><a href="companies/j_g_meakin.html">J & G Meakin</a></h2>     <h3>         <strong>Eagle Pottery</strong>     </h3>              <ul>             <li><a href="companies/j_g_meakin.html#j_g_meakin_libelle_marjolein_bastin">Strawberry Border</a></li>             <li>Earthenware Plate</li>                                           <li>                     <i class="fa-solid fa-calendar-days"></i> c1970-c2000                 </li>                      </ul>         <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />      </div></div>`)[0];
-                popup_j_g_meakin.setContent(html_j_g_meakin);
-
-
-
-        marker_j_g_meakin.bindPopup(popup_j_g_meakin)
-        ;
-
-
-
-
-            marker_j_g_meakin.bindTooltip(
-                `<div>
-                     J & G Meakin
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-
-
-            var marker_wedgwood = L.marker(
-                [52.95429347186072, -2.1703569422826328],
-                {
-}
-            ).addTo(marker_cluster_collection);
-
-
-        var popup_wedgwood = L.popup({
-  "maxWidth": 400,
-  "minWidth": 245,
-});
-
-
-
-                var html_wedgwood = $(`<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">     <h2><a href="companies/wedgwood.html">Wedgwood</a></h2>     <h3>         <strong>Wedgwood Barlaston</strong>     </h3>      </div></div>`)[0];
-                popup_wedgwood.setContent(html_wedgwood);
-
-
-
-        marker_wedgwood.bindPopup(popup_wedgwood)
-        ;
-
-
-
-
-            marker_wedgwood.bindTooltip(
-                `<div>
-                     Wedgwood
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-
-
-            marker_cluster_collection.addTo(map_pottery);
-
-
-            var layer_control_basemap_layers = {
-                base_layers : {
-                    "OpenStreetMap" : tile_layer_osm_carto,
-                    "OS 1:10,000 1949-1972" : tile_layer_os10k,
-                    "OS 1:1,250 1949-1975" : tile_layer_os1250,
-                    "OS 1:2,500 1948-1975" : tile_layer_os2500,
-                    "OS 25 Inch, 1892-1914" : tile_layer_os25inch,
-                },
-                overlays :  {
-                },
-            };
-            let layer_control_basemap = L.control.layers.minimap.toggle(
-                layer_control_basemap_layers.base_layers,
-                layer_control_basemap_layers.overlays,
-                {
-  "position": "topright",
-  "collapsed": true,
-  "autoZIndex": true,
-}
-            ).addTo(map_pottery);
-
-
-
-			basemapFromURL("OpenStreetMap", layer_control_basemap).addTo(map_pottery);
-
-
-    map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)
-    </script>
+            <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"
+            integrity="sha384-hmO927BeGpSftObswxhZUK8wHu+kAA9eqZX4frVKbcAzbhVd+hMTv57SECK5k8de"
+            crossorigin="anonymous"></script>
 
     </body>
 </html>

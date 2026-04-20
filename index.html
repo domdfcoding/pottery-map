@@ -45,6 +45,7 @@
             </script>
 
 
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
 
 				<style>
 					img.pottery-image {
@@ -187,61 +188,7 @@
             );
 
 
-			/*
-Preserve zoom level and map position when reloading or sharing URLs
-*/
-function updateQueryStringParam (key, value) {
-	const url = new URL(window.location.href);
-	url.searchParams.set(key, value.toString()); // Add or update the parameter
-	// window.history.pushState({}, null, url);
-	window.history.replaceState({}, '', url);
-}
-function setupZoomState (map) {
-	map.on('zoomend', function () {
-		const zoomLvl = map.getZoom();
-		updateQueryStringParam('zoom', zoomLvl);
-	});
-	map.on('moveend', function () {
-		const centre = map.getCenter();
-		updateQueryStringParam('lat', centre.lat);
-		updateQueryStringParam('lng', centre.lng);
-	});
-}
-function zoomStateFromURL (defaultZoom, defaultCentre) {
-	const url = new URL(window.location.href);
-	// let zoomLvl = map.getZoom();
-	let zoomLvl = defaultZoom;
-	if (url.searchParams.has('zoom')) {
-		zoomLvl = parseInt(url.searchParams.get('zoom'));
-	}
-	// const centre = map.getCenter();
-	const centre = defaultCentre;
-	if (url.searchParams.has('lat')) {
-		centre.lat = parseFloat(url.searchParams.get('lat'));
-	}
-	if (url.searchParams.has('lng')) {
-		centre.lng = parseFloat(url.searchParams.get('lng'));
-	}
-	return { centre, zoomLvl };
-}
-function basemapFromURL (defaultBasemap, layerControl) {
-	let _a;
-	const url = new URL(window.location.href);
-	const basemapLayers = Object.fromEntries(
-		/* @ts-expect-error _layers does exist but is private */
-		layerControl._layers.map((element) => [element.name, element.layer]));
-	if (url.searchParams.has('basemap')) {
-		const basemapName = (_a = url.searchParams.get('basemap')) !== null && _a !== void 0 ? _a : defaultBasemap;
-		console.log(basemapName);
-		if (basemapName in basemapLayers) {
-			return basemapLayers[basemapName];
-		}
-	}
-	return basemapLayers[defaultBasemap];
-}
-function setupBasemapState (map) {
-	map.on('baselayerchange', (e) => updateQueryStringParam('basemap', e.name));
-}
+
 			setupZoomState(map_pottery);
 
 			setupBasemapState(map_pottery);
@@ -283,6 +230,41 @@ function setupBasemapState (map) {
             marker_j_g_meakin.bindTooltip(
                 `<div>
                      J & G Meakin
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+
+
+            var marker_wedgwood = L.marker(
+                [52.95429347186072, -2.1703569422826328],
+                {
+}
+            ).addTo(marker_cluster_collection);
+
+
+        var popup_wedgwood = L.popup({
+  "maxWidth": 400,
+  "minWidth": 245,
+});
+
+
+
+                var html_wedgwood = $(`<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">     <h2>Wedgwood</h2>     <h3>         <strong>Wedgwood Barlaston</strong>     </h3>      </div></div>`)[0];
+                popup_wedgwood.setContent(html_wedgwood);
+
+
+
+        marker_wedgwood.bindPopup(popup_wedgwood)
+        ;
+
+
+
+
+            marker_wedgwood.bindTooltip(
+                `<div>
+                     Wedgwood
                  </div>`,
                 {
   "sticky": true,
