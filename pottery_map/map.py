@@ -34,7 +34,7 @@ from typing import Any
 import folium
 import folium.plugins
 from domdf_folium_tools import embed_styles
-from domdf_folium_tools.elements import NLSTileLayer, add_to, set_id
+from domdf_folium_tools.elements import add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import clean_writer
 from folium.utilities import escape_backticks
@@ -42,6 +42,7 @@ from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
+from pottery_map.nls_basemaps import os10k, os25inch, os1250, os2500
 from pottery_map.templates import render_template
 from pottery_map.utils import make_id
 
@@ -113,38 +114,11 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			wheelPxPerZoomLevel=80,
 			)
 
-	os10k = NLSTileLayer(
-			"OS 1:10,000 1949-1972",
-			"https://geo.nls.uk/mapdata3/os/britain10knationalgridnew/{z}/{x}/{y}.png",
-			max_native_zoom=16,
-			show=False,
-			)
-
-	os1250 = NLSTileLayer(
-			"OS 1:1,250 1949-1975",
-			"https://geo.nls.uk/maps/os/1250_B_2eng/{z}/{x}/{y}.png",
-			max_native_zoom=20,
-			show=False,
-			)
-
-	os2500 = NLSTileLayer(
-			"OS 1:2,500 1948-1975",
-			"https://geo.nls.uk/maps/os/2500_A_1S/{z}/{x}/{y}.png",
-			max_native_zoom=18,
-			show=False,
-			)
-
-	os25inch = NLSTileLayer(
-			"OS 25 Inch, 1892-1914",
-			"https://mapseries-tilesets.s3.amazonaws.com/25_inch/stafford/{z}/{x}/{y}.png",
-			max_native_zoom=18,
-			show=False,
-			)
-
 	set_id(os10k, "os10k").add_to(m)
 	set_id(os1250, "os1250").add_to(m)
 	set_id(os2500, "os2500").add_to(m)
 	set_id(os25inch, "os25inch").add_to(m)
+	# TODO: use these IDs in the url rather than the long, space-filled, human-readable name
 
 	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
 
