@@ -257,7 +257,7 @@ def get_dashboard_data(pottery: list[PotteryItem], companies: Companies) -> dict
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
 			items_count=len(pottery),
-			companies_count=len(companies.pottery_by_company),
+			companies_count=len(companies.represented_companies),
 			)
 
 

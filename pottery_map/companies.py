@@ -185,3 +185,13 @@ class Companies:
 		"""
 
 		return [x for x in self.graph.nodes() if self.graph.out_degree(x) == 0]
+
+	@property
+	def represented_companies(self) -> list[str]:
+		"""
+		List of companies represented in the collection.
+		
+		Excludes successors for which metadata exists but no items of theirs are in the collection.
+		"""
+
+		return [k for k, v in self.company_item_counts.items() if v > 0]
