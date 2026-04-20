@@ -67,6 +67,30 @@ class PotteryItem:
 	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
 	successor: str | None = None
 	defunct: bool = False
+	diameter: str | None = None
+
+
+	@property
+	def description(self) -> str:
+		"""
+		A description of the item, including its material, diameter (if applicable), and type (e.g. plate).
+
+		E.g. ``bone china 12 cm plate``.
+		"""
+
+		parts = []
+
+		for part in [
+				self.material,
+				self.diameter,
+				self.type,
+				]:
+			if part:
+				assert isinstance(part, str)
+				part = part.strip()
+				parts.append(part)
+
+		return ' '.join(parts)
 
 	@classmethod
 	def from_toml_dict(

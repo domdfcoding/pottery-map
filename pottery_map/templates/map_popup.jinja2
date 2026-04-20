@@ -12,7 +12,7 @@
     {% for item in company_data["items"] %}
         <ul>
             <li>{{ make_link(company, item=item.id, inner=item.design, standalone=standalone) }}</li>
-            <li>{{ item.material }} {{ item.type }}</li>
+            <li>{{ item.description }}</li>
             {% if item.designer %}
                 <li>
                     <i class="fa-solid fa-user"></i> {{ item.designer }}
