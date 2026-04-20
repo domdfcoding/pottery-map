@@ -26,25 +26,25 @@
             <h3>Wares</h3>
             <div class="d-flex flex-wrap gap-3 items-container">
                 {%- for item in items %}
-                    <div class="item border p-1 d-flex flex-column" id="{{ item['id'] }}">
-                        <h4>{{ item['design'] }}</h4>
+                    <div class="item border p-1 d-flex flex-column" id="{{ item.id }}">
+                        <h4>{{ item.design }}</h4>
                         <div class="container properties">
                             <div class="row">
-                                <span>{{ item['material'] }} {{ item['type'] }}</span>
+                                <span>{{ item.material }} {{ item.type }}</span>
                             </div>
-                            {% if item['designer'] %}
+                            {% if item.designer %}
                                 <div class="row">
-                                    <span><i class="fa-solid fa-user"></i> {{ item['designer'] }}</span>
+                                    <span><i class="fa-solid fa-user"></i> {{ item.designer }}</span>
                                 </div>
                             {% endif %}
-                            {% if item['era'] %}
+                            {% if item.era %}
                                 <div class="row">
-                                    <span><i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}</span>
+                                    <span><i class="fa-solid fa-calendar-days"></i> {{ item.era }}</span>
                                 </div>
                             {% endif %}
-                            {% if item['category'] %}
+                            {% if item.category %}
                                 <div class="row">
-                                    <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}categories/{{ make_id(normalise_category(item['category']) ) }}.html">{{ item['category'] }}</a></span>
+                                    <span><i class="fa-solid fa-chart-diagram"></i> <a href="{{ root }}categories/{{ make_id(normalise_category(item.category) ) }}.html">{{ item.category }}</a></span>
                                 </div>
                             {% endif %}
                         </div>

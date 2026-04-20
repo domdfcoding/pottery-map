@@ -33,30 +33,15 @@ from typing import NamedTuple
 from domdf_folium_tools import Coordinates
 from typing_extensions import NotRequired, Required, TypedDict
 
-__all__ = ["CompanyData", "PotteryData"]
+# this package
+from pottery_map.pottery import PotteryItem
+
+__all__ = ["CompanyData"]
 
 
-class PotteryData(TypedDict):
+class CompanyDetails(TypedDict):
 	"""
-	An item in the pottery collection.
-	"""
-
-	id: Required[str]
-	material: Required[str]  # E.g. "Bone China"
-	type: Required[str]  # E.g. "Sandwich Plate"
-	design: Required[str]
-	designer: NotRequired[str]
-	category: NotRequired[str]  # E.g. "Plate", "Bowl", "Cup"
-	era: NotRequired[str]
-	notes: NotRequired[list[str]]
-	links: NotRequired[dict[str, str]]
-	photo_urls: NotRequired[list[str]]
-	area: NotRequired[str]
-
-
-class CompanyData(TypedDict):
-	"""
-	A company and the items made by it.
+	A company.
 	"""
 
 	factory: Required[str]
@@ -64,7 +49,14 @@ class CompanyData(TypedDict):
 	successor: Required[str | None]
 	defunct: Required[bool]
 	area: NotRequired[str | None]
-	items: NotRequired[list[PotteryData]]
+
+
+class CompanyData(CompanyDetails):
+	"""
+	A company and the items made by it.
+	"""
+
+	items: NotRequired[list[PotteryItem]]
 
 
 class SidebarData(NamedTuple):

@@ -87,7 +87,6 @@ def group_pottery_by_company(
 	pottery_by_company: dict[str, CompanyData] = {}
 
 	for item in pottery:
-		new_item: PotteryData = item.get_item_data()
 		company = item.company
 		if company not in pottery_by_company:
 			if company in companies:
@@ -111,7 +110,7 @@ def group_pottery_by_company(
 					"area": area,
 					}
 
-		pottery_by_company[company]["items"].append(new_item)
+		pottery_by_company[company]["items"].append(item)
 
 	return pottery_by_company
 

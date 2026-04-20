@@ -26,6 +26,9 @@ Classes to represent pottery collection.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from typing import TYPE_CHECKING
+
 # 3rd party
 import attrs
 import dom_toml
@@ -33,8 +36,11 @@ from domdf_folium_tools import Coordinates
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pottery_map.types import PotteryData
 from pottery_map.utils import make_id
+
+if TYPE_CHECKING:
+	# this package
+	from pottery_map.types import CompanyDetails
 
 __all__ = ["PotteryItem", "load_pottery_collection"]
 
@@ -79,24 +85,6 @@ class PotteryItem:
 				id=make_id(id),
 				**data,
 				)
-
-	def get_item_data(self) -> PotteryData:
-		"""
-		Returns data about the item but not where it was made.
-		"""
-
-		return {
-				"id": self.id,
-				"material": self.material,
-				"type": self.type,
-				"design": self.design,
-				"designer": self.designer,
-				"category": self.category,
-				"era": self.era,
-				"notes": self.notes,
-				"links": self.links,
-				"photo_urls": self.photo_urls,
-				}
 
 
 def load_pottery_collection(pottery_file: PathLike = "pottery.toml") -> list[PotteryItem]:

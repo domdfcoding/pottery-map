@@ -11,19 +11,19 @@
     </h3>
     {% for item in company_data["items"] %}
         <ul>
-            <li>{{ make_link(company, item=item["id"], inner=item['design'], standalone=standalone) }}</li>
-            <li>{{ item['material'] }} {{ item['type'] }}</li>
-            {% if item['designer'] %}
+            <li>{{ make_link(company, item=item.id, inner=item.design, standalone=standalone) }}</li>
+            <li>{{ item.material }} {{ item.type }}</li>
+            {% if item.designer %}
                 <li>
-                    <i class="fa-solid fa-user"></i> {{ item['designer'] }}
+                    <i class="fa-solid fa-user"></i> {{ item.designer }}
                 </li>
             {% endif %}
-            {% if item['era'] %}
+            {% if item.era %}
                 <li>
-                    <i class="fa-solid fa-calendar-days"></i> {{ item['era'] }}
+                    <i class="fa-solid fa-calendar-days"></i> {{ item.era }}
                 </li>
             {% endif %}
         </ul>
-        {% if item["photo_urls"] %}<img class="pottery-image" src="{{ item['photo_urls'][0] }}" />{% endif %}
+        {% if item.id %}<img class="pottery-image" src="{{ item.photo_urls[0] }}" />{% endif %}
     {% endfor %}
 </div>
