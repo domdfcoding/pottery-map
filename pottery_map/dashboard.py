@@ -82,8 +82,10 @@ colour_cycle = [
 		"darkblue",
 		]
 
+ChartJSData = dict[str, Any]  # TODO: TypedDict
 
-def groups_pie_chart(companies: Companies) -> dict[str, Any]:
+
+def groups_pie_chart(companies: Companies) -> ChartJSData:
 	"""
 	Returns data for the pie chart showing company groups.
 
@@ -166,7 +168,7 @@ def sort_counts(counts: Mapping[str, float], other_count: float | None = None) -
 	return list(labels), list(data)
 
 
-def companies_bar_chart(companies: Companies) -> dict[str, Any]:
+def companies_bar_chart(companies: Companies) -> ChartJSData:
 	"""
 	Returns data for the bar chart showing items per company.
 
@@ -189,7 +191,7 @@ def companies_bar_chart(companies: Companies) -> dict[str, Any]:
 	return companies_bar_chart_data
 
 
-def materials_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
+def materials_pie_chart(pottery: list[PotteryItem]) -> ChartJSData:
 	"""
 	Returns data for the pie chart showing materials, such as ``Bone China``.
 
@@ -210,7 +212,7 @@ def materials_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	return materials_pie_chart_data
 
 
-def types_bar_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
+def types_bar_chart(pottery: list[PotteryItem]) -> ChartJSData:
 	"""
 	Returns data for the pie chart showing item types, such as ``Bowl``.
 
@@ -259,7 +261,7 @@ def get_dashboard_data(pottery: list[PotteryItem], companies: Companies) -> dict
 			)
 
 
-def areas_pie_chart(companies: Companies) -> dict[str, Any]:
+def areas_pie_chart(companies: Companies) -> ChartJSData:
 	"""
 	Returns data for the pie chart showing areas factories are locted in, such as ``Tunstall``.
 
@@ -290,7 +292,7 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 	return pie_chart_data(labels, data, colour_cycle)
 
 
-def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
+def categories_pie_chart(pottery: list[PotteryItem]) -> ChartJSData:
 	"""
 	Returns data for the pie chart showing number of items in each category, such as ``Bowl``.
 
@@ -314,7 +316,7 @@ def categories_pie_chart(pottery: list[PotteryItem]) -> dict[str, Any]:
 	return pie_chart_data(labels, data, colour_cycle)
 
 
-def pie_chart_data(labels: list[str], data: list[float], colours: list[str]) -> dict[str, Any]:
+def pie_chart_data(labels: list[str], data: list[float], colours: list[str]) -> ChartJSData:
 	"""
 	Returns data for a pie chart in the format expected by ChartJS.
 

@@ -28,9 +28,17 @@ Class to represent a company.
 
 # stdlib
 
+# stdlib
+from typing import TYPE_CHECKING, NamedTuple
+
 # 3rd party
 import attrs
 from domdf_folium_tools import Coordinates
+from typing_extensions import NotRequired, Required, TypedDict
+
+if TYPE_CHECKING:
+	# this package
+	from pottery_map.pottery import PotteryItem
 
 __all__ = ["Company"]
 
@@ -69,3 +77,34 @@ class Company:
 				name=name,
 				**data,
 				)
+
+
+class CompanyItems(NamedTuple):
+	"""
+	A company and the items made by it.
+	"""
+
+	company: Company
+	items: list["PotteryItem"]
+
+	def add_item(self, item: "PotteryItem") -> None:
+		"""
+		Add an item to ``.items``.
+
+		:param item:
+		"""
+
+		self.items.append(item)
+
+
+class CompanyData(TypedDict):
+	"""
+	A company and the items made by it.
+	"""
+
+	factory: Required[str]
+	location: Required[Coordinates | None]
+	successor: Required[str | None]
+	defunct: Required[bool]
+	area: NotRequired[str | None]
+	items: NotRequired[list["PotteryItem"]]

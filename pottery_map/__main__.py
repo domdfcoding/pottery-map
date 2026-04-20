@@ -31,7 +31,7 @@ if __name__ == "__main__":
 	from domdf_folium_tools import set_branca_random_seed
 
 	# this package
-	from pottery_map import PotteryMap
+	from pottery_map.pottery_map import PotteryMap
 
 	set_branca_random_seed("WWRD")
 

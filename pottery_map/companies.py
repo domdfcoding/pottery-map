@@ -32,7 +32,6 @@ Function for loading data about companies.
 import warnings
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import NamedTuple
 
 # 3rd party
 import dom_toml
@@ -40,9 +39,8 @@ import networkx
 from domdf_python_tools.typing import PathLike
 
 # this package
-from pottery_map.company import Company
+from pottery_map.company import Company, CompanyData, CompanyItems
 from pottery_map.pottery import PotteryItem
-from pottery_map.types import CompanyData
 
 __all__ = ["Companies", "group_pottery_by_company", "load_companies", "make_successor_network"]
 
@@ -69,24 +67,6 @@ def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Com
 		companies[company_name] = Company.from_toml_dict(company_name, **company_data)
 
 	return companies
-
-
-class CompanyItems(NamedTuple):
-	"""
-	A company and the items made by it.
-	"""
-
-	company: Company
-	items: list[PotteryItem]
-
-	def add_item(self, item: PotteryItem) -> None:
-		"""
-		Add an item to ``.items``.
-
-		:param item:
-		"""
-
-		self.items.append(item)
 
 
 def group_pottery_by_company(
