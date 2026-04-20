@@ -255,7 +255,7 @@ def get_dashboard_data(pottery: list[PotteryItem], companies: Companies) -> dict
 			types_bar_chart_data=json.dumps(types_bar_chart(pottery)),
 			categories_pie_chart_data=json.dumps(categories_pie_chart(pottery)),
 			items_count=len(pottery),
-			companies_count=len(companies.all_companies),
+			companies_count=len(companies.pottery_by_company),
 			)
 
 
@@ -270,20 +270,20 @@ def areas_pie_chart(companies: Companies) -> dict[str, Any]:
 
 	areas: dict[str, int] = defaultdict(int)
 
-	for company_name, company_data in companies.companies_data.items():
-		area = company_data.get("area", None)
-		if area is None:
+	for company_data in companies.pottery_by_company.values():
+		company = company_data.company
+		if company.area is None:
 			continue
 		# 	warnings.warn(f"No area specified for {company_name} at {company_data['factory']}")
 		# 	area = "Unknown"
-		areas[area] += 1
+		areas[company.area] += 1
 
 	# labels, data = sort_counts(areas)
 
 	other_count = 0
-	for company_name in list(areas.keys()):
-		if areas[company_name] < 2:
-			other_count += areas.pop(company_name)
+	for area_name in list(areas.keys()):
+		if areas[area_name] < 2:
+			other_count += areas.pop(area_name)
 
 	labels, data = sort_counts(areas, other_count)
 

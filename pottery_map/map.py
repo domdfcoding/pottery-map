@@ -28,7 +28,7 @@ The map itself.
 
 # stdlib
 import sys
-from typing import Any
+from collections.abc import Iterable
 
 # 3rd party
 import folium
@@ -42,6 +42,7 @@ from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
 # this package
+from pottery_map.companies import CompanyItems
 from pottery_map.nls_basemaps import os10k, os25inch, os1250, os2500
 from pottery_map.templates import render_template
 from pottery_map.utils import make_id
@@ -84,11 +85,11 @@ class Popup(folium.Popup):
 		self._id = id
 
 
-def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map:
+def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True) -> Map:
 	"""
 	Make the pottery collection folium map.
 
-	:param pottery_by_company:
+	:param pottery_collection:
 	:param standalone: Create a standalone map with embedded CSS,
 	"""
 
@@ -133,24 +134,23 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 			"collection",
 			)
 
-	for company, company_data in pottery_by_company.items():
-
-		if "location" not in company_data or not company_data["location"]:
+	for company_data in pottery_collection:
+		company = company_data.company
+		if not company.location:
 			continue
 
 		popup_text = render_template(
 				"map_popup.jinja2",
-				company=company,
 				company_data=company_data,
 				standalone=standalone,
 				make_id=make_id,
 				).splitlines()
 
-		company_id = make_id(company)
+		company_id = make_id(company.name)
 
 		marker = folium.Marker(
-				location=[company_data["location"]["latitude"], company_data["location"]["longitude"]],
-				tooltip=company,
+				location=[company.location["latitude"], company.location["longitude"]],
+				tooltip=company.name,
 				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
 				)
 		add_to(marker, marker_cluster, company_id)
@@ -182,7 +182,7 @@ def _create_standalone_map() -> None:
 	companies = load_companies("companies.toml")
 	pottery_by_company = group_pottery_by_company(pottery, companies)
 
-	m = make_map(pottery_by_company)
+	m = make_map(pottery_by_company.values())
 	m.add_css_link("bootstrap_css", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")
 	m.add_js_link("bootstrap_js", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js")
 

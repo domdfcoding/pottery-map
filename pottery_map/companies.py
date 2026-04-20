@@ -32,11 +32,13 @@ Function for loading data about companies.
 import warnings
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any
+from typing import NamedTuple
 
 # 3rd party
+import attrs
 import dom_toml
 import networkx
+from domdf_folium_tools import Coordinates
 from domdf_python_tools.typing import PathLike
 
 # this package
@@ -48,34 +50,84 @@ __all__ = ["Companies", "group_pottery_by_company", "load_companies", "make_succ
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
 
-def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, CompanyData]:
+@attrs.define
+class Company:
+	"""
+	A pottery manufacturer represented in the collection.
+	"""
+
+	name: str
+	factory: str = "Unknown"
+	# TODO: notes: list[str] = attrs.field(factory=list)
+	# TODO: links: dict[str, str] = attrs.field(factory=dict)
+	location: Coordinates | None = None
+	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
+	successor: str | None = None
+	defunct: bool = False
+
+	@classmethod
+	def from_toml_dict(
+			cls,
+			name: str,
+			**data,
+			) -> "Company":
+		r"""
+		Create from a table in a TOML file.
+
+		:param name: The company name.
+		:param \*\*data:
+		"""
+
+		return cls(
+				name=name,
+				**data,
+				)
+
+
+def load_companies(companies_file: PathLike = "companies.toml") -> dict[str, Company]:
 	"""
 	Load company data (name, factory, location) from file.
 
 	:param companies_file:
 	"""
 
-	companies: dict[str, CompanyData] = {}
+	companies: dict[str, Company] = {}
 	existing_coordinates = []
 	company_data: CompanyData
+
 	for company_name, company_data in dom_toml.load(companies_file).items():
 		if "location" in company_data:
 			if company_data["location"] in existing_coordinates:
 				warnings.warn(f"Multiple factories at location {company_data['location']!r}")
 			existing_coordinates.append(company_data["location"])
-		company_data.setdefault("factory", "Unknown")
-		company_data.setdefault("location", None)
-		company_data.setdefault("successor", None)
-		company_data.setdefault("defunct", False)
-		companies[company_name] = company_data
+
+		companies[company_name] = Company.from_toml_dict(company_name, **company_data)
 
 	return companies
 
 
+class CompanyItems(NamedTuple):
+	"""
+	A company and the items made by it.
+	"""
+
+	company: Company
+	items: list[PotteryItem]
+
+	def add_item(self, item: PotteryItem) -> None:
+		"""
+		Add an item to ``.items``.
+
+		:param item:
+		"""
+
+		self.items.append(item)
+
+
 def group_pottery_by_company(
 		pottery: list[PotteryItem],
-		companies: dict[str, CompanyData],
-		) -> dict[str, CompanyData]:
+		companies: dict[str, Company],
+		) -> dict[str, CompanyItems]:
 	"""
 	Group items in the pottery collection by the company who made them.
 
@@ -83,38 +135,35 @@ def group_pottery_by_company(
 	:param companies: Data about companies, giving factory locations.
 	"""
 
-	pottery_by_company: dict[str, CompanyData] = {}
+	pottery_by_company: dict[str, CompanyItems] = {}
 
 	for item in pottery:
-		company = item.company
-		if company not in pottery_by_company:
-			if company in companies:
-				factory = companies[company]["factory"]
-				location = companies[company]["location"]
-				area = companies[company].get("area")
-				successor = companies[company].get("successor")
-				defunct = companies[company].get("defunct", False)
+		company_name = item.company
+		if company_name not in pottery_by_company:
+			if company_name in companies:
+				company = companies[company_name]
 			else:
-				factory = item.factory
-				location = item.location
-				area = item.area
-				successor = item.successor
-				defunct = item.defunct
-			pottery_by_company[company] = {
-					"items": [],
-					"factory": factory,
-					"location": location,
-					"successor": successor,
-					"defunct": defunct,
-					"area": area,
-					}
+				# "Ad-hoc" company that only exists in pottery.toml, not in companies.toml
+				company = Company(
+						name=company_name,
+						factory=item.factory,
+						location=item.location,
+						area=item.area,
+						successor=item.successor,
+						defunct=item.defunct,
+						)
+			pottery_by_company[company_name] = CompanyItems(company, [])
 
-		pottery_by_company[company]["items"].append(item)
+		pottery_by_company[company_name].add_item(item)
+
+	for company_name, company in companies.items():
+		if company_name not in pottery_by_company:
+			pottery_by_company[company_name] = CompanyItems(company, [])
 
 	return pottery_by_company
 
 
-def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
+def make_successor_network(companies: dict[str, Company]) -> networkx.DiGraph:
 	"""
 	Make a graph of relationships betweenn companies and their successors/parents.
 
@@ -123,12 +172,11 @@ def make_successor_network(companies: dict[str, Any]) -> networkx.DiGraph:
 
 	graph: networkx.DiGraph = networkx.DiGraph()
 
-	for company, company_data in companies.items():
-		successor = company_data.get("successor")
-		graph.add_node(company)
-		if successor:
-			graph.add_node(successor)
-			graph.add_edge(company, successor)
+	for company_name, company in companies.items():
+		graph.add_node(company_name)
+		if company.successor:
+			graph.add_node(company.successor)
+			graph.add_edge(company_name, company.successor)
 
 	return graph
 
@@ -139,18 +187,18 @@ def _get_item_count(company_item_counts: dict[str, int], successors: Iterable[st
 
 @dataclass
 class Companies:
+	"""
+	Helper class for companies in the collection.
+	"""
+
 	#: Graph showing relationships between companies.
 	graph: networkx.DiGraph
 
-	#: The names of all companies.
-	all_companies: set[str]
-
-	companies_data: dict[str, Any]
-
-	pottery_by_company: dict[str, Any]
+	#: Mapping of all company names to the company objects and items made by the company (if any).
+	pottery_by_company: dict[str, CompanyItems]
 
 	@classmethod
-	def from_raw_data(cls, pottery: list, companies: dict[str, Any]) -> "Companies":
+	def from_raw_data(cls, pottery: list, companies: dict[str, Company]) -> "Companies":
 		"""
 
 		:param pottery: The pottery collection.
@@ -159,27 +207,42 @@ class Companies:
 
 		graph = make_successor_network(companies)
 		pottery_by_company = group_pottery_by_company(pottery, companies)
+
+		# Check no extra companies have snuck into or escaped from the graph
 		all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
+		assert not all_companies.difference(pottery_by_company)
+		assert all_companies == set(pottery_by_company)
+
 		return cls(
 				graph=graph,
-				all_companies=all_companies,
-				companies_data=companies,
 				pottery_by_company=pottery_by_company,
 				)
 
 	@property
 	def sorted_company_names(self) -> list[str]:
-		return sorted(self.all_companies)
+		"""
+		Sorted list of the companies' names.
+		"""
+
+		return sorted(self.pottery_by_company)
 
 	@property
 	def company_item_counts(self) -> dict[str, int]:
+		"""
+		Mapping of company names to the number of items by that company in the collecton.
+		"""
+
 		company_item_counts: dict[str, int] = {}
 
-		for company, company_data in self.pottery_by_company.items():
-			company_item_counts[company] = len(company_data["items"])
+		for company_name, company_data in self.pottery_by_company.items():
+			company_item_counts[company_name] = len(company_data.items)
 
 		return company_item_counts
 
 	@property
 	def top_level_companies(self) -> list[str]:
+		"""
+		List of top level companies (those with no successors, e.g. Churchill China).
+		"""
+
 		return [x for x in self.graph.nodes() if self.graph.out_degree(x) == 0]

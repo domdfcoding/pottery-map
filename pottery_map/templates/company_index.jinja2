@@ -1,6 +1,6 @@
 {% macro defunct_dagger(company) %}
     {% if company in companies.pottery_by_company %}
-        {% if companies.pottery_by_company[company]["defunct"] %}<abbr title="defunct">†</abbr>{% endif %}
+        {% if companies.pottery_by_company[company].company.defunct %}<abbr title="defunct">†</abbr>{% endif %}
     {% endif %}
 {% endmacro %}
 {% extends "page.jinja2" %}

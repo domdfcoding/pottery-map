@@ -127,7 +127,7 @@ class PotteryMap:
 		Render the index page with the map.
 		"""
 
-		m = make_map(self.companies.pottery_by_company, standalone=False)
+		m = make_map(self.companies.pottery_by_company.values(), standalone=False)
 
 		root: Figure = m.get_root()  # type: ignore[assignment]
 
@@ -194,20 +194,17 @@ class PotteryMap:
 		Render the pages for the companies.
 		"""
 
-		for company in self.companies.all_companies:
-			if company in self.companies.pottery_by_company:
-				company_data = self.companies.pottery_by_company[company]
-			else:
-				company_data = {"items": [], **self.companies.companies_data[company]}
+		for company_name in self.companies.pottery_by_company:
+			company, items = self.companies.pottery_by_company[company_name]
 
 			html = self.render_page(
 					"company_page.jinja2",
-					company=company,
-					factory=company_data["factory"],
-					location=company_data["location"],
-					items=company_data["items"],
+					company=company_name,
+					factory=company.factory,
+					location=company.location,
+					items=items,
 					)
-			yield company, html
+			yield company_name, html
 
 	def render_categories_index(self) -> str:
 		"""

@@ -26,9 +26,6 @@ Classes to represent pottery collection.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-# stdlib
-from typing import TYPE_CHECKING
-
 # 3rd party
 import attrs
 import dom_toml
@@ -38,10 +35,6 @@ from domdf_python_tools.typing import PathLike
 # this package
 from pottery_map.utils import make_id
 
-if TYPE_CHECKING:
-	# this package
-	from pottery_map.types import CompanyDetails
-
 __all__ = ["PotteryItem", "load_pottery_collection"]
 
 
@@ -50,6 +43,8 @@ class PotteryItem:
 	"""
 	An item in the pottery collection.
 	"""
+
+	# TODO: move company parts into an instance of the Company class.
 
 	id: str
 	company: str
@@ -68,7 +63,6 @@ class PotteryItem:
 	successor: str | None = None
 	defunct: bool = False
 	diameter: str | None = None
-
 
 	@property
 	def description(self) -> str:
