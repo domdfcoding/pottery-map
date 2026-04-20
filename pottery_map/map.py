@@ -120,13 +120,12 @@ def make_map(pottery_by_company: dict[str, Any], standalone: bool = True) -> Map
 	set_id(os25inch, "os25inch").add_to(m)
 	# TODO: use these IDs in the url rather than the long, space-filled, human-readable name
 
-	ZoomStateJS(setup_basemap_state=True).add_to(m, embed_script=standalone)
+	ZoomStateJS(setup_basemap_state=True).add_to(m)
 
 	if standalone:
 		embed_styles(m, importlib_resources.read_text("pottery_map.static", "pottery_map.css"))
 	else:
 		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
-		m.add_js_link("zoom_state.js", "static/js/zoom_state.js")
 
 	marker_cluster = add_to(
 			folium.plugins.MarkerCluster(options={"maxClusterRadius": 50}, control=False),
