@@ -41,10 +41,9 @@ from domdf_python_tools.typing import PathLike
 
 # this package
 from pottery_map.pottery import PotteryItem
-from pottery_map.templates import render_template
-from pottery_map.types import CompanyData, PotteryData, SidebarData
+from pottery_map.types import CompanyData
 
-__all__ = ["group_pottery_by_company", "load_companies", "make_company_pages", "make_successor_network"]
+__all__ = ["Companies", "group_pottery_by_company", "load_companies", "make_successor_network"]
 
 # TODO: include ultimate (i.e. current) parent. E.g. J&G Meakin is now Wedgwood/WWRD.
 
@@ -184,39 +183,3 @@ class Companies:
 	@property
 	def top_level_companies(self) -> list[str]:
 		return [x for x in self.graph.nodes() if self.graph.out_degree(x) == 0]
-
-
-def make_company_pages(companies: Companies, sidebar_data: SidebarData) -> tuple[str, dict[str, str]]:
-	"""
-	Create pages listing all items made by the company, and an index of all companies.
-
-	:param companies:
-	:param sidebar_data:
-	"""
-
-	pages = {}
-
-	for company in companies.all_companies:
-		if company in companies.pottery_by_company:
-			company_data = companies.pottery_by_company[company]
-		else:
-			company_data = {"items": [], **companies.companies_data[company]}
-
-		pages[company] = render_template(
-				"company_page.jinja2",
-				company=company,
-				factory=company_data["factory"],
-				location=company_data["location"],
-				items=company_data["items"],
-				sidebar_data=sidebar_data,
-				)
-
-	index_page = render_template(
-			"company_index.jinja2",
-			companies=companies,
-			sidebar_data=sidebar_data,
-			graph=companies.graph,
-			get_item_count=_get_item_count,
-			)
-
-	return index_page, pages
