@@ -36,12 +36,12 @@ from branca.element import Figure  # nodep
 from domdf_folium_tools.elements import render_figure
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
+from folium_about_button import render_markdown
 
 # this package
 from pottery_map.companies import Companies, _get_item_count, load_companies
 from pottery_map.dashboard import get_dashboard_data
 from pottery_map.map import make_map
-from pottery_map.notes import render_markdown
 from pottery_map.pottery import PotteryItem, load_pottery_collection
 from pottery_map.templates import render_template
 from pottery_map.utils import copy_static_files, groupby, make_id, normalise_category

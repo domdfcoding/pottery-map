@@ -163,6 +163,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 	add_to(layer_control, m, "basemap")
 
 	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
+	# TODO: about dialog
 
 	return m
 

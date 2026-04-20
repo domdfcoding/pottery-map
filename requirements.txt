@@ -3,11 +3,11 @@ dom-toml>=2.1.0
 domdf-folium-tools>=0.1.0b9
 domdf-python-tools>=3.10.0
 folium>=0.20.0
+folium-about-button @ git+https://github.com/domdfcoding/folium-about-button
 folium-layerscontrol-minimap @ git+https://github.com/domdfcoding/folium-layerscontrol-minimap
 folium-zoom-state @ git+https://github.com/domdfcoding/folium-zoom-state
 gradpyent>=0.9.5
 jinja2>=3.1.6
 jinja2-workarounds @ git+https://github.com/domdfcoding/jinja2_workarounds
-markdown>=3.3.4
 networkx>=3.4
 typing-extensions>=4.15.0
