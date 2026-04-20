@@ -36,7 +36,7 @@ import folium.plugins
 from domdf_folium_tools import embed_styles
 from domdf_folium_tools.elements import add_to, set_id
 from domdf_python_tools.compat import importlib_resources
-from domdf_python_tools.paths import clean_writer
+from domdf_python_tools.paths import PathPlus, clean_writer
 from folium.utilities import escape_backticks
 from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
@@ -179,28 +179,27 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 	return m
 
 
-def _create_standalone_map() -> None:
-
-	# 3rd party
-	from domdf_folium_tools import set_branca_random_seed
+def _create_standalone_map(input_directory: PathPlus) -> str:
 
 	# this package
 	from pottery_map.companies import group_pottery_by_company, load_companies
 	from pottery_map.pottery import load_pottery_collection
 
-	set_branca_random_seed("WWRD")
-
-	pottery = load_pottery_collection("pottery.toml")
-	companies = load_companies("companies.toml")
+	pottery = load_pottery_collection(input_directory / "pottery.toml")
+	companies = load_companies(input_directory / "companies.toml")
 	pottery_by_company = group_pottery_by_company(pottery, companies)
 
 	m = make_map(pottery_by_company.values())
 	m.add_css_link("bootstrap_css", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")
 	m.add_js_link("bootstrap_js", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js")
 
-	html = m.get_root().render()
-	clean_writer(html, sys.stdout)
+	return m.get_root().render()
 
 
 if __name__ == "__main__":
-	_create_standalone_map()
+	# 3rd party
+	from domdf_folium_tools import set_branca_random_seed
+
+	set_branca_random_seed("WWRD")
+
+	clean_writer(_create_standalone_map(PathPlus()), sys.stdout)
