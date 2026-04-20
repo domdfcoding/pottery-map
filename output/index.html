@@ -62,6 +62,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/control.layers.minimap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/control.layers.minimap.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
 
     </head>
     <body>
@@ -202,7 +203,7 @@
 
 
                                     <li>
-                                        <a href="categories/other.html">Other</a>
+                                        <a href="categories/plates.html">Plates</a>
                                     </li>
 
 
@@ -242,6 +243,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/L.Control.Layers.Minimap.Toggle.min.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b2/folium_map_search/folium-map-search.min.js"></script>
     <script>
 
             var mapOptions = {
@@ -372,6 +375,7 @@
             var marker_j_g_meakin = L.marker(
                 [53.02308684898784, -2.1629028183132877],
                 {
+  "searchName": "J \u0026 G Meakin",
 }
             ).addTo(marker_cluster_collection);
 
@@ -407,6 +411,7 @@
             var marker_wedgwood = L.marker(
                 [52.95429347186072, -2.1703569422826328],
                 {
+  "searchName": "Wedgwood",
 }
             ).addTo(marker_cluster_collection);
 
@@ -466,6 +471,22 @@
 
 
 			basemapFromURL("OpenStreetMap", layer_control_basemap).addTo(map_pottery);
+
+
+				var map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b = L.MapSearchControl({
+					provider: new L.MapSearchProvider({
+				map: map_pottery,
+				layer: marker_cluster_collection,
+				...{"featureType": "settlement"},
+				}),
+					...{"autoCompleteDelay": 1000, "closeOnSubmit": true, "disableEnterSearch": true, "maxSuggestions": 15, "searchLabel": "Enter town or manufacturer name", "showMarker": false},
+					}
+				)
+
+				// Close search box when map clicked.
+				map_pottery.on('click', map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.close, map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b);
+
+				map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.addTo(map_pottery);
 
 
     map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)

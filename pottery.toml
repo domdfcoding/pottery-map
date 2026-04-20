@@ -3,6 +3,7 @@ company = "J & G Meakin"
 factory = "Eagle Pottery"
 material = "Earthenware"
 type = "Plate"
+category = "Plate"
 design = "Strawberry Border"
 era = "c1970-c2000"
 "photo_urls" = [

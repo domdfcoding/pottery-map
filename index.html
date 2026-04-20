@@ -67,6 +67,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+    <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b2/folium_map_search/folium-map-search.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
 </head>
 <body>
 
@@ -205,6 +208,7 @@
             var marker_j_g_meakin = L.marker(
                 [53.02308684898784, -2.1629028183132877],
                 {
+  "searchName": "J \u0026 G Meakin",
 }
             ).addTo(marker_cluster_collection);
 
@@ -240,6 +244,7 @@
             var marker_wedgwood = L.marker(
                 [52.95429347186072, -2.1703569422826328],
                 {
+  "searchName": "Wedgwood",
 }
             ).addTo(marker_cluster_collection);
 
@@ -299,6 +304,22 @@
 
 
 			basemapFromURL("OpenStreetMap", layer_control_basemap).addTo(map_pottery);
+
+
+				var map_search_control_5a445d4920eb4d85bb24b9224192cafd = L.MapSearchControl({
+					provider: new L.MapSearchProvider({
+				map: map_pottery,
+				layer: marker_cluster_collection,
+				...{"featureType": "settlement"},
+				}),
+					...{"autoCompleteDelay": 1000, "closeOnSubmit": true, "disableEnterSearch": true, "maxSuggestions": 15, "searchLabel": "Enter town or manufacturer name", "showMarker": false},
+					}
+				)
+
+				// Close search box when map clicked.
+				map_pottery.on('click', map_search_control_5a445d4920eb4d85bb24b9224192cafd.close, map_search_control_5a445d4920eb4d85bb24b9224192cafd);
+
+				map_search_control_5a445d4920eb4d85bb24b9224192cafd.addTo(map_pottery);
 
 </script>
 </html>

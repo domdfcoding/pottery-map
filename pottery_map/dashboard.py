@@ -162,6 +162,9 @@ def sort_counts(counts: Mapping[str, float], other_count: float | None = None) -
 		if other_count > 0:
 			sorted_counts += [("Other", other_count)]
 
+	if not sort_counts:
+		return [], []
+
 	sorted_counts_dict = dict(sorted_counts)
 
 	labels, data = list(zip(*sorted_counts_dict.items()))

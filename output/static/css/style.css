@@ -159,3 +159,13 @@ nav > .breadcrumb {
 		padding: 0;
 	}
 }
+
+.leaflet-control.geosearch form {
+	input {
+		font-size: 14px !important;
+	}
+
+	.results.active {
+		font-size: 14px;
+	}
+}
