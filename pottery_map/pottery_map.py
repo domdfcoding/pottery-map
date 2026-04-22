@@ -27,9 +27,11 @@ Map showing where items in a pottery collection were manufactured.
 #
 
 # stdlib
+import shutil
 from collections.abc import Iterator
 from operator import attrgetter
 from typing import NamedTuple
+from urllib.parse import urlparse
 
 # 3rd party
 from branca.element import Figure  # nodep
@@ -44,7 +46,7 @@ from pottery_map.dashboard import get_dashboard_data
 from pottery_map.map import make_map
 from pottery_map.pottery import PotteryItem, load_pottery_collection
 from pottery_map.templates import render_template
-from pottery_map.utils import copy_static_files, groupby, make_id, normalise_category
+from pottery_map.utils import copy_static_files, get_photo_path, groupby, make_id, normalise_category
 
 __all__ = ["PotteryMap", "SidebarData"]
 
@@ -254,6 +256,40 @@ class PotteryMap:
 				"companies": companies_dir,
 				"categories": categories_dir,
 				}
+
+	def copy_images(self, image_directory: PathLike) -> None:
+		"""
+		Copy required images from ``image_directory`` into the output folder.
+
+		:param image_directory:
+		"""
+
+		img_dir = PathPlus(image_directory)
+
+		if not img_dir.is_absolute():
+			if (self.input_directory / img_dir).exists():
+				img_dir = self.input_directory / img_dir
+
+		if img_dir.exists():
+			# Perfectly acceptable for it not to
+			for item in self.pottery:
+				photos_to_copy: list[tuple[str, PathPlus]] = []
+				for path in item.get_substituted_photo_paths():
+					parts = urlparse(path)
+					if not (parts.scheme and parts.netloc):
+						# Local filesystem path; will be copied into images/{id}
+						photos_to_copy.append((
+								path,
+								self.output_directory / get_photo_path(item, path),
+								))
+
+				if photos_to_copy:
+					# first item, target path
+					photos_to_copy[0][1].parent.maybe_make(parents=True)
+					for src_path, dst_path in photos_to_copy:
+						# TODO: warn (but carry on) if image doesn't exist
+						# print(f"{src_path} -> {dst_path}")
+						shutil.copy2(src_path, dst_path)
 
 	def write_output(self) -> None:
 		"""

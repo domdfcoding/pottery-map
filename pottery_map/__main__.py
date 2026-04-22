@@ -35,7 +35,7 @@ __all__ = ["main"]
 
 @auto_default_argument("input_directory")
 @auto_default_option("-o", "--out-dir", help="The output directory.")
-@auto_default_option("-i", "--img-dir", help="The images directory to copy into the output directory.")
+@auto_default_option("-i", "--img-dir", help="Directory containing the images specified in pottery.toml")
 @auto_default_option(
 		"--standalone", is_flag=True, help="Create a standalone map without catalogue pages or additional files."
 		)
@@ -49,9 +49,6 @@ def main(
 	"""
 	Generate map showing where items in a pottery collection were manufactured, and catalogue pages.
 	"""
-
-	# stdlib
-	import shutil
 
 	# 3rd party
 	from domdf_folium_tools import set_branca_random_seed
@@ -70,16 +67,9 @@ def main(
 		output_directory.joinpath("index.html").write_clean(html)
 		return
 
-	PotteryMap(input_directory=input_directory, output_directory=out_dir).write_output()
-
-	image_directory = PathPlus(img_dir)
-	if not image_directory.is_absolute():
-		if (input_directory / image_directory).exists():
-			image_directory = input_directory / image_directory
-
-	if image_directory.exists():
-		# Perfectly acceptable for it not to
-		shutil.copytree(image_directory, output_directory / image_directory.name, dirs_exist_ok=True)
+	pm = PotteryMap(input_directory=input_directory, output_directory=out_dir)
+	pm.write_output()
+	pm.copy_images(img_dir)
 
 
 if __name__ == "__main__":

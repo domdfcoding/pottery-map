@@ -30,13 +30,18 @@ Utility functions.
 import re
 from collections import defaultdict
 from collections.abc import Callable, Collection, Iterable
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 # 3rd party
 import domdf_folium_tools.static_files
 from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.typing import PathLike
 
-__all__ = ["copy_static_files", "filter_keys", "groupby", "make_id", "normalise_category"]
+if TYPE_CHECKING:
+	# this package
+	from pottery_map.pottery import PotteryItem
+
+__all__ = ["copy_static_files", "filter_keys", "get_photo_path", "groupby", "make_id", "normalise_category"]
 
 _id_regex = re.compile("[^0-9a-zA-Z]+")
 
@@ -142,3 +147,14 @@ def filter_keys(
 		new_dict.append((key, value))
 
 	return dict(new_dict)
+
+
+def get_photo_path(pottery_item: "PotteryItem", fileystem_path: PathLike) -> PathPlus:
+	"""
+	Returns the filesystem path (in the output directory) for the given item and image.
+
+	:param pottery_item:
+	:param fileystem_path: Path to the image.
+	"""
+
+	return PathPlus("images") / pottery_item.id / PathPlus(fileystem_path).name

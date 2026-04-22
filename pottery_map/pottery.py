@@ -26,6 +26,9 @@ Classes to represent pottery collection.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from urllib.parse import urlparse
+
 # 3rd party
 import attrs
 import dom_toml
@@ -33,7 +36,7 @@ from domdf_python_tools.typing import PathLike
 
 # this package
 from pottery_map.company import Company
-from pottery_map.utils import filter_keys, make_id
+from pottery_map.utils import filter_keys, get_photo_path, make_id
 
 __all__ = ["PotteryItem", "load_pottery_collection"]
 
@@ -47,6 +50,10 @@ class PotteryItem:
 	# TODO: move company parts into an instance of the Company class.
 
 	id: str
+
+	#: Used as the table name in ``pottery.toml``.
+	toml_id: str
+
 	company: Company
 	material: str  # E.g. "Bone China"
 	type: str  # E.g. "Sandwich Plate"
@@ -56,7 +63,7 @@ class PotteryItem:
 	era: str = ''
 	notes: list[str] = attrs.field(factory=list)
 	links: dict[str, str] = attrs.field(factory=dict)
-	photo_urls: list[str] = attrs.field(factory=list)
+	photo_paths: list[str] = attrs.field(factory=list)
 	diameter: str | None = None
 
 	@property
@@ -81,6 +88,43 @@ class PotteryItem:
 
 		return ' '.join(parts)
 
+	def get_photo_urls(self, root: str = '') -> list[str]:
+		"""
+		Returns the list of photo URLs with parameters substituted.
+
+		:param root: URL path to the website root.
+		"""
+
+		# TODO: copy files (maybe converting to webp or avif) from the photo_url path (if not a URL) and put into subfolder of images folder with same ID as the item (filename itself stays the same)
+
+		photo_urls = []
+
+		for path in self.get_substituted_photo_paths():
+			parts = urlparse(path)
+			if parts.scheme and parts.netloc:
+				# It's a URL
+				photo_urls.append(path)
+			else:
+				# Local filesystem path; will be copied into images/{id}
+				photo_urls.append(f"{root}{get_photo_path(self, path)}")
+
+		return photo_urls
+
+	def get_substituted_photo_paths(self) -> list[str]:
+		"""
+		Returns a list of photo paths after parameter substitution.
+		"""
+
+		photo_paths = []
+		params = attrs.asdict(self)
+		params.pop("photo_paths")
+
+		for path in self.photo_paths:
+			path = (path.format_map(params))
+			photo_paths.append(path.strip())
+
+		return photo_paths
+
 	@classmethod
 	def from_toml_dict(
 			cls,
@@ -102,6 +146,7 @@ class PotteryItem:
 
 		return cls(
 				id=make_id(id),
+				toml_id=id,
 				company=company,
 				**data,
 				)

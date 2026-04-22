@@ -24,6 +24,6 @@
                 </li>
             {% endif %}
         </ul>
-        {% if item.id %}<img class="pottery-image" src="{{ item.photo_urls[0] }}" />{% endif %}
+        {% if item.id %}<img class="pottery-image" src="{{ item.get_photo_urls()[0] }}" />{% endif %}
     {% endfor %}
 </div>

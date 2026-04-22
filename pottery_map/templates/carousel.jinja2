@@ -1,6 +1,6 @@
 <div id="{{ item.id }}_carousel" class="carousel slide">
     <div class="carousel-inner">
-        {%- for idx, photo_url in enumerate(item.photo_urls) %}
+        {%- for idx, photo_url in enumerate(item.get_photo_urls(root)) %}
             <div class="carousel-item{% if idx == 0 %} active{% endif %}">
                 {# TODO: force lightbox to match image size or always be 4:3 #}
                 <img src="{{ photo_url }}"
@@ -29,7 +29,7 @@
     </button>
 
     <div class="carousel-indicators">
-        {%- for idx, photo_url in enumerate(item.photo_urls) %}
+        {%- for idx, photo_url in enumerate(item.get_photo_urls(root)) %}
             <button {% if idx == 0 %}class="active" aria-current="true"{% endif %}
                     data-bs-target="#{{ item.id }}_carousel"
                     role="button"
