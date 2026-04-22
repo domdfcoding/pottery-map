@@ -6,24 +6,33 @@
 {% endmacro -%}
 <div class="item-details">
     <h2>{{ make_link(company_data.company.name, inner=company_data.company.name, standalone=standalone) }}</h2>
-    <h3>
+    <h3 class="fs-5">
         <strong>{{ company_data.company.factory }}</strong>
     </h3>
     {% for item in company_data.items %}
-        <ul>
-            <li>{{ make_link(company_data.company.name, item=item.id, inner=item.design, standalone=standalone) }}</li>
-            <li>{{ item.description }}</li>
+        <hr class="mt-1 mb-2">
+        <h4 class="fs-4">
+            {{ make_link(company_data.company.name, item=item.id, inner=item.design, standalone=standalone) }}
+        </h4>
+        <div class="container properties">
+            <div class="row">
+                <span>{{ item.description }}</span>
+            </div>
             {% if item.designer %}
-                <li>
-                    <i class="fa-solid fa-user"></i> {{ item.designer }}
-                </li>
-            {% endif %}
+                <div class="row">
+                    <span><i class="fa-solid fa-user"></i> {{ item.designer }}</span>
+                </div>
+            {%- endif %}
             {% if item.era %}
-                <li>
-                    <i class="fa-solid fa-calendar-days"></i> {{ item.era }}
-                </li>
-            {% endif %}
-        </ul>
-        {% if item.photo_paths %}<img class="pottery-image" src="{{ item.get_photo_urls()[0] }}" />{% endif %}
+                <div class="row">
+                    <span><i class="fa-solid fa-calendar-days"></i> {{ item.era }}</span>
+                </div>
+            {%- endif %}
+        </div>
+        {% if item.photo_paths %}
+            <div class="mt-auto mx-auto pt-1">
+                <img class="pottery-image" src="{{ item.get_photo_urls()[0] }}" />
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
