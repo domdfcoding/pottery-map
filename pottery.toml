@@ -6,6 +6,6 @@ type = "Plate"
 category = "Plate"
 design = "Strawberry Border"
 era = "c1970-c2000"
-"photo_urls" = [
+"photo_paths" = [
   "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg",
 ]
