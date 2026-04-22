@@ -37,6 +37,7 @@ from domdf_folium_tools import embed_styles
 from domdf_folium_tools.elements import add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
+from folium.template import Template
 from folium.utilities import escape_backticks
 from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
@@ -57,7 +58,7 @@ class Map(ZoomStateMap):
 
 	default_js = [
 			("leaflet", "https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"),
-			("jquery", "https://code.jquery.com/jquery-3.7.1.min.js"),
+			# ("jquery", "https://code.jquery.com/jquery-3.7.1.min.js"),
 			]
 
 	default_css = [
@@ -70,6 +71,24 @@ class Map(ZoomStateMap):
 
 
 class Popup(folium.Popup):
+	_template = Template(
+			"""
+        var {{this.get_name()}} = L.popup({{ this.options|tojavascript }});
+
+        {% for name, element in this.html._children.items() %}
+                {{ this.get_name() }}.setContent(`
+{{ element.render(**kwargs) }}
+`);
+        {% endfor %}
+
+        {{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
+        {% if this.show %}.openPopup(){% endif %};
+
+        {% for name, element in this.script._children.items() %}
+            {{element.render()}}
+        {% endfor %}
+    """,
+			)
 
 	def __init__(
 			self,
@@ -81,6 +100,8 @@ class Popup(folium.Popup):
 			):
 		html_element = folium.Html(escape_backticks(html), script=True)
 		html_element._id = id
+
+		assert not kwargs.get("lazy", False)
 
 		super().__init__(html=html_element, max_width=max_width, min_width=min_width, **kwargs)
 		self._id = id
