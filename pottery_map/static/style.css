@@ -68,6 +68,10 @@ main p {
 	margin-bottom: calc(var(--image-height) + 10px);
 
 	.carousel-indicators {
+		button, img {
+			max-width: 52px;
+		}
+
 		margin-bottom: -20px;
 
 		button {
@@ -76,6 +80,8 @@ main p {
 
 		img {
 			max-height: var(--image-height);
+			margin-left: auto;
+			margin-right: auto;
 			width: auto;
 			aspect-ratio: 3/4;
 			min-width: 0;

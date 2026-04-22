@@ -1,4 +1,4 @@
-<div id="{{ item.id }}_carousel" class="carousel slide">
+<div id="{{ item.id }}_carousel" class="carousel slide" data-bs-theme="dark">
     <div class="carousel-inner">
         {%- for idx, photo_url in enumerate(item.get_photo_urls(root)) %}
             <div class="carousel-item{% if idx == 0 %} active{% endif %}">
@@ -9,7 +9,8 @@
                      data-toggle="lightbox"
                      data-remote="{{ photo_url }}"
                      data-aspect="4x3"
-                     data-size="lg" />
+                     data-size="lg"
+                     loading="lazy" />
             </div>
         {%- endfor %}
     </div>
@@ -35,7 +36,7 @@
                     role="button"
                     data-bs-slide-to="{{ idx }}"
                     aria-label="Slide {{ idx + 1 }}">
-                <img class="d-block w-100" src="{{ photo_url }}" />
+                <img class="d-block w-100" src="{{ photo_url }}" loading="lazy" />
             </button>
         {%- endfor %}
     </div>
