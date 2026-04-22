@@ -37,7 +37,9 @@ __all__ = ["main"]
 @auto_default_option("-o", "--out-dir", help="The output directory.")
 @auto_default_option("-i", "--img-dir", help="Directory containing the images specified in pottery.toml")
 @auto_default_option(
-		"--standalone", is_flag=True, help="Create a standalone map without catalogue pages or additional files."
+		"--standalone",
+		is_flag=True,
+		help="Create a standalone map without catalogue pages or additional files.",
 		)
 @click_command(context_settings={**CONTEXT_SETTINGS, "show_default": True})
 def main(

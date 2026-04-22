@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 	# this package
 	from pottery_map.pottery import PotteryItem
 
-__all__ = ["Company"]
+__all__ = ["Company", "CompanyData", "CompanyItems"]
 
 # this package
 
