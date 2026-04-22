@@ -4,7 +4,6 @@
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
@@ -219,10 +218,27 @@
 });
 
 
+                popup_j_g_meakin.setContent(`
+<div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
+    <h2>J & G Meakin</h2>
+    <h3>
+        <strong>Eagle Pottery</strong>
+    </h3>
 
-                var html_j_g_meakin = $(`<div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">     <h2>J & G Meakin</h2>     <h3>         <strong>Eagle Pottery</strong>     </h3>              <hr>         <ul>             <li>Strawberry Border</li>             <li>Earthenware Plate</li>                                           <li>                     <i class="fa-solid fa-calendar-days"></i> c1970-c2000                 </li>                      </ul>         <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />      </div></div>`)[0];
-                popup_j_g_meakin.setContent(html_j_g_meakin);
+        <ul>
+            <li>Strawberry Border</li>
+            <li>Earthenware Plate</li>
 
+
+                <li>
+                    <i class="fa-solid fa-calendar-days"></i> c1970-c2000
+                </li>
+
+        </ul>
+        <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+
+</div></div>
+`);
 
 
         marker_j_g_meakin.bindPopup(popup_j_g_meakin)
@@ -255,10 +271,15 @@
 });
 
 
+                popup_wedgwood.setContent(`
+<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
+    <h2>Wedgwood</h2>
+    <h3>
+        <strong>Wedgwood Barlaston</strong>
+    </h3>
 
-                var html_wedgwood = $(`<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">     <h2>Wedgwood</h2>     <h3>         <strong>Wedgwood Barlaston</strong>     </h3>      </div></div>`)[0];
-                popup_wedgwood.setContent(html_wedgwood);
-
+</div></div>
+`);
 
 
         marker_wedgwood.bindPopup(popup_wedgwood)
