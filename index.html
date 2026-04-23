@@ -47,9 +47,18 @@
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
 
 				<style>
-					img.pottery-image {
-	max-width: 240px;
+					:root {
+	--popup-image-width: 240px;
+	--popup-image-height: 180px;
+}
+
+img.pottery-image {
+	min-width: var(--popup-image-width);
+	min-height: var(--popup-image-height);
+	max-width: var(--popup-image-width);
 	height: auto;
+	z-index: 20;
+	position: relative;
 }
 
 .item-details {
@@ -57,8 +66,91 @@
 	overflow-y: scroll;
 }
 
-.item-details ul {
-	list-style-type: none;
+.popup-image-wrapper {
+	position: relative;
+}
+
+.loading-anim {
+	z-index: 10;
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-width: var(--popup-image-width);
+	min-height: var(--popup-image-height);
+	width: var(--popup-image-width);
+	height: var(--popup-image-height);
+	background-color: #dfdfdf;
+}
+
+/* From https://github.com/loadingio/css-spinner/ */
+.lds-ellipsis {
+	/* change color here */
+	color: #1c4c5b;
+	display: inline-block;
+	position: absolute;
+	left: calc((var(--popup-image-width)/2) - 38px);
+	top: 90px;
+	box-sizing: border-box;
+}
+
+.lds-ellipsis div {
+	box-sizing: border-box;
+	position: absolute;
+	width: 13.3333px;
+	height: 13.3333px;
+	border-radius: 50%;
+	background: currentcolor;
+	animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+	left: 8px;
+	animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+	left: 8px;
+	animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+	left: 32px;
+	animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+	left: 56px;
+	animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+	0% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes lds-ellipsis3 {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0);
+	}
+}
+
+@keyframes lds-ellipsis2 {
+	0% {
+		transform: translate(0, 0);
+	}
+
+	100% {
+		transform: translate(24px, 0);
+	}
 }
 
 				</style>
@@ -67,7 +159,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b4/folium_map_search/folium-map-search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b5/folium_map_search/folium-map-search.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
 </head>
 <body>
@@ -221,21 +313,39 @@
                 popup_j_g_meakin.setContent(`
 <div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
     <h2>J & G Meakin</h2>
-    <h3>
+    <h3 class="fs-5">
         <strong>Eagle Pottery</strong>
     </h3>
 
-        <ul>
-            <li>Strawberry Border</li>
-            <li>Earthenware Plate</li>
+        <hr class="mt-1 mb-2">
+        <h4 class="fs-4">
+            Strawberry Border
+        </h4>
+        <div class="container properties">
+            <div class="row">
+                <span>Earthenware Plate</span>
+            </div>
 
 
-                <li>
-                    <i class="fa-solid fa-calendar-days"></i> c1970-c2000
-                </li>
+                <div class="row">
+                    <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
+                </div>
+        </div>
 
-        </ul>
-        <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+            <div class="mt-auto mx-auto pt-1">
+                <div class="popup-image-wrapper">
+                    <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
+                    <div class="loading-anim">
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 </div></div>
 `);
@@ -274,7 +384,7 @@
                 popup_wedgwood.setContent(`
 <div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
     <h2>Wedgwood</h2>
-    <h3>
+    <h3 class="fs-5">
         <strong>Wedgwood Barlaston</strong>
     </h3>
 

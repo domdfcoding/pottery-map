@@ -17,6 +17,9 @@
         <title>Map – Pottery Collection</title>
 
     <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="preload"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/webfonts/fa-solid-900.woff2"
+          as="font">
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
@@ -243,7 +246,7 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/L.Control.Layers.Minimap.Toggle.min.js"></script>
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b4/folium_map_search/folium-map-search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b5/folium_map_search/folium-map-search.min.js"></script>
     <script>
 
             var mapOptions = {
@@ -388,21 +391,39 @@
                 popup_j_g_meakin.setContent(`
 <div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
     <h2><a href="companies/j_g_meakin.html">J & G Meakin</a></h2>
-    <h3>
+    <h3 class="fs-5">
         <strong>Eagle Pottery</strong>
     </h3>
 
-        <ul>
-            <li><a href="companies/j_g_meakin.html#j_g_meakin_libelle_marjolein_bastin">Strawberry Border</a></li>
-            <li>Earthenware Plate</li>
+        <hr class="mt-1 mb-2">
+        <h4 class="fs-4">
+            <a href="companies/j_g_meakin.html#j_g_meakin_libelle_marjolein_bastin">Strawberry Border</a>
+        </h4>
+        <div class="container properties">
+            <div class="row">
+                <span>Earthenware Plate</span>
+            </div>
 
 
-                <li>
-                    <i class="fa-solid fa-calendar-days"></i> c1970-c2000
-                </li>
+                <div class="row">
+                    <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
+                </div>
+        </div>
 
-        </ul>
-        <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" />
+            <div class="mt-auto mx-auto pt-1">
+                <div class="popup-image-wrapper">
+                    <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
+                    <div class="loading-anim">
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 </div></div>
 `);
@@ -441,7 +462,7 @@
                 popup_wedgwood.setContent(`
 <div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
     <h2><a href="companies/wedgwood.html">Wedgwood</a></h2>
-    <h3>
+    <h3 class="fs-5">
         <strong>Wedgwood Barlaston</strong>
     </h3>
 

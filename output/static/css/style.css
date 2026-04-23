@@ -175,3 +175,8 @@ nav > .breadcrumb {
 		font-size: 14px;
 	}
 }
+
+
+.modal-960 {
+	max-width: 960px;
+}
