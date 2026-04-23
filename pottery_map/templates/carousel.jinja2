@@ -4,7 +4,7 @@
             <div class="carousel-item{% if idx == 0 %} active{% endif %}">
                 {# TODO: force lightbox to match image size or always be 4:3 #}
                 <img src="{{ photo_url }}"
-                     class="d-block w-100"
+                     class="d-block w-100 carousel-image"
                      alt="Image {{ idx + 1 }} of the {{ item.design }} pottery"
                      data-toggle="lightbox"
                      data-remote="{{ photo_url }}"

@@ -180,3 +180,7 @@ nav > .breadcrumb {
 .modal-960 {
 	max-width: 960px;
 }
+
+.carousel-image {
+	min-height: 220px;
+}
