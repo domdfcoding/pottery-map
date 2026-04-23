@@ -31,7 +31,17 @@
         </div>
         {% if item.photo_paths %}
             <div class="mt-auto mx-auto pt-1">
-                <img class="pottery-image" src="{{ item.get_photo_urls()[0] }}" />
+                <div class="popup-image-wrapper">
+                    <img class="pottery-image" src="{{ item.get_photo_urls()[0] }}" loading="lazy" />
+                    <div class="loading-anim">
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% endif %}
     {% endfor %}
