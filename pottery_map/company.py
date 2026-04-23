@@ -53,12 +53,20 @@ class Company:
 
 	name: str
 	factory: str = "Unknown"
-	# TODO: notes: list[str] = attrs.field(factory=list)
-	# TODO: links: dict[str, str] = attrs.field(factory=dict)
+	notes: list[str] = attrs.field(factory=list)
+	links: dict[str, str] = attrs.field(factory=dict)
 	location: Coordinates | None = None
 	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
 	successor: str | None = None
 	defunct: bool = False
+
+	@property
+	def has_notes(self) -> bool:
+		"""
+		Returns whether the company has any notes or links.
+		"""
+
+		return bool(self.notes or self.links)
 
 	@classmethod
 	def from_toml_dict(

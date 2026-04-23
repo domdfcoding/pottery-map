@@ -32,7 +32,13 @@
                     </div>
 
                     {# djlint:off #}
-                    {% include "notes.jinja2" indent content %}
+                    {%- if item.has_notes -%}
+                        {%- set show_item_notes = True -%}
+                        {%- set show_company_notes = True -%}
+                        {%- set base_id = item.id -%}
+                        {%- set company = item.company %}
+                        {% include "notes.jinja2" indent content %}
+                    {%- endif %}
 
                     <div class="mt-auto mx-auto pt-1">
                         {% include "carousel.jinja2" indent content %}

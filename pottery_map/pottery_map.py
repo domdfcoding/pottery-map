@@ -199,17 +199,14 @@ class PotteryMap:
 		Render the pages for the companies.
 		"""
 
-		for company_name in self.companies.pottery_by_company:
-			company, items = self.companies.pottery_by_company[company_name]
+		for (company, items) in self.companies.pottery_by_company.values():
 
 			html = self.render_page(
 					"company_page.jinja2",
-					company=company_name,
-					factory=company.factory,
-					location=company.location,
+					company=company,
 					items=items,
 					)
-			yield company_name, html
+			yield company.name, html
 
 	def render_categories_index(self) -> str:
 		"""

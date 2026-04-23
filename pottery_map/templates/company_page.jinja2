@@ -1,13 +1,13 @@
 {% extends "collection_page.jinja2" %}
-{% set title = company %}
+{% set title = company.name %}
 {% set root = "../" %}
 {% set companies_page = True %}
 {% block body %}
 
-    <h2>{{ factory }}</h2>
-    {%- if location %}
-        {%- set factory_lat = location["latitude"] %}
-        {%- set factory_lng = location["longitude"] %}
+    <h2>{{ company.factory }}</h2>
+    {%- if company.location %}
+        {%- set factory_lat = company.location["latitude"] %}
+        {%- set factory_lng = company.location["longitude"] %}
         <h6>
             Show On
             <a href='{{ root }}?zoom=16&lat={{ factory_lat }}&lng={{ factory_lng }}'>
@@ -20,9 +20,21 @@
                 Google Maps
             </a>
         </h6>
+
+        {# djlint:off #}
+        {%- if company.has_notes -%}
+            {%- set show_item_notes = False -%}
+            {%- set show_company_notes = True -%}
+            {%- set base_id = make_id(company.name) %}
+            <div class="company-notes mb-2">
+                {% include "notes.jinja2" indent content %}
+            </div>
+        {% endif -%}
+        {# djlint:on #}
+
     {%- endif %}
     {%- if items %}
-        <div class="wares gy-2" id="{{ make_id(company) }}-wares">
+        <div class="wares gy-2" id="{{ make_id(company.name) }}-wares">
             <h3>Wares</h3>
             <div class="d-flex flex-wrap gap-3 items-container">
                 {%- for item in items %}
@@ -50,7 +62,12 @@
                         </div>
 
                         {# djlint:off #}
-                        {% include "notes.jinja2" indent content %}
+                        {%- if item.has_notes -%}
+                            {%- set show_item_notes = True -%}
+                            {%- set show_company_notes = False -%}
+                            {%- set base_id = item.id -%}
+                            {% include "notes.jinja2" indent content %}
+                        {%- endif %}
 
                         <div class="mt-auto mx-auto pt-1">
                             {% include "carousel.jinja2" indent content %}

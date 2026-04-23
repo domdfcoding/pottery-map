@@ -125,6 +125,14 @@ class PotteryItem:
 
 		return photo_paths
 
+	@property
+	def has_notes(self) -> bool:
+		"""
+		Returns whether the item, or its company, has any notes or links.
+		"""
+
+		return any([self.notes, self.links, self.company.has_notes])
+
 	@classmethod
 	def from_toml_dict(
 			cls,

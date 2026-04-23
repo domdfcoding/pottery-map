@@ -26,8 +26,6 @@ Function for loading data about companies.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-# TODO: notes and links for the company itself (including to thepotteries.org and Wikipedia where available)
-
 # stdlib
 import warnings
 from collections.abc import Iterable
@@ -93,6 +91,7 @@ def group_pottery_by_company(
 
 			pottery_by_company[company_name] = CompanyItems(company, [])
 
+		item.company = pottery_by_company[company_name].company
 		pottery_by_company[company_name].add_item(item)
 
 	for company_name, company in companies.items():
