@@ -65,6 +65,7 @@ class PotteryItem:
 	links: dict[str, str] = attrs.field(factory=dict)
 	photo_paths: list[str] = attrs.field(factory=list)
 	diameter: str | None = None
+	quantity: int = 1
 
 	@property
 	def description(self) -> str:
