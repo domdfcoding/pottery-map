@@ -27,7 +27,6 @@ Map showing where items in a pottery collection were manufactured.
 #
 
 # stdlib
-import shutil
 from collections.abc import Iterator
 from operator import attrgetter
 from typing import NamedTuple
@@ -46,7 +45,18 @@ from pottery_map.dashboard import get_dashboard_data
 from pottery_map.map import make_map
 from pottery_map.pottery import PotteryItem, load_pottery_collection
 from pottery_map.templates import render_template
-from pottery_map.utils import copy_static_files, get_photo_path, groupby, make_id, normalise_category
+from pottery_map.utils import (
+		IMG_HEIGHT,
+		IMG_WIDTH,
+		FileModifications,
+		ProgressBar,
+		_convert_image,
+		copy_static_files,
+		get_photo_path,
+		groupby,
+		make_id,
+		normalise_category
+		)
 
 __all__ = ["PotteryMap", "SidebarData"]
 
@@ -254,39 +264,51 @@ class PotteryMap:
 				"categories": categories_dir,
 				}
 
-	def copy_images(self, image_directory: PathLike) -> None:
+	def copy_images(self) -> None:
 		"""
-		Copy required images from ``image_directory`` into the output folder.
-
-		:param image_directory:
+		Copy required images into the output folder.
 		"""
 
-		img_dir = PathPlus(image_directory)
+		image_hashes = FileModifications(self.output_directory / "images" / "hashes.json")
 
-		if not img_dir.is_absolute():
-			if (self.input_directory / img_dir).exists():
-				img_dir = self.input_directory / img_dir
+		photos_to_copy: list[tuple[PathPlus, PathPlus]] = []
+		for item in self.pottery:
+			for path in item.get_substituted_photo_paths():
+				parts = urlparse(path)
+				if not (parts.scheme and parts.netloc):
+					# Local filesystem path; will be copied into images/{id}
+					photos_to_copy.append((
+							self.input_directory / path,
+							self.output_directory / get_photo_path(item, path),
+							))
 
-		if img_dir.exists():
-			# Perfectly acceptable for it not to
-			for item in self.pottery:
-				photos_to_copy: list[tuple[str, PathPlus]] = []
-				for path in item.get_substituted_photo_paths():
-					parts = urlparse(path)
-					if not (parts.scheme and parts.netloc):
-						# Local filesystem path; will be copied into images/{id}
-						photos_to_copy.append((
-								path,
-								self.output_directory / get_photo_path(item, path),
-								))
+		if photos_to_copy:
+			progbar = ProgressBar(photos_to_copy, desc="Copying images")
 
-				if photos_to_copy:
-					# first item, target path
-					photos_to_copy[0][1].parent.maybe_make(parents=True)
-					for src_path, dst_path in photos_to_copy:
-						# TODO: warn (but carry on) if image doesn't exist
-						# print(f"{src_path} -> {dst_path}")
-						shutil.copy2(src_path, dst_path)
+			src_path: PathPlus
+			dst_path: PathPlus
+
+			for src_path, dst_path in progbar:
+				dst_path.parent.maybe_make(parents=True)
+
+				if src_path.is_file():
+					if not image_hashes.has_file_changed(src_path):
+						# File hasn't changed
+						continue
+
+					# progbar.write(f"{src_path.as_posix()} -> {dst_path.as_posix()}")
+
+					img_ratio = _convert_image(src_path, dst_path)
+					if img_ratio != 4 / 3:
+						warning_msg = f"Warning: Image has wrong ratio ({img_ratio}; expected {IMG_WIDTH / IMG_HEIGHT}): {src_path.as_posix()}"
+						progbar.warning(warning_msg)
+					else:
+						image_hashes.record_changed_file(src_path)
+				else:
+					progbar.error(f"Error: Image not found: {src_path.as_posix()}")
+
+			image_hashes.write_file()
+			progbar.report_errors_warnings("Complete. ")
 
 	def write_output(self) -> None:
 		"""

@@ -35,7 +35,6 @@ __all__ = ["main"]
 
 @auto_default_argument("input_directory")
 @auto_default_option("-o", "--out-dir", help="The output directory.")
-@auto_default_option("-i", "--img-dir", help="Directory containing the images specified in pottery.toml")
 @auto_default_option(
 		"--standalone",
 		is_flag=True,
@@ -45,7 +44,6 @@ __all__ = ["main"]
 def main(
 		input_directory: str = '.',
 		out_dir: str = "output",
-		img_dir: str = "images",
 		standalone: bool = False,
 		) -> None:
 	"""
@@ -71,7 +69,7 @@ def main(
 
 	pm = PotteryMap(input_directory=input_directory, output_directory=out_dir)
 	pm.write_output()
-	pm.copy_images(img_dir)
+	pm.copy_images()
 
 
 if __name__ == "__main__":

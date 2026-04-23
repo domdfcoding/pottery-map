@@ -1,2 +1,3 @@
+types-tqdm
 types-Markdown
 types-networkx
