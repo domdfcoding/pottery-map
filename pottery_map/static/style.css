@@ -184,3 +184,11 @@ nav > .breadcrumb {
 .carousel-image {
 	min-height: 220px;
 }
+
+nav#sidebar .companies-search {
+	display: inherit;
+}
+
+nav#sidbar.close .companies-search {
+	display: none;
+}
