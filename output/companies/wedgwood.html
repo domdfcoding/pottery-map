@@ -95,7 +95,19 @@
                         </svg>
                     </a>
                     <ul class="text-decoration-none sub-menu ps-0">
-                        <div>
+                        <div id="companiesMenu" data-bs-theme="dark">
+                            <form class="companies-search" id="companiesSearchForm">
+                                <div class="input-group">
+                                    <div class="form-floating">
+                                        <input type="search" class="form-control" id="companiesSearch" placeholder="Search">
+                                        <label for="companiesSearch">Search</label>
+                                    </div>
+                                    <button class="btn btn-outline-secondary" type="reset" id="companiesSearchReset">
+                                        <i class="fa-solid fa-delete-left"></i>
+                                    </button>
+                                </div>
+                            </form>
+
 
                                 <li class="border-bottom">
                                     <a href="../companies">View All</a>
@@ -103,19 +115,19 @@
 
 
 
-                                    <li>
+                                    <li data-company="J & G Meakin">
                                         <a href="../companies/j_g_meakin.html">J & G Meakin</a>
                                     </li>
 
 
 
-                                    <li>
+                                    <li data-company="WWRD">
                                         <a href="../companies/wwrd.html">WWRD</a>
                                     </li>
 
 
 
-                                    <li class="active">
+                                    <li class="active" data-company="Wedgwood">
                                         <a href="#">Wedgwood</a>
                                     </li>
 
@@ -168,7 +180,10 @@
         <div class="d-flex flex-column min-vh-100">
 
                 <main class="padded">
-                    <h1>Wedgwood</h1>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+                        <h1>Wedgwood</h1>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -181,6 +196,22 @@
             <li class="breadcrumb-item active" aria-current="page">Wedgwood</li>
         </ol>
     </nav>
+
+                    </div>
+        <div class="col-sm-12 col-md-7">
+            <form class="items-search mb-sm-2 mt-sm-0 mb-md-0 mt-md-4 mw-50" id="itemsSearchForm">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="search" class="form-control" id="itemsSearch" placeholder="Search">
+                        <label for="itemsSearch">Search</label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="reset" id="itemsSearchReset">
+                        <i class="fa-solid fa-delete-left"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 
@@ -231,11 +262,14 @@
                     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
                     crossorigin="anonymous"></script>
 
+            <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@0.1.0b6/folium_map_search/microfuzz.min.js"></script>
+
             <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/bs5-lightbox@9e1743b/dist/index.bundle.min.js"
             integrity="sha384-pJaIjougtvDzmqvXGZjUt6RKD2XpQOqiBZyaUEEXy5+RSSEZ8iF2yl/JVtrfMGdx"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../static/js/items_search.js" defer></script>
 
     </body>
 </html>

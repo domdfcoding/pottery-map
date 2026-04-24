@@ -95,7 +95,19 @@
                         </svg>
                     </a>
                     <ul class="text-decoration-none sub-menu ps-0">
-                        <div>
+                        <div id="companiesMenu" data-bs-theme="dark">
+                            <form class="companies-search" id="companiesSearchForm">
+                                <div class="input-group">
+                                    <div class="form-floating">
+                                        <input type="search" class="form-control" id="companiesSearch" placeholder="Search">
+                                        <label for="companiesSearch">Search</label>
+                                    </div>
+                                    <button class="btn btn-outline-secondary" type="reset" id="companiesSearchReset">
+                                        <i class="fa-solid fa-delete-left"></i>
+                                    </button>
+                                </div>
+                            </form>
+
 
                                 <li class="border-bottom">
                                     <a href="../companies">View All</a>
@@ -103,19 +115,19 @@
 
 
 
-                                    <li>
+                                    <li data-company="J & G Meakin">
                                         <a href="../companies/j_g_meakin.html">J & G Meakin</a>
                                     </li>
 
 
 
-                                    <li>
+                                    <li data-company="WWRD">
                                         <a href="../companies/wwrd.html">WWRD</a>
                                     </li>
 
 
 
-                                    <li>
+                                    <li data-company="Wedgwood">
                                         <a href="../companies/wedgwood.html">Wedgwood</a>
                                     </li>
 
@@ -168,7 +180,10 @@
         <div class="d-flex flex-column min-vh-100">
 
                 <main class="padded">
-                    <h1>Plates</h1>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+                        <h1>Plates</h1>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -182,11 +197,29 @@
         </ol>
     </nav>
 
+                    </div>
+        <div class="col-sm-12 col-md-7">
+            <form class="items-search mb-sm-2 mt-sm-0 mb-md-0 mt-md-4 mw-50" id="itemsSearchForm">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="search" class="form-control" id="itemsSearch" placeholder="Search">
+                        <label for="itemsSearch">Search</label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="reset" id="itemsSearchReset">
+                        <i class="fa-solid fa-delete-left"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 
     <div class="wares gy-2" id="wares">
-        <div class="d-flex flex-wrap gap-3 items-container">
-                <div class="item border p-1 d-flex flex-column" id="j_g_meakin_libelle_marjolein_bastin">
+        <div class="d-flex flex-wrap gap-2 items-container">
+                <div class="item border p-1 d-flex flex-column"
+                     id="j_g_meakin_libelle_marjolein_bastin"
+                     data-item-name="J & G Meakin Strawberry Border Earthenware">
                     <h4>Strawberry Border</h4>
                     <h5>
                         <a href="../companies/j_g_meakin.html">J & G Meakin, Eagle Pottery</a>
@@ -275,11 +308,14 @@
                     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
                     crossorigin="anonymous"></script>
 
+            <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@0.1.0b6/folium_map_search/microfuzz.min.js"></script>
+
             <script type="text/javascript" src="../static/js/sidebar.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/bs5-lightbox@9e1743b/dist/index.bundle.min.js"
             integrity="sha384-pJaIjougtvDzmqvXGZjUt6RKD2XpQOqiBZyaUEEXy5+RSSEZ8iF2yl/JVtrfMGdx"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../static/js/items_search.js" defer></script>
 
     </body>
 </html>
