@@ -1,6 +1,20 @@
 const toggleButton = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar');
 
+function updateQueryStringParam(key, value) {
+	const url = new URL(window.location.href);
+	url.searchParams.set(key, value.toString()); // Add or update the parameter
+	// window.history.pushState({}, null, url);
+	window.history.replaceState({}, '', url);
+}
+
+function deleteQueryStringParam(key) {
+	const url = new URL(window.location.href);
+	url.searchParams.delete(key);
+	// window.history.pushState({}, null, url);
+	window.history.replaceState({}, '', url);
+}
+
 function getCompanyName(li) {
 	return li.dataset.company;
 }
@@ -28,10 +42,26 @@ function filterCompanies(query) {
 }
 
 function setupSidebar() {
+	const url = new URL(window.location.href);
+
+	let showSidebar = 0;
+	if (url.searchParams.has('sidebar')) {
+		showSidebar = parseInt(url.searchParams.get('sidebar'));
+	}
+
+	if (showSidebar === 1) {
+		sidebar.classList.remove('close');
+	}
+
 	if (sidebar.classList.contains('close')) {
 		toggleButton.classList.add('rotate');
 	} else {
 		toggleButton.classList.remove('rotate');
+	}
+
+	if (url.searchParams.has('sidebar_expand')) {
+		const sectionTitle = url.searchParams.get('sidebar_expand');
+		toggleSubMenu(document.querySelector(`a[title=${sectionTitle}]`));
 	}
 
 	companiesSearch.addEventListener('input', (e) => {
@@ -53,6 +83,13 @@ function toggleSidebar() {
 	sidebar.classList.toggle('close');
 	toggleButton.classList.toggle('rotate');
 
+	if (sidebar.classList.contains('close')) {
+		deleteQueryStringParam('sidebar_expand');
+		deleteQueryStringParam('sidebar');
+	} else {
+		updateQueryStringParam('sidebar', 1);
+	}
+
 	closeAllSubMenus();
 }
 
@@ -67,6 +104,12 @@ function toggleSubMenu(button) {
 	if (sidebar.classList.contains('close')) {
 		sidebar.classList.toggle('close');
 		toggleButton.classList.toggle('rotate');
+	}
+
+	if (button.nextElementSibling.classList.contains('show')) {
+		updateQueryStringParam('sidebar_expand', button.title);
+	} else {
+		deleteQueryStringParam('sidebar_expand');
 	}
 }
 
