@@ -1,10 +1,10 @@
-<div id="{{ item.id }}_carousel" class="carousel slide" data-bs-theme="dark">
+<div id="{{ item.id }}_carousel" class="carousel slide pt-1" data-bs-theme="dark">
     <div class="carousel-inner">
         {%- for idx, photo_url in enumerate(item.get_photo_urls(root)) %}
             <div class="carousel-item{% if idx == 0 %} active{% endif %}">
                 {# TODO: force lightbox to match image size or always be 4:3 #}
                 <img src="{{ photo_url }}"
-                     class="d-block w-100 carousel-image"
+                     class="d-block w-100 carousel-image ratio ratio-4x3"
                      alt="Image {{ idx + 1 }} of the {{ item.design }} pottery"
                      data-toggle="lightbox"
                      data-remote="{{ photo_url }}"

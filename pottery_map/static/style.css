@@ -58,37 +58,59 @@ main p {
 	}
 } */
 
+
+.accordion.notes {
+	margin: 4px 1px 2px;
+
+	.accordion-header button {
+		padding: 2px 0;
+	}
+
+	.accordion-body {
+		padding: 2px;
+	}
+
+	.accordion-button:not(.collapsed) {
+		background-color: unset !important;
+	}
+}
+
+
 /* TODO: bottom few pixels of image disappear when switching images */
-.item .carousel {
+.item .carousel-wrapper {
 	--image-height: 50px;
 
-	max-width: 330px;
-	max-height: 247px;
-	height: auto;
-	margin-bottom: calc(var(--image-height) + 10px);
+	margin-bottom: calc(var(--image-height) + 8px);
 
-	.carousel-indicators {
-		button, img {
-			max-width: 52px;
-		}
+	.carousel {
+		max-width: 330px;
+		max-height: 247px;
+		height: auto;
 
-		margin-bottom: -20px;
+		.carousel-indicators {
+			button, img {
+				max-width: 52px;
+			}
 
-		button {
-			width: 100px;
-		}
+			margin-bottom: -20px;
 
-		img {
-			max-height: var(--image-height);
-			margin-left: auto;
-			margin-right: auto;
-			width: auto;
-			aspect-ratio: 3/4;
-			min-width: 0;
-			object-fit: contain;
+			button {
+				width: 100px;
+			}
+
+			img {
+				max-height: var(--image-height);
+				margin-left: auto;
+				margin-right: auto;
+				width: auto;
+				aspect-ratio: 3/4;
+				min-width: 0;
+				object-fit: contain;
+			}
 		}
 	}
 }
+
 
 .leaflet-control-attribution {
 	font-size: 11px !important;
@@ -120,22 +142,6 @@ main p {
 
 .min-vw-45 {
 	min-width: 45vw;
-}
-
-.accordion.notes {
-	margin: 4px 1px 2px;
-
-	.accordion-header button {
-		padding: 2px 0;
-	}
-
-	.accordion-body {
-		padding: 2px;
-	}
-
-	.accordion-button:not(.collapsed) {
-		background-color: unset !important;
-	}
 }
 
 nav > .breadcrumb {
@@ -181,9 +187,6 @@ nav > .breadcrumb {
 	max-width: 960px;
 }
 
-.carousel-image {
-	min-height: 220px;
-}
 
 nav#sidebar .companies-search {
 	display: inherit;
