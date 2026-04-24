@@ -1,11 +1,32 @@
 {% extends "page.jinja2" %}
 {% set category_page = category_page | default(False, boolean=True) %}
+{% block preamble %}
+    <div class="row">
+        <div class="col-sm-12 col-md-5">{{ super() }}</div>
+        <div class="col-sm-12 col-md-7">
+            <form class="items-search mb-sm-2 mt-sm-0 mb-md-0 mt-md-4 mw-50" id="itemsSearchForm">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="search" class="form-control" id="itemsSearch" placeholder="Search">
+                        <label for="itemsSearch">Search</label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="reset" id="itemsSearchReset">
+                        <i class="fa-solid fa-delete-left"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock preamble %}
+
 {% block body %}
 
     <div class="wares gy-2" id="wares">
-        <div class="d-flex flex-wrap gap-3 items-container">
+        <div class="d-flex flex-wrap gap-2 items-container">
             {%- for item in items %}
-                <div class="item border p-1 d-flex flex-column" id="{{ item.id }}">
+                <div class="item border p-1 d-flex flex-column"
+                     id="{{ item.id }}"
+                     data-item-name="{{ item.company.name }} {{ item.design }} {{ item.material }}">
                     <h4>{{ item.design }}</h4>
                     <h5>
                         <a href="{{ root }}companies/{{ make_id(item.company.name) }}.html">{{ item.company.name }}, {{ item.company.factory }}</a>
@@ -55,4 +76,5 @@
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/bs5-lightbox@9e1743b/dist/index.bundle.min.js"
             integrity="sha384-pJaIjougtvDzmqvXGZjUt6RKD2XpQOqiBZyaUEEXy5+RSSEZ8iF2yl/JVtrfMGdx"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ root }}static/js/items_search.js" defer></script>
 {% endblock scripts %}

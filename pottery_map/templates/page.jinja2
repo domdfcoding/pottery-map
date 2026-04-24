@@ -157,17 +157,19 @@
         <div class="d-flex flex-column min-vh-100">
             {% block main %}
                 <main class="padded">
-                    <h1>{{ title }}</h1>
-                    {% block breadcrumbs %}
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ root }}">Home</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
-                            </ol>
-                        </nav>
-                    {% endblock breadcrumbs %}
+                    {% block preamble %}
+                        <h1>{{ title }}</h1>
+                        {% block breadcrumbs %}
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ root }}">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+                                </ol>
+                            </nav>
+                        {% endblock breadcrumbs %}
+                    {% endblock preamble %}
                     {% block body %}
                     {% endblock body %}
                 </main>

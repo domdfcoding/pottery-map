@@ -36,9 +36,11 @@
     {%- if items %}
         <div class="wares gy-2" id="{{ make_id(company.name) }}-wares">
             <h3>Wares</h3>
-            <div class="d-flex flex-wrap gap-3 items-container">
+            <div class="d-flex flex-wrap gap-2 items-container">
                 {%- for item in items %}
-                    <div class="item border p-1 d-flex flex-column" id="{{ item.id }}">
+                    <div class="item border p-1 d-flex flex-column"
+                         id="{{ item.id }}"
+                         data-item-name="{{ item.design }} {{ item.material }}">
                         <h4>{{ item.design }}</h4>
                         <div class="container properties">
                             <div class="row">

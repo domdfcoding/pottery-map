@@ -19,21 +19,24 @@ function getCompanyName(li) {
 	return li.dataset.company;
 }
 
-const fuzzySearch = createFuzzySearch([...companiesMenu.querySelectorAll('li[data-company]')], {
+const fuzzySearchCompanies = createFuzzySearch([...companiesMenu.querySelectorAll('li[data-company]')], {
 	getText: (item) => [getCompanyName(item)],
 });
 
 function filterCompanies(query) {
 	// console.log("Search query:", query);
-	// console.log("Results:", fuzzySearch(query))
+	// console.log("Results:", fuzzySearchCompanies(query))
 	let results = [];
-	fuzzySearch(query).forEach((item) => {
-		const li = item.item;
-		results.push(li);
-	});
+
+	if (query !== '') {
+		fuzzySearchCompanies(query).forEach((item) => {
+			const li = item.item;
+			results.push(li);
+		});
+	}
 
 	companiesMenu.querySelectorAll('li[data-company]').forEach((li) => {
-		if (results.includes(li)) {
+		if (query === '' || results.includes(li)) {
 			li.classList.remove('d-none');
 		} else {
 			li.classList.add('d-none');

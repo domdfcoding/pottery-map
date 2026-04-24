@@ -87,6 +87,7 @@ def copy_static_files(static_dir: PathPlus) -> None:
 			js_files=[
 					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "sidebar.js"),
 					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "dashboard.js"),
+					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "items_search.js"),
 					],
 			css_files=[
 					domdf_folium_tools.static_files.PythonResource("pottery_map.static", "pottery_map.css"),
