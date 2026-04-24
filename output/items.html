@@ -96,7 +96,9 @@
                     </a>
                     <ul class="text-decoration-none sub-menu ps-0">
                         <div id="companiesMenu" data-bs-theme="dark">
-                            <form class="companies-search" id="companiesSearchForm">
+                            <form class="companies-search"
+                                  id="companiesSearchForm"
+                                  onsubmit="companiesSearch.blur(); return false;">
                                 <div class="input-group">
                                     <div class="form-floating">
                                         <input type="search" class="form-control" id="companiesSearch" placeholder="Search">
@@ -196,7 +198,9 @@
 
                     </div>
         <div class="col-sm-12 col-md-7">
-            <form class="items-search mb-sm-2 mt-sm-0 mb-md-0 mt-md-4 mw-50" id="itemsSearchForm">
+            <form class="items-search mb-sm-2 mt-sm-0 mb-md-0 mt-md-4 mw-50"
+                  id="itemsSearchForm"
+                  onsubmit="itemsSearch.blur(); return false;">
                 <div class="input-group">
                     <div class="form-floating">
                         <input type="search" class="form-control" id="itemsSearch" placeholder="Search">

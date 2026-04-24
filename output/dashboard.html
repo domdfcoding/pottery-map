@@ -103,7 +103,9 @@
                     </a>
                     <ul class="text-decoration-none sub-menu ps-0">
                         <div id="companiesMenu" data-bs-theme="dark">
-                            <form class="companies-search" id="companiesSearchForm">
+                            <form class="companies-search"
+                                  id="companiesSearchForm"
+                                  onsubmit="companiesSearch.blur(); return false;">
                                 <div class="input-group">
                                     <div class="form-floating">
                                         <input type="search" class="form-control" id="companiesSearch" placeholder="Search">
