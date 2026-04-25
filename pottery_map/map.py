@@ -70,6 +70,43 @@ class Map(ZoomStateMap):
 		set_id(self, "pottery")
 
 
+class PopupResizeMonitor(folium.MacroElement):
+	"""
+	Monitors the browser window for resizes and dismisses popups if going into "small screen" mode.
+
+	This avoids the popup becoming malformed when reducing its width below what leaflet originally set it to.
+	"""
+
+	_template = Template(
+			"""
+		{% macro script(this, kwargs) %}
+		function PopupResizeMonitor(){
+
+			let lastWidth = window.innerWidth;
+
+			function reportWindowSize() {
+				console.log("Width was", lastWidth, "now", window.innerWidth)
+
+				if (lastWidth > 500 && window.innerWidth <= 500) {
+					{{ this._parent.get_name() }}.closePopup();
+					// TODO: reopen if it was open  {{ this._parent.get_name() }}.openPopup();
+				}
+
+				lastWidth = window.innerWidth;
+
+			}
+
+			window.addEventListener("resize", reportWindowSize);
+
+		}
+
+		PopupResizeMonitor();
+		{% endmacro %}
+
+    """,
+			)
+
+
 class Popup(folium.Popup):
 	_template = Template(
 			"""
@@ -173,7 +210,8 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 		marker = folium.Marker(
 				location=[company.location["latitude"], company.location["longitude"]],
 				tooltip=company.name,
-				popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
+				# popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
+				popup=Popup('\n'.join(popup_text), min_width=285, id=company_id, class_name="pottery-map-popup"),
 				search_name=company.name,
 				)
 		add_to(marker, marker_cluster, company_id)
@@ -196,6 +234,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 			disable_enter_search=True,  # Otherwise markers don't appear 🤷
 			close_on_submit=True,
 			).add_to(m)
+	PopupResizeMonitor().add_to(m)
 
 	return m
 

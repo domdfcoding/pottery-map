@@ -103,3 +103,19 @@ img.pottery-image {
 		transform: translate(24px, 0);
 	}
 }
+
+.pottery-map-popup {
+	--popup-max-width: 285px;
+
+	max-width: 400px;
+	min-width: var(--popup-max-width);
+
+	@media (width <= 500px) {
+		max-width: max(var(--popup-max-width), 50vw);
+	}
+
+	.leaflet-popup-content {
+		margin-left: 10px;
+		margin-right: 12px;
+	}
+}
