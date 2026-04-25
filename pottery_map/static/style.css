@@ -184,7 +184,13 @@ nav > .breadcrumb {
 
 
 .modal-960 {
-	max-width: 960px;
+	@media (min-width: 960px) {
+		max-width: 960px;
+	}
+
+	@media (max-width: 959px) {
+		max-width: calc(100vw - 10px);
+	}
 }
 
 
