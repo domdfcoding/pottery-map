@@ -118,6 +118,9 @@ main p {
 
 .item {
 	max-width: 340px;
+
+	/* flex-basis: 20vw; */
+	flex-grow: 1;
 }
 
 .item:target {
