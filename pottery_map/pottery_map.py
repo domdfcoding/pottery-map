@@ -159,6 +159,14 @@ class PotteryMap:
 		return self.render_page(
 				"dashboard.jinja2",
 				**get_dashboard_data(self.pottery, self.companies),
+				chart_list=[
+						"groups-pie-chart",
+						"materials-pie-chart",
+						"companies-bar-chart",
+						"areas-pie-chart",
+						"categories-pie-chart",
+						"types-bar-chart",
+						],
 				)
 
 	def render_notes(self) -> str:

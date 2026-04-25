@@ -123,6 +123,14 @@ main p {
 	flex-grow: 1;
 }
 
+.chart {
+	flex-grow: 1;
+
+	@media (width >= 1000px) {
+		flex-basis: 20vw;
+	}
+}
+
 .item:target {
 	border-color: pink !important;
 }
