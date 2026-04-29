@@ -27,21 +27,29 @@ Generate map showing where items in a pottery collection were manufactured, and 
 #
 
 # 3rd party
-from consolekit import CONTEXT_SETTINGS, click_command
-from consolekit.options import auto_default_argument, auto_default_option
+import click  # nodep
+from consolekit import CONTEXT_SETTINGS, click_group
+from consolekit.options import auto_default_option
 
 __all__ = ["main"]
 
 
-@auto_default_argument("input_directory")
+@auto_default_option(
+		"-i",
+		"--in-dir",
+		"input_directory",
+		help="The input directory, containing the TOML files and images.",
+		)
 @auto_default_option("-o", "--out-dir", help="The output directory.")
 @auto_default_option(
 		"--standalone",
 		is_flag=True,
 		help="Create a standalone map without catalogue pages or additional files.",
 		)
-@click_command(context_settings={**CONTEXT_SETTINGS, "show_default": True})
+@click_group(context_settings={**CONTEXT_SETTINGS, "show_default": True}, invoke_without_command=True)
+@click.pass_context
 def main(
+		ctx: click.Context,
 		input_directory: str = '.',
 		out_dir: str = "output",
 		standalone: bool = False,
@@ -49,6 +57,9 @@ def main(
 	"""
 	Generate map showing where items in a pottery collection were manufactured, and catalogue pages.
 	"""
+
+	if ctx.invoked_subcommand:
+		return
 
 	# 3rd party
 	from domdf_folium_tools import set_branca_random_seed
@@ -70,6 +81,22 @@ def main(
 	pm = PotteryMap(input_directory=input_directory, output_directory=out_dir)
 	pm.write_output()
 	pm.copy_images()
+
+
+@auto_default_option("-o", "--out-dir", help="The output directory.")
+@main.command()
+def schemas(out_dir: str = '.') -> None:
+	"""
+	Write the TOML schemas to the given directory.
+	"""
+
+	# TODO: add comment to top of files in input_directory
+
+	# this package
+	from pottery_map.schema import create_schemas
+
+	for path in create_schemas(out_dir):
+		print(path.as_posix())
 
 
 if __name__ == "__main__":

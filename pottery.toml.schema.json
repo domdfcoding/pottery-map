@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "pottery.toml",
+  "additionalProperties": {
+    "type": "object",
+    "title": "PotteryItem",
+    "properties": {
+      "factory": {
+        "type": "string"
+      },
+      "notes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "links": {
+        "type": "object"
+      },
+      "location": {
+        "type": "object"
+      },
+      "area": {
+        "type": "string"
+      },
+      "successor": {
+        "type": "string"
+      },
+      "defunct": {
+        "type": "boolean"
+      },
+      "material": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "design": {
+        "type": "string"
+      },
+      "designer": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "era": {
+        "type": "string"
+      },
+      "photo_paths": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "diameter": {
+        "type": "string"
+      },
+      "quantity": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "company",
+      "material",
+      "type",
+      "design"
+    ]
+  }
+}

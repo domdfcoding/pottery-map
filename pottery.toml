@@ -1,3 +1,4 @@
+#:schema ./pottery.toml.schema.json
 ["J & G Meakin Libelle Marjolein Bastin"]
 company = "J & G Meakin"
 factory = "Eagle Pottery"

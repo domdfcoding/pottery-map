@@ -27,6 +27,8 @@ Classes to represent pottery collection.
 #
 
 # stdlib
+from collections.abc import Sequence
+from typing import ClassVar
 from urllib.parse import urlparse
 
 # 3rd party
@@ -66,6 +68,9 @@ class PotteryItem:
 	photo_paths: list[str] = attrs.field(factory=list)
 	diameter: str | None = None
 	quantity: int = 1
+
+	_schema_table_name_field: ClassVar[str] = "id"
+	_schema_exclude_fields: ClassVar[Sequence[str]] = ("toml_id", )
 
 	@property
 	def description(self) -> str:

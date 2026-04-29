@@ -29,7 +29,8 @@ Class to represent a company.
 # stdlib
 
 # stdlib
-from typing import TYPE_CHECKING, NamedTuple
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, ClassVar, NamedTuple
 
 # 3rd party
 import attrs
@@ -59,6 +60,9 @@ class Company:
 	area: str | None = None  # E.g. "Hanley", "Longton", "Czechosolvakia", "Chesterfield", "Jingdezhen"
 	successor: str | None = None
 	defunct: bool = False
+
+	_schema_table_name_field: ClassVar[str] = "name"
+	_schema_exclude_fields: ClassVar[Sequence[str]] = ()
 
 	@property
 	def has_notes(self) -> bool:
