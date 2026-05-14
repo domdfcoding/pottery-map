@@ -64,7 +64,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/control.layers.minimap.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/control.layers.minimap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layercontrols@v0.1.0b1/folium_layercontrols/control.layers.minimap.min.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
 
     </head>
@@ -260,9 +260,9 @@
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layerscontrol-minimap@v0.1.0a1/folium_layerscontrol_minimap/L.Control.Layers.Minimap.Toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layercontrols@v0.1.0b1/folium_layercontrols/L.Control.Layers.Minimap.Toggle.min.js"></script>
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b5/folium_map_search/folium-map-search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
     <script>
 
             var mapOptions = {
@@ -400,7 +400,8 @@
 
         var popup_j_g_meakin = L.popup({
   "maxWidth": 400,
-  "minWidth": 245,
+  "minWidth": 285,
+  "className": "pottery-map-popup",
 });
 
 
@@ -471,7 +472,8 @@
 
         var popup_wedgwood = L.popup({
   "maxWidth": 400,
-  "minWidth": 245,
+  "minWidth": 285,
+  "className": "pottery-map-popup",
 });
 
 
@@ -516,7 +518,7 @@
                 overlays :  {
                 },
             };
-            let layer_control_basemap = L.control.layers.minimap.toggle(
+            let layer_control_basemap = new L.Control.Layers.MinimapToggle(
                 layer_control_basemap_layers.base_layers,
                 layer_control_basemap_layers.overlays,
                 {
@@ -545,6 +547,29 @@
 				map_pottery.on('click', map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.close, map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b);
 
 				map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.addTo(map_pottery);
+
+
+		function PopupResizeMonitor(){
+
+			let lastWidth = window.innerWidth;
+
+			function reportWindowSize() {
+				console.log("Width was", lastWidth, "now", window.innerWidth)
+
+				if (lastWidth > 500 && window.innerWidth <= 500) {
+					map_pottery.closePopup();
+					// TODO: reopen if it was open  map_pottery.openPopup();
+				}
+
+				lastWidth = window.innerWidth;
+
+			}
+
+			window.addEventListener("resize", reportWindowSize);
+
+		}
+
+		PopupResizeMonitor();
 
 
     map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)

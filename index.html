@@ -153,13 +153,29 @@ img.pottery-image {
 	}
 }
 
+.pottery-map-popup {
+	--popup-max-width: 285px;
+
+	max-width: 400px;
+	min-width: var(--popup-max-width);
+
+	@media (width <= 500px) {
+		max-width: max(var(--popup-max-width), 50vw);
+	}
+
+	.leaflet-popup-content {
+		margin-left: 10px;
+		margin-right: 12px;
+	}
+}
+
 				</style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b5/folium_map_search/folium-map-search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
 </head>
 <body>
@@ -306,7 +322,8 @@ img.pottery-image {
 
         var popup_j_g_meakin = L.popup({
   "maxWidth": 400,
-  "minWidth": 245,
+  "minWidth": 285,
+  "className": "pottery-map-popup",
 });
 
 
@@ -377,7 +394,8 @@ img.pottery-image {
 
         var popup_wedgwood = L.popup({
   "maxWidth": 400,
-  "minWidth": 245,
+  "minWidth": 285,
+  "className": "pottery-map-popup",
 });
 
 
@@ -451,6 +469,29 @@ img.pottery-image {
 				map_pottery.on('click', map_search_control_5a445d4920eb4d85bb24b9224192cafd.close, map_search_control_5a445d4920eb4d85bb24b9224192cafd);
 
 				map_search_control_5a445d4920eb4d85bb24b9224192cafd.addTo(map_pottery);
+
+
+		function PopupResizeMonitor(){
+
+			let lastWidth = window.innerWidth;
+
+			function reportWindowSize() {
+				console.log("Width was", lastWidth, "now", window.innerWidth)
+
+				if (lastWidth > 500 && window.innerWidth <= 500) {
+					map_pottery.closePopup();
+					// TODO: reopen if it was open  map_pottery.openPopup();
+				}
+
+				lastWidth = window.innerWidth;
+
+			}
+
+			window.addEventListener("resize", reportWindowSize);
+
+		}
+
+		PopupResizeMonitor();
 
 </script>
 </html>
