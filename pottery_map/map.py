@@ -39,7 +39,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
-from folium_layerscontrol_minimap.toggle import ToggleMinimapLayerControl
+from folium_layercontrols.minimap.toggle import ToggleMinimapLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
