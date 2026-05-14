@@ -16,14 +16,14 @@
             <div class="accordion-body">
                 {%- if show_item_notes %}
                     {%- for note in item.notes %}
-                        <code>{{ note }}</code>
+                        <code>{{ format_note(note, root) }}</code>
                         <br>
                     {%- endfor %}
                 {%- endif %}
 
                 {%- if show_company_notes %}
                     {%- for note in company.notes %}
-                        <code>{{ note }}</code>
+                        <code>{{ format_note(note, root) }}</code>
                         <br>
                     {%- endfor %}
                 {%- endif %}

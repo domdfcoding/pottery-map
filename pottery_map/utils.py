@@ -29,6 +29,8 @@ Utility functions.
 # stdlib
 import re
 import shutil
+import warnings
+import xml.etree.ElementTree as etree
 from collections import defaultdict
 from collections.abc import Callable, Collection, Iterable
 from hashlib import sha256
@@ -36,10 +38,12 @@ from typing import TYPE_CHECKING, TypeVar
 
 # 3rd party
 import domdf_folium_tools.static_files
+import markdown
 import tqdm
 from consolekit.terminal_colours import Fore
 from domdf_python_tools.paths import PathPlus, TemporaryPathPlus
 from domdf_python_tools.typing import PathLike
+from markdown.inlinepatterns import InlineProcessor
 from PIL import Image
 
 if TYPE_CHECKING:
@@ -52,6 +56,7 @@ __all__ = [
 		"ProgressBar",
 		"copy_static_files",
 		"filter_keys",
+		"format_note",
 		"get_photo_path",
 		"get_sha256_hash",
 		"groupby",
@@ -333,3 +338,80 @@ class FileModifications:
 			tmpfile.dump_json(self._hashes, indent=2)
 			# tmpfile.rename(self._filename)  # Doesn't work across devices (drives)
 			shutil.copy2(tmpfile, self._filename)
+
+
+NS_COMPANIES = {"company", "companies"}
+
+
+class XRefProcessor(InlineProcessor):  # noqa: PRM002
+	"""
+	Processor for handling internal xref matches.
+	"""
+
+	def __init__(self, pattern: str, root: str, *args, **kwargs):
+		self.root = root
+		super().__init__(pattern, *args, **kwargs)
+
+	def handleMatch(  # type: ignore[override]  # false positive
+			self,
+			m: re.Match[str],
+			data: str,
+			) -> tuple[etree.Element | str | None, int | None, int | None]:
+		link = m.group(1)
+
+		namespace = "item"
+		anchor = None
+
+		if ':' in link:
+			namespace, link = link.split(':', 1)
+
+		if '|' in link:
+			link, text = link.split('|', 1)
+		else:
+			text = link
+
+		if '#' in link:
+			if namespace not in NS_COMPANIES:
+				warnings.warn(
+						f"Link anchors not supported in {namespace} namespace for cross reference {m.group(1)!r}",
+						)
+
+			link, anchor = link.split('#', 1)
+
+		link = make_id(link)
+
+		start = m.start(0)
+		end = m.end(0)
+
+		el = etree.Element('a')
+		el.text = text
+
+		namespace = namespace.lower()
+
+		if namespace in NS_COMPANIES:
+			href = f"{self.root}companies/{link}.html"
+			if anchor:
+				href += f"#{make_id(anchor)}"
+
+			el.set("href", href)
+
+		elif namespace in {"item", "items"}:
+			el.set("href", f"{self.root}items.html#{link}")
+
+		else:
+			raise ValueError(f"Unknown namespace {namespace} for cross reference")
+
+		return el, start, end
+
+
+def format_note(note_text: str, root: str = '') -> str:
+	"""
+	Format a markdown note, with support for internal cross references.
+
+	:param note_text:
+	:param root: The URL root. Prepended to all URLs.
+	"""
+
+	md = markdown.Markdown()
+	md.inlinePatterns.register(XRefProcessor(r'\[\[(.*)\]\]', root), "xref", 65)
+	return md.convert(note_text).removeprefix("<p>").removesuffix("</p>")

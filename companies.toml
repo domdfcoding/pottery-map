@@ -9,5 +9,6 @@ area = "Hanley"
 factory = "Wedgwood Barlaston"
 location = { "latitude" = 52.95429347186072, "longitude" = -2.1703569422826328 }
 successor = "WWRD"
+notes = ["Some text [[company:J & G Meakin#J & G Meakin Libelle Marjolein Bastin|Link Text]]"]
 
 ["WWRD"]
