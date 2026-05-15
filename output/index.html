@@ -239,7 +239,7 @@
 
 
 			<bottom-sheet-dialog-manager>
-				<dialog id="bottomSheetDialog">
+				<dialog id="bottomSheetDialog" class="bottom-sheet-dialog">
 					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
 					</bottom-sheet>
 				</dialog>
@@ -272,7 +272,7 @@
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layercontrols@v0.1.0b1/folium_layercontrols/L.Control.Layers.Minimap.Toggle.min.js"></script>
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b1/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b2/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
     <script>
 
             var mapOptions = {
@@ -464,16 +464,19 @@
 			// TODO: dismiss any tooltips
 			L.setBottomSheetContent(popup_j_g_meakin_content)
 
-			bottomSheetDialog.showModal();
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_j_g_meakin.getElement();
 			if (el != undefined) {
-				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
 			}
-			bottomSheetDialog.addEventListener("close", (event) => {
-				el.style.filter = "unset";
-				{once: true}
-			});
 		}
 
 		function popup_j_g_meakin_bottom_sheet() {
@@ -553,16 +556,19 @@
 			// TODO: dismiss any tooltips
 			L.setBottomSheetContent(popup_wedgwood_content)
 
-			bottomSheetDialog.showModal();
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_wedgwood.getElement();
 			if (el != undefined) {
-				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
 			}
-			bottomSheetDialog.addEventListener("close", (event) => {
-				el.style.filter = "unset";
-				{once: true}
-			});
 		}
 
 		function popup_wedgwood_bottom_sheet() {

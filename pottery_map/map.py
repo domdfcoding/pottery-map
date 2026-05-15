@@ -123,17 +123,20 @@ class Popup(folium.Popup):
 			// TODO: dismiss any tooltips
 			L.setBottomSheetContent({{this.get_name()}}_content)
 
-			bottomSheetDialog.showModal();
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
 			{#- TODO: need to reset colour when opening another, and z-index: 9999 bottomSheetDialog.show(); #}
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = {{ this._parent.get_name() }}.getElement();
 			if (el != undefined) {
-				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
 			}
-			bottomSheetDialog.addEventListener("close", (event) => {
-				el.style.filter = "unset";
-				{once: true}
-			});
 		}
 
 		function {{this.get_name()}}_bottom_sheet() {

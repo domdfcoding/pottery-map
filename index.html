@@ -184,6 +184,15 @@ bottom-sheet .company-factory-details {
 	}
 }
 
+.bottom-sheet-dialog {
+	z-index: 9999;
+}
+
+.marker-highlight {
+	/* Purple-ish */
+	filter: hue-rotate(60deg);
+}
+
 				</style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
@@ -193,7 +202,7 @@ bottom-sheet .company-factory-details {
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b1/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b2/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
 </head>
 <body>
 
@@ -202,7 +211,7 @@ bottom-sheet .company-factory-details {
 
 
 			<bottom-sheet-dialog-manager>
-				<dialog id="bottomSheetDialog">
+				<dialog id="bottomSheetDialog" class="bottom-sheet-dialog">
 					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
 					</bottom-sheet>
 				</dialog>
@@ -402,16 +411,19 @@ bottom-sheet .company-factory-details {
 			// TODO: dismiss any tooltips
 			L.setBottomSheetContent(popup_j_g_meakin_content)
 
-			bottomSheetDialog.showModal();
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_j_g_meakin.getElement();
 			if (el != undefined) {
-				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
 			}
-			bottomSheetDialog.addEventListener("close", (event) => {
-				el.style.filter = "unset";
-				{once: true}
-			});
 		}
 
 		function popup_j_g_meakin_bottom_sheet() {
@@ -491,16 +503,19 @@ bottom-sheet .company-factory-details {
 			// TODO: dismiss any tooltips
 			L.setBottomSheetContent(popup_wedgwood_content)
 
-			bottomSheetDialog.showModal();
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_wedgwood.getElement();
 			if (el != undefined) {
-				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
 			}
-			bottomSheetDialog.addEventListener("close", (event) => {
-				el.style.filter = "unset";
-				{once: true}
-			});
 		}
 
 		function popup_wedgwood_bottom_sheet() {
