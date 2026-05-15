@@ -33,7 +33,6 @@ from collections.abc import Iterable
 # 3rd party
 import folium
 import folium.plugins
-from domdf_folium_tools import embed_styles
 from domdf_folium_tools.elements import add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
@@ -82,97 +81,37 @@ class PopupResizeMonitor(folium.MacroElement):
 	_template = Template(
 			"""
 		{% macro script(this, kwargs) %}
-		function PopupResizeMonitor(){
-
-			let lastWidth = window.innerWidth;
-
-			function reportWindowSize() {
-				console.log("Width was", lastWidth, "now", window.innerWidth)
-
-				if (lastWidth > 500 && window.innerWidth <= 500) {
-					{{ this._parent.get_name() }}.closePopup();
-					// TODO: reopen if it was open  {{ this._parent.get_name() }}.openPopup();
-				} else if (lastWidth <= 500 && window.innerWidth > 500) {
-					document.getElementById("bottomSheetDialog").close();
-				}
-
-				lastWidth = window.innerWidth;
-
-			}
-
-			window.addEventListener("resize", reportWindowSize);
-
-		}
-
-		PopupResizeMonitor();
+		{{ this._parent.get_name() }}.on('click', bottomSheetDialog.close, bottomSheetDialog);
+		PopupResizeMonitor({{ this._parent.get_name() }});
 		{% endmacro %}
 
-    """,
+	""",
 			)
 
 
 class Popup(folium.Popup):
+	"""
+	Heavily customised folium popup that displays either a popup or the bottom sheet depending on the screen size.
+	"""
+
 	_template = Template(
 			"""
-        var {{this.get_name()}} = L.popup({{ this.options|tojavascript }});
+		var {{this.get_name()}}_popup = L.popup({{ this.options|tojavascript }});
 
-		const {{this.get_name()}}_content = `{{ this.popup_content }}`;
-		{{ this.get_name() }}.setContent(`<div class="item-details">${ {{this.get_name()}}_content }</div>`);
+		var {{this.get_name()}} = new PopupOrBottomSheet(
+			marker={{ this._parent.get_name() }},
+			content=`{{ this.popup_content }}`,
+			popup={{this.get_name()}}_popup,
+		);
 
-		function {{this.get_name()}}_open_bottom_sheet() {
-			// TODO: dismiss any tooltips
-			L.setBottomSheetContent({{this.get_name()}}_content)
-
-			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
-				m.classList.remove("marker-highlight")
-			})
-			bottomSheetDialog.show();
-			{#- TODO: need to reset colour when opening another, and z-index: 9999 bottomSheetDialog.show(); #}
-			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
-			const el = {{ this._parent.get_name() }}.getElement();
-			if (el != undefined) {
-				el.classList.add("marker-highlight")
-				bottomSheetDialog.addEventListener("close", (event) => {
-					el.classList.remove("marker-highlight")
-					{once: true}
-				});
-			}
-		}
-
-		function {{this.get_name()}}_bottom_sheet() {
-			{{ this._parent.get_name() }}.unbindPopup({{ this.get_name() }})
-			{{ this._parent.get_name() }}.on("click", {{this.get_name()}}_open_bottom_sheet)
-		}
-
-		function {{this.get_name()}}_popup() {
-			{{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
-			{{ this._parent.get_name() }}.off("click", {{this.get_name()}}_open_bottom_sheet)
-		}
-
-		function {{this.get_name()}}_switch() {
-			if (window.innerWidth < 500){
-				{{this.get_name()}}_bottom_sheet()
-			} else {
-				{{this.get_name()}}_popup()
-			}
-		}
-
-		{{this.get_name()}}_switch()
-		{#{% if this.show %}.openPopup(){% endif %};#}
-
-		addEventListener("resize", (event) => {
-			if (window.innerWidth < 500){
-				{{this.get_name()}}_bottom_sheet()
-			} else {
-				{{this.get_name()}}_popup()
-			}
-		})
+		{{this.get_name()}}.switch();
+		{% if this.show %}{{this.get_name()}}.show(){% endif %}
 
 
-        {% for name, element in this.script._children.items() %}
-            {{element.render()}}
-        {% endfor %}
-    """,
+		{% for name, element in this.script._children.items() %}
+			{{element.render()}}
+		{% endfor %}
+	""".replace('\t', "    "),
 			)
 
 	def __init__(
@@ -192,6 +131,35 @@ class Popup(folium.Popup):
 		self._id = id
 
 		self.popup_content = html
+
+
+class EmbeddedCSSJS(folium.MacroElement):
+	"""
+	Embed the map's custom CSS and JavaScript into the HTML.
+
+	:param custom_css: CSS as a string.
+	:param custom_js: JavaScript as a string.
+	"""
+
+	_template = Template(
+			"""
+			{% macro header(this, kwargs) %}
+				<style>
+					{{ this.custom_css }}
+				</style>
+			{% endmacro %}
+
+			{% macro script(this, kwargs) %}
+				{{ this.custom_js }}
+			{% endmacro %}
+	""",
+			)
+
+	def __init__(self, custom_css: str = '', custom_js: str = ''):
+		super().__init__()
+		self._name = "EmbeddedCSSJS"
+		self.custom_css = custom_css
+		self.custom_js = custom_js
 
 
 def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True) -> Map:
@@ -233,9 +201,13 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 	ZoomStateJS(setup_basemap_state=True).add_to(m)
 
 	if standalone:
-		embed_styles(m, importlib_resources.read_text("pottery_map.static", "pottery_map.css"))
+		EmbeddedCSSJS(
+				custom_css=importlib_resources.read_text("pottery_map.static", "pottery_map.css"),
+				custom_js=importlib_resources.read_text("pottery_map.static", "map_popup.js"),
+				).add_to(m)
 	else:
 		m.add_css_link("pottery_map.css", "./static/css/pottery_map.css")
+		m.add_js_link("map-popup-js", "./static/js/map_popup.js")
 
 	marker_cluster = add_to(
 			folium.plugins.MarkerCluster(options={"maxClusterRadius": 50}, control=False),
