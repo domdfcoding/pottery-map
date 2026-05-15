@@ -17,6 +17,11 @@ img.pottery-image {
 	overflow-y: scroll;
 }
 
+bottom-sheet .company-factory-details {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
 .popup-image-wrapper {
 	position: relative;
 }

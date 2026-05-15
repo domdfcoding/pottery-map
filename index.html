@@ -66,6 +66,11 @@ img.pottery-image {
 	overflow-y: scroll;
 }
 
+bottom-sheet .company-factory-details {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
 .popup-image-wrapper {
 	position: relative;
 }
@@ -198,13 +203,7 @@ img.pottery-image {
 			<bottom-sheet-dialog-manager>
 				<dialog id="mobilePopupDialog">
 
-					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
-					<!-- Snap points -->
-					<div slot="snap" style="--snap: 75%" class="top"></div>
-					<div slot="snap" style="--snap: 50%"></div>
-					<div slot="snap" style="--snap: 25%" class="initial"></div>
-
-					<div id="bottomSheetContent"></div>
+					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
 					</bottom-sheet>
 				</dialog>
             </bottom-sheet-dialog-manager>
@@ -361,61 +360,55 @@ img.pottery-image {
 ],
 });
 
+		const popup_j_g_meakin_content = `<div slot="header" class="company-factory-details">
+    <h2>J & G Meakin</h2>
+    <h3 class="fs-5">
+        <strong>Eagle Pottery</strong>
+    </h3>
+</div>
 
-                popup_j_g_meakin.setContent(`
-<div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <div slot="header">
-        <h2>J & G Meakin</h2>
-        <h3 class="fs-5">
-            <strong>Eagle Pottery</strong>
-        </h3>
-    </div>
-
-        <hr class="mt-1 mb-2">
-        <h4 class="fs-4">
-            Strawberry Border
-        </h4>
-        <div class="container properties">
-            <div class="row">
-                <span>Earthenware Plate</span>
-            </div>
-
-
-                <div class="row">
-                    <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
-                </div>
+    <hr class="mt-1 mb-2">
+    <h4 class="fs-4">
+        Strawberry Border
+    </h4>
+    <div class="container properties">
+        <div class="row">
+            <span>Earthenware Plate</span>
         </div>
 
-            <div class="mt-auto mx-auto pt-1">
-                <div class="popup-image-wrapper">
-                    <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
-                    <div class="loading-anim">
-                        <div class="lds-ellipsis">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
+
+            <div class="row">
+                <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
+            </div>
+    </div>
+
+        <div class="mt-auto mx-auto pt-1">
+            <div class="popup-image-wrapper">
+                <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
+                <div class="loading-anim">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
             </div>
-
-
-</div></div>
-`);
-
+        </div>
+    `;
+		popup_j_g_meakin.setContent(`<div class="item-details">${ popup_j_g_meakin_content }</div>`);
 
 		function popup_j_g_meakin_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			bottomSheetContent.innerHTML = popup_j_g_meakin.getContent()
+			setMobilePopupDialogContent(popup_j_g_meakin_content)
 
-			const dialog = document.getElementById("mobilePopupDialog")
-			dialog.showModal();
+			mobilePopupDialog.showModal();
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_j_g_meakin.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			dialog.addEventListener("close", (event) => {
+			mobilePopupDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -486,31 +479,25 @@ img.pottery-image {
 ],
 });
 
-
-                popup_wedgwood.setContent(`
-<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <div slot="header">
-        <h2>Wedgwood</h2>
-        <h3 class="fs-5">
-            <strong>Wedgwood Barlaston</strong>
-        </h3>
-    </div>
-
-</div></div>
-`);
-
+		const popup_wedgwood_content = `<div slot="header" class="company-factory-details">
+    <h2>Wedgwood</h2>
+    <h3 class="fs-5">
+        <strong>Wedgwood Barlaston</strong>
+    </h3>
+</div>`;
+		popup_wedgwood.setContent(`<div class="item-details">${ popup_wedgwood_content }</div>`);
 
 		function popup_wedgwood_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			bottomSheetContent.innerHTML = popup_wedgwood.getContent()
+			setMobilePopupDialogContent(popup_wedgwood_content)
 
-			const dialog = document.getElementById("mobilePopupDialog")
-			dialog.showModal();
+			mobilePopupDialog.showModal();
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_wedgwood.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			dialog.addEventListener("close", (event) => {
+			mobilePopupDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -639,6 +626,14 @@ img.pottery-image {
 			</script>
 
 			<script>
+			function setMobilePopupDialogContent(content) {
+				bottomSheetContent.innerHTML = `<!-- Snap points -->
+					<div slot="snap" style="--snap: 75%" class="top"></div>
+					<div slot="snap" style="--snap: 50%"></div>
+					<div slot="snap" style="--snap: 25%" class="initial"></div>
+					${content}
+					`
+			}
 
 </script>
 </html>

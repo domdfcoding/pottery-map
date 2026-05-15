@@ -123,13 +123,7 @@ class MobilePopupDialog(folium.MacroElement):
 			<bottom-sheet-dialog-manager>
 				<dialog id="mobilePopupDialog">
 					{# TODO: keep dialog on screen if it would be collapsed, and have manual close button #}
-					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
-					<!-- Snap points -->
-					<div slot="snap" style="--snap: 75%" class="top"></div>
-					<div slot="snap" style="--snap: 50%"></div>
-					<div slot="snap" style="--snap: 25%" class="initial"></div>
-
-					<div id="bottomSheetContent"></div>
+					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
 					</bottom-sheet>
 				</dialog>
             </bottom-sheet-dialog-manager>
@@ -146,6 +140,14 @@ class MobilePopupDialog(folium.MacroElement):
 			</script>
 
 			<script>
+			function setMobilePopupDialogContent(content) {
+				bottomSheetContent.innerHTML = `<!-- Snap points -->
+					<div slot="snap" style="--snap: 75%" class="top"></div>
+					<div slot="snap" style="--snap: 50%"></div>
+					<div slot="snap" style="--snap: 25%" class="initial"></div>
+					${content}
+					`
+			}
 		{% endmacro %}
 
     """,
@@ -157,23 +159,20 @@ class Popup(folium.Popup):
 			"""
         var {{this.get_name()}} = L.popup({{ this.options|tojavascript }});
 
-        {% for name, element in this.html._children.items() %}
-                {{ this.get_name() }}.setContent(`
-{{ element.render(**kwargs) }}
-`);
-        {% endfor %}
+		const {{this.get_name()}}_content = `{{ this.popup_content }}`;
+		{{ this.get_name() }}.setContent(`<div class="item-details">${ {{this.get_name()}}_content }</div>`);
 
 		function {{this.get_name()}}_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			bottomSheetContent.innerHTML = {{ this.get_name() }}.getContent()
+			setMobilePopupDialogContent({{this.get_name()}}_content)
 
-			const dialog = document.getElementById("mobilePopupDialog")
-			dialog.showModal();
+			mobilePopupDialog.showModal();
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = {{ this._parent.get_name() }}.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			dialog.addEventListener("close", (event) => {
+			mobilePopupDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -230,6 +229,8 @@ class Popup(folium.Popup):
 
 		super().__init__(html=html_element, max_width=max_width, min_width=min_width, **kwargs)
 		self._id = id
+
+		self.popup_content = html
 
 
 def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True) -> Map:
