@@ -12,20 +12,6 @@
     <main class="min-vh-100 min-vw-75">
         {% block body %}
             {{ body|safe }}
-            <bottom-sheet-dialog-manager>
-            <dialog id="mobilePopupDialog">
-                <!-- TODO: keep dialog on screen if it would be collapsed, and have manual close button -->
-                <bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
-                <!-- Snap points -->
-                <div slot="snap" style="--snap: 75%" class="top"></div>
-                <div slot="snap" style="--snap: 50%"></div>
-                <div slot="snap" style="--snap: 25%" class="initial"></div>
-
-                <div id="bottomSheetContent"></div>
-                </bottom-sheet>
-            </dialog>
-            </bottom-sheet-dialog-manager>
-
         {% endblock body %}
     </main>
 {% endblock main %}
@@ -37,12 +23,6 @@
     <script>{{ script|safe }}
 
     map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)
-    </script>
-
-    <script type="module">
-        // TODO: edit code so collapses with a few pixels left
-        import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
-        registerSheetElements();
     </script>
 {% endblock scripts %}
 {% block footer %}

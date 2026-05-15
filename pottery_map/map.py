@@ -110,6 +110,48 @@ class PopupResizeMonitor(folium.MacroElement):
 			)
 
 
+class MobilePopupDialog(folium.MacroElement):
+	"""
+	Monitors the browser window for resizes and dismisses popups if going into "small screen" mode.
+
+	This avoids the popup becoming malformed when reducing its width below what leaflet originally set it to.
+	"""
+
+	_template = Template(
+			"""
+		{% macro html(this, kwargs) %}
+			<bottom-sheet-dialog-manager>
+				<dialog id="mobilePopupDialog">
+					{# TODO: keep dialog on screen if it would be collapsed, and have manual close button #}
+					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
+					<!-- Snap points -->
+					<div slot="snap" style="--snap: 75%" class="top"></div>
+					<div slot="snap" style="--snap: 50%"></div>
+					<div slot="snap" style="--snap: 25%" class="initial"></div>
+
+					<div id="bottomSheetContent"></div>
+					</bottom-sheet>
+				</dialog>
+            </bottom-sheet-dialog-manager>
+
+		{% endmacro %}
+		{% macro script(this, kwargs) %}
+			{# TODO: better way to have script type=module with branca #}
+			</script>
+
+			<script type="module">
+				{# TODO: edit code so collapses with a few pixels left #}
+				import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
+				registerSheetElements();
+			</script>
+
+			<script>
+		{% endmacro %}
+
+    """,
+			)
+
+
 class Popup(folium.Popup):
 	_template = Template(
 			"""
@@ -289,6 +331,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 			close_on_submit=True,
 			).add_to(m)
 	PopupResizeMonitor().add_to(m)
+	MobilePopupDialog().add_to(m)
 
 	return m
 

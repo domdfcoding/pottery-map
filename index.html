@@ -194,6 +194,22 @@ img.pottery-image {
 
             <div class="folium-map" id="map_pottery" ></div>
 
+
+			<bottom-sheet-dialog-manager>
+				<dialog id="mobilePopupDialog">
+
+					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
+					<!-- Snap points -->
+					<div slot="snap" style="--snap: 75%" class="top"></div>
+					<div slot="snap" style="--snap: 50%"></div>
+					<div slot="snap" style="--snap: 25%" class="initial"></div>
+
+					<div id="bottomSheetContent"></div>
+					</bottom-sheet>
+				</dialog>
+            </bottom-sheet-dialog-manager>
+
+
 </body>
 <script>
 
@@ -611,6 +627,18 @@ img.pottery-image {
 		}
 
 		PopupResizeMonitor();
+
+
+
+			</script>
+
+			<script type="module">
+
+				import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
+				registerSheetElements();
+			</script>
+
+			<script>
 
 </script>
 </html>
