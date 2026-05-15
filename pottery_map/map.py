@@ -40,6 +40,7 @@ from domdf_python_tools.paths import PathPlus, clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
 from folium_layercontrols.minimap.toggle import ToggleMinimapLayerControl
+from folium_layercontrols.toggle import ToggleLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
 from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
 
@@ -216,8 +217,9 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 				)
 		add_to(marker, marker_cluster, company_id)
 
+	layer_control: folium.LayerControl
 	if standalone:
-		layer_control = folium.LayerControl()
+		layer_control = ToggleLayerControl()
 	else:
 		layer_control = ToggleMinimapLayerControl()
 
