@@ -257,7 +257,14 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 				location=[company.location["latitude"], company.location["longitude"]],
 				tooltip=company.name,
 				# popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
-				popup=Popup('\n'.join(popup_text), min_width=285, id=company_id, class_name="pottery-map-popup"),
+				popup=Popup(
+						'\n'.join(popup_text),
+						min_width=285,
+						id=company_id,
+						class_name="pottery-map-popup",
+						autoPanPaddingTopLeft=[45, 0],
+						autoPanPaddingBottomRight=[65, 0],
+						),
 				search_name=company.name,
 				)
 		add_to(marker, marker_cluster, company_id)
