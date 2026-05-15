@@ -33,6 +33,7 @@ from collections.abc import Iterable
 # 3rd party
 import folium
 import folium.plugins
+from domdf_folium_tools import EmbeddedCSSJS
 from domdf_folium_tools.elements import add_to, set_id
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
@@ -131,35 +132,6 @@ class Popup(folium.Popup):
 		self._id = id
 
 		self.popup_content = html
-
-
-class EmbeddedCSSJS(folium.MacroElement):
-	"""
-	Embed the map's custom CSS and JavaScript into the HTML.
-
-	:param custom_css: CSS as a string.
-	:param custom_js: JavaScript as a string.
-	"""
-
-	_template = Template(
-			"""
-			{% macro header(this, kwargs) %}
-				<style>
-					{{ this.custom_css }}
-				</style>
-			{% endmacro %}
-
-			{% macro script(this, kwargs) %}
-				{{ this.custom_js }}
-			{% endmacro %}
-	""",
-			)
-
-	def __init__(self, custom_css: str = '', custom_js: str = ''):
-		super().__init__()
-		self._name = "EmbeddedCSSJS"
-		self.custom_css = custom_css
-		self.custom_js = custom_js
 
 
 def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True) -> Map:
