@@ -193,6 +193,7 @@ bottom-sheet .company-factory-details {
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b1/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
 </head>
 <body>
 
@@ -201,8 +202,7 @@ bottom-sheet .company-factory-details {
 
 
 			<bottom-sheet-dialog-manager>
-				<dialog id="mobilePopupDialog">
-
+				<dialog id="bottomSheetDialog">
 					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
 					</bottom-sheet>
 				</dialog>
@@ -400,15 +400,15 @@ bottom-sheet .company-factory-details {
 
 		function popup_j_g_meakin_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			setMobilePopupDialogContent(popup_j_g_meakin_content)
+			L.setBottomSheetContent(popup_j_g_meakin_content)
 
-			mobilePopupDialog.showModal();
+			bottomSheetDialog.showModal();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_j_g_meakin.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			mobilePopupDialog.addEventListener("close", (event) => {
+			bottomSheetDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -489,15 +489,15 @@ bottom-sheet .company-factory-details {
 
 		function popup_wedgwood_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			setMobilePopupDialogContent(popup_wedgwood_content)
+			L.setBottomSheetContent(popup_wedgwood_content)
 
-			mobilePopupDialog.showModal();
+			bottomSheetDialog.showModal();
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = marker_wedgwood.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			mobilePopupDialog.addEventListener("close", (event) => {
+			bottomSheetDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -602,7 +602,7 @@ bottom-sheet .company-factory-details {
 					map_pottery.closePopup();
 					// TODO: reopen if it was open  map_pottery.openPopup();
 				} else if (lastWidth <= 500 && window.innerWidth > 500) {
-					document.getElementById("mobilePopupDialog").close();
+					document.getElementById("bottomSheetDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -616,24 +616,7 @@ bottom-sheet .company-factory-details {
 		PopupResizeMonitor();
 
 
-
-			</script>
-
-			<script type="module">
-
-				import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
-				registerSheetElements();
-			</script>
-
-			<script>
-			function setMobilePopupDialogContent(content) {
-				bottomSheetContent.innerHTML = `<!-- Snap points -->
-					<div slot="snap" style="--snap: 75%" class="top"></div>
-					<div slot="snap" style="--snap: 50%"></div>
-					<div slot="snap" style="--snap: 25%" class="initial"></div>
-					${content}
-					`
-			}
+			L.setupBottomSheet();
 
 </script>
 </html>

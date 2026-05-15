@@ -39,6 +39,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
+from folium_bottom_sheet import BottomSheetDialog
 from folium_layercontrols.minimap.toggle import ToggleMinimapLayerControl
 from folium_layercontrols.toggle import ToggleLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
@@ -92,7 +93,7 @@ class PopupResizeMonitor(folium.MacroElement):
 					{{ this._parent.get_name() }}.closePopup();
 					// TODO: reopen if it was open  {{ this._parent.get_name() }}.openPopup();
 				} else if (lastWidth <= 500 && window.innerWidth > 500) {
-					document.getElementById("mobilePopupDialog").close();
+					document.getElementById("bottomSheetDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -110,50 +111,6 @@ class PopupResizeMonitor(folium.MacroElement):
 			)
 
 
-class MobilePopupDialog(folium.MacroElement):
-	"""
-	Monitors the browser window for resizes and dismisses popups if going into "small screen" mode.
-
-	This avoids the popup becoming malformed when reducing its width below what leaflet originally set it to.
-	"""
-
-	_template = Template(
-			"""
-		{% macro html(this, kwargs) %}
-			<bottom-sheet-dialog-manager>
-				<dialog id="mobilePopupDialog">
-					{# TODO: keep dialog on screen if it would be collapsed, and have manual close button #}
-					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
-					</bottom-sheet>
-				</dialog>
-            </bottom-sheet-dialog-manager>
-
-		{% endmacro %}
-		{% macro script(this, kwargs) %}
-			{# TODO: better way to have script type=module with branca #}
-			</script>
-
-			<script type="module">
-				{# TODO: edit code so collapses with a few pixels left #}
-				import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
-				registerSheetElements();
-			</script>
-
-			<script>
-			function setMobilePopupDialogContent(content) {
-				bottomSheetContent.innerHTML = `<!-- Snap points -->
-					<div slot="snap" style="--snap: 75%" class="top"></div>
-					<div slot="snap" style="--snap: 50%"></div>
-					<div slot="snap" style="--snap: 25%" class="initial"></div>
-					${content}
-					`
-			}
-		{% endmacro %}
-
-    """,
-			)
-
-
 class Popup(folium.Popup):
 	_template = Template(
 			"""
@@ -164,15 +121,16 @@ class Popup(folium.Popup):
 
 		function {{this.get_name()}}_open_bottom_sheet() {
 			// TODO: dismiss any tooltips
-			setMobilePopupDialogContent({{this.get_name()}}_content)
+			L.setBottomSheetContent({{this.get_name()}}_content)
 
-			mobilePopupDialog.showModal();
+			bottomSheetDialog.showModal();
+			{#- TODO: need to reset colour when opening another, and z-index: 9999 bottomSheetDialog.show(); #}
 			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
 			const el = {{ this._parent.get_name() }}.getElement();
 			if (el != undefined) {
 				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
 			}
-			mobilePopupDialog.addEventListener("close", (event) => {
+			bottomSheetDialog.addEventListener("close", (event) => {
 				el.style.filter = "unset";
 				{once: true}
 			});
@@ -332,7 +290,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 			close_on_submit=True,
 			).add_to(m)
 	PopupResizeMonitor().add_to(m)
-	MobilePopupDialog().add_to(m)
+	BottomSheetDialog().add_to(m)
 
 	return m
 
