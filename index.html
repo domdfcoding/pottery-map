@@ -160,7 +160,7 @@ img.pottery-image {
 	min-width: var(--popup-max-width);
 
 	@media (width <= 500px) {
-		max-width: max(var(--popup-max-width), 50vw);
+		max-width: min(var(--popup-max-width), 50vw);
 	}
 
 	.leaflet-popup-content {
@@ -330,10 +330,12 @@ img.pottery-image {
 
                 popup_j_g_meakin.setContent(`
 <div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <h2>J & G Meakin</h2>
-    <h3 class="fs-5">
-        <strong>Eagle Pottery</strong>
-    </h3>
+    <div slot="header">
+        <h2>J & G Meakin</h2>
+        <h3 class="fs-5">
+            <strong>Eagle Pottery</strong>
+        </h3>
+    </div>
 
         <hr class="mt-1 mb-2">
         <h4 class="fs-4">
@@ -369,8 +371,51 @@ img.pottery-image {
 `);
 
 
-        marker_j_g_meakin.bindPopup(popup_j_g_meakin)
-        ;
+		function popup_j_g_meakin_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			bottomSheetContent.innerHTML = popup_j_g_meakin.getContent()
+
+			const dialog = document.getElementById("mobilePopupDialog")
+			dialog.showModal();
+			const el = marker_j_g_meakin.getElement();
+			if (el != undefined) {
+				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+			}
+			dialog.addEventListener("close", (event) => {
+				el.style.filter = "unset";
+				{once: true}
+			});
+		}
+
+		function popup_j_g_meakin_bottom_sheet() {
+			marker_j_g_meakin.unbindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.on("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_popup() {
+			marker_j_g_meakin.bindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.off("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_switch() {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		}
+
+		popup_j_g_meakin_switch()
+
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		})
+
 
 
 
@@ -402,17 +447,62 @@ img.pottery-image {
 
                 popup_wedgwood.setContent(`
 <div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <h2>Wedgwood</h2>
-    <h3 class="fs-5">
-        <strong>Wedgwood Barlaston</strong>
-    </h3>
+    <div slot="header">
+        <h2>Wedgwood</h2>
+        <h3 class="fs-5">
+            <strong>Wedgwood Barlaston</strong>
+        </h3>
+    </div>
 
 </div></div>
 `);
 
 
-        marker_wedgwood.bindPopup(popup_wedgwood)
-        ;
+		function popup_wedgwood_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			bottomSheetContent.innerHTML = popup_wedgwood.getContent()
+
+			const dialog = document.getElementById("mobilePopupDialog")
+			dialog.showModal();
+			const el = marker_wedgwood.getElement();
+			if (el != undefined) {
+				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+			}
+			dialog.addEventListener("close", (event) => {
+				el.style.filter = "unset";
+				{once: true}
+			});
+		}
+
+		function popup_wedgwood_bottom_sheet() {
+			marker_wedgwood.unbindPopup(popup_wedgwood)
+			marker_wedgwood.on("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_popup() {
+			marker_wedgwood.bindPopup(popup_wedgwood)
+			marker_wedgwood.off("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_switch() {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		}
+
+		popup_wedgwood_switch()
+
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		})
+
 
 
 
@@ -482,6 +572,8 @@ img.pottery-image {
 				if (lastWidth > 500 && window.innerWidth <= 500) {
 					map_pottery.closePopup();
 					// TODO: reopen if it was open  map_pottery.openPopup();
+				} else if (lastWidth <= 500 && window.innerWidth > 500) {
+					document.getElementById("mobilePopupDialog").close();
 				}
 
 				lastWidth = window.innerWidth;

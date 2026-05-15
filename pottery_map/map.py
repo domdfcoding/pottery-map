@@ -91,6 +91,8 @@ class PopupResizeMonitor(folium.MacroElement):
 				if (lastWidth > 500 && window.innerWidth <= 500) {
 					{{ this._parent.get_name() }}.closePopup();
 					// TODO: reopen if it was open  {{ this._parent.get_name() }}.openPopup();
+				} else if (lastWidth <= 500 && window.innerWidth > 500) {
+					document.getElementById("mobilePopupDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -119,8 +121,51 @@ class Popup(folium.Popup):
 `);
         {% endfor %}
 
-        {{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
-        {% if this.show %}.openPopup(){% endif %};
+		function {{this.get_name()}}_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			bottomSheetContent.innerHTML = {{ this.get_name() }}.getContent()
+
+			const dialog = document.getElementById("mobilePopupDialog")
+			dialog.showModal();
+			const el = {{ this._parent.get_name() }}.getElement();
+			if (el != undefined) {
+				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+			}
+			dialog.addEventListener("close", (event) => {
+				el.style.filter = "unset";
+				{once: true}
+			});
+		}
+
+		function {{this.get_name()}}_bottom_sheet() {
+			{{ this._parent.get_name() }}.unbindPopup({{ this.get_name() }})
+			{{ this._parent.get_name() }}.on("click", {{this.get_name()}}_open_bottom_sheet)
+		}
+
+		function {{this.get_name()}}_popup() {
+			{{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
+			{{ this._parent.get_name() }}.off("click", {{this.get_name()}}_open_bottom_sheet)
+		}
+
+		function {{this.get_name()}}_switch() {
+			if (window.innerWidth < 500){
+				{{this.get_name()}}_bottom_sheet()
+			} else {
+				{{this.get_name()}}_popup()
+			}
+		}
+
+		{{this.get_name()}}_switch()
+		{#{% if this.show %}.openPopup(){% endif %};#}
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				{{this.get_name()}}_bottom_sheet()
+			} else {
+				{{this.get_name()}}_popup()
+			}
+		})
+
 
         {% for name, element in this.script._children.items() %}
             {{element.render()}}

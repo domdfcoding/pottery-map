@@ -237,6 +237,20 @@
 
             <div class="folium-map" id="map_pottery" ></div>
 
+            <bottom-sheet-dialog-manager>
+            <dialog id="mobilePopupDialog">
+                <!-- TODO: keep dialog on screen if it would be collapsed, and have manual close button -->
+                <bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0">
+                <!-- Snap points -->
+                <div slot="snap" style="--snap: 75%" class="top"></div>
+                <div slot="snap" style="--snap: 50%"></div>
+                <div slot="snap" style="--snap: 25%" class="initial"></div>
+
+                <div id="bottomSheetContent"></div>
+                </bottom-sheet>
+            </dialog>
+            </bottom-sheet-dialog-manager>
+
 
     </main>
 
@@ -407,10 +421,12 @@
 
                 popup_j_g_meakin.setContent(`
 <div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <h2><a href="companies/j_g_meakin.html">J & G Meakin</a></h2>
-    <h3 class="fs-5">
-        <strong>Eagle Pottery</strong>
-    </h3>
+    <div slot="header">
+        <h2><a href="companies/j_g_meakin.html">J & G Meakin</a></h2>
+        <h3 class="fs-5">
+            <strong>Eagle Pottery</strong>
+        </h3>
+    </div>
 
         <hr class="mt-1 mb-2">
         <h4 class="fs-4">
@@ -446,8 +462,51 @@
 `);
 
 
-        marker_j_g_meakin.bindPopup(popup_j_g_meakin)
-        ;
+		function popup_j_g_meakin_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			bottomSheetContent.innerHTML = popup_j_g_meakin.getContent()
+
+			const dialog = document.getElementById("mobilePopupDialog")
+			dialog.showModal();
+			const el = marker_j_g_meakin.getElement();
+			if (el != undefined) {
+				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+			}
+			dialog.addEventListener("close", (event) => {
+				el.style.filter = "unset";
+				{once: true}
+			});
+		}
+
+		function popup_j_g_meakin_bottom_sheet() {
+			marker_j_g_meakin.unbindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.on("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_popup() {
+			marker_j_g_meakin.bindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.off("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_switch() {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		}
+
+		popup_j_g_meakin_switch()
+
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		})
+
 
 
 
@@ -479,17 +538,62 @@
 
                 popup_wedgwood.setContent(`
 <div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
-    <h2><a href="companies/wedgwood.html">Wedgwood</a></h2>
-    <h3 class="fs-5">
-        <strong>Wedgwood Barlaston</strong>
-    </h3>
+    <div slot="header">
+        <h2><a href="companies/wedgwood.html">Wedgwood</a></h2>
+        <h3 class="fs-5">
+            <strong>Wedgwood Barlaston</strong>
+        </h3>
+    </div>
 
 </div></div>
 `);
 
 
-        marker_wedgwood.bindPopup(popup_wedgwood)
-        ;
+		function popup_wedgwood_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			bottomSheetContent.innerHTML = popup_wedgwood.getContent()
+
+			const dialog = document.getElementById("mobilePopupDialog")
+			dialog.showModal();
+			const el = marker_wedgwood.getElement();
+			if (el != undefined) {
+				el.style.filter = "hue-rotate(60deg)";  // Purple-ish
+			}
+			dialog.addEventListener("close", (event) => {
+				el.style.filter = "unset";
+				{once: true}
+			});
+		}
+
+		function popup_wedgwood_bottom_sheet() {
+			marker_wedgwood.unbindPopup(popup_wedgwood)
+			marker_wedgwood.on("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_popup() {
+			marker_wedgwood.bindPopup(popup_wedgwood)
+			marker_wedgwood.off("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_switch() {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		}
+
+		popup_wedgwood_switch()
+
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		})
+
 
 
 
@@ -559,6 +663,8 @@
 				if (lastWidth > 500 && window.innerWidth <= 500) {
 					map_pottery.closePopup();
 					// TODO: reopen if it was open  map_pottery.openPopup();
+				} else if (lastWidth <= 500 && window.innerWidth > 500) {
+					document.getElementById("mobilePopupDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -573,6 +679,12 @@
 
 
     map_pottery.attributionControl.setPrefix(`<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">🇺🇦 Leaflet</a> | <a href="https://thenounproject.com/icon/pottery-7911200/" target="_blank">Pottery icon by Singlar</a>`)
+    </script>
+
+    <script type="module">
+        // TODO: edit code so collapses with a few pixels left
+        import { registerSheetElements } from "https://unpkg.com/pure-web-bottom-sheet@0.7.0/dist/web.client.js";
+        registerSheetElements();
     </script>
 
     </body>
