@@ -49,7 +49,7 @@
 				<style>
 					:root {
 	--popup-image-width: 240px;
-	--popup-image-height: 180px;
+	--popup-image-height: calc(var(--popup-image-width) / 4 * 3);
 }
 
 img.pottery-image {
@@ -64,6 +64,11 @@ img.pottery-image {
 .item-details {
 	max-height: 50vh;
 	overflow-y: scroll;
+}
+
+bottom-sheet .company-factory-details {
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 .popup-image-wrapper {
@@ -160,13 +165,32 @@ img.pottery-image {
 	min-width: var(--popup-max-width);
 
 	@media (width <= 500px) {
-		max-width: max(var(--popup-max-width), 50vw);
+		max-width: min(var(--popup-max-width), 50vw);
 	}
 
 	.leaflet-popup-content {
-		margin-left: 10px;
+		margin-left: 10px !important;
 		margin-right: 12px;
 	}
+}
+
+
+.leaflet-popup-close-button {
+	margin-right: 4px;
+	margin-top: 4px;
+
+	span {
+		font-size: 24px;
+	}
+}
+
+.bottom-sheet-dialog {
+	z-index: 9999;
+}
+
+.marker-highlight {
+	/* Purple-ish */
+	filter: hue-rotate(60deg);
 }
 
 				</style>
@@ -178,11 +202,21 @@ img.pottery-image {
     <script src="https://unpkg.com/leaflet-geosearch@4.4.0/dist/bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-map-search@v0.1.0b6/folium_map_search/folium-map-search.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@4.4.0/dist/geosearch.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-bottom-sheet@v0.1.0b2/folium_bottom_sheet/folium-bottom-sheet.min.js"></script>
 </head>
 <body>
 
 
             <div class="folium-map" id="map_pottery" ></div>
+
+
+			<bottom-sheet-dialog-manager>
+				<dialog id="bottomSheetDialog" class="bottom-sheet-dialog">
+					<bottom-sheet expand-to-scroll nested-scroll swipe-to-dismiss tabindex="0" id="bottomSheetContent">
+					</bottom-sheet>
+				</dialog>
+            </bottom-sheet-dialog-manager>
+
 
 </body>
 <script>
@@ -325,52 +359,102 @@ img.pottery-image {
   "maxWidth": 400,
   "minWidth": 285,
   "className": "pottery-map-popup",
+  "autoPanPaddingTopLeft": [
+45,
+0,
+],
+  "autoPanPaddingBottomRight": [
+65,
+0,
+],
 });
 
-
-                popup_j_g_meakin.setContent(`
-<div id="html_j_g_meakin" style="width: 100.0%; height: 100.0%;"><div class="item-details">
+		const popup_j_g_meakin_content = `<div slot="header" class="company-factory-details">
     <h2>J & G Meakin</h2>
     <h3 class="fs-5">
         <strong>Eagle Pottery</strong>
     </h3>
+</div>
 
-        <hr class="mt-1 mb-2">
-        <h4 class="fs-4">
-            Strawberry Border
-        </h4>
-        <div class="container properties">
-            <div class="row">
-                <span>Earthenware Plate</span>
-            </div>
-
-
-                <div class="row">
-                    <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
-                </div>
+    <hr class="mt-1 mb-2">
+    <h4 class="fs-4">
+        Strawberry Border
+    </h4>
+    <div class="container properties">
+        <div class="row">
+            <span>Earthenware Plate</span>
         </div>
 
-            <div class="mt-auto mx-auto pt-1">
-                <div class="popup-image-wrapper">
-                    <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
-                    <div class="loading-anim">
-                        <div class="lds-ellipsis">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
+
+            <div class="row">
+                <span><i class="fa-solid fa-calendar-days"></i> c1970-c2000</span>
+            </div>
+    </div>
+
+        <div class="mt-auto mx-auto pt-1">
+            <div class="popup-image-wrapper">
+                <img class="pottery-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg/330px-Meakin_%27Impact%27_tableware_-_2025-04-22_-_Andy_Mabbett_-_01.jpg" loading="lazy" />
+                <div class="loading-anim">
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
             </div>
+        </div>
+    `;
+		popup_j_g_meakin.setContent(`<div class="item-details">${ popup_j_g_meakin_content }</div>`);
+
+		function popup_j_g_meakin_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			L.setBottomSheetContent(popup_j_g_meakin_content)
+
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
+			const el = marker_j_g_meakin.getElement();
+			if (el != undefined) {
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
+			}
+		}
+
+		function popup_j_g_meakin_bottom_sheet() {
+			marker_j_g_meakin.unbindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.on("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_popup() {
+			marker_j_g_meakin.bindPopup(popup_j_g_meakin)
+			marker_j_g_meakin.off("click", popup_j_g_meakin_open_bottom_sheet)
+		}
+
+		function popup_j_g_meakin_switch() {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		}
+
+		popup_j_g_meakin_switch()
 
 
-</div></div>
-`);
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_j_g_meakin_bottom_sheet()
+			} else {
+				popup_j_g_meakin_popup()
+			}
+		})
 
-
-        marker_j_g_meakin.bindPopup(popup_j_g_meakin)
-        ;
 
 
 
@@ -397,22 +481,72 @@ img.pottery-image {
   "maxWidth": 400,
   "minWidth": 285,
   "className": "pottery-map-popup",
+  "autoPanPaddingTopLeft": [
+45,
+0,
+],
+  "autoPanPaddingBottomRight": [
+65,
+0,
+],
 });
 
-
-                popup_wedgwood.setContent(`
-<div id="html_wedgwood" style="width: 100.0%; height: 100.0%;"><div class="item-details">
+		const popup_wedgwood_content = `<div slot="header" class="company-factory-details">
     <h2>Wedgwood</h2>
     <h3 class="fs-5">
         <strong>Wedgwood Barlaston</strong>
     </h3>
+</div>`;
+		popup_wedgwood.setContent(`<div class="item-details">${ popup_wedgwood_content }</div>`);
 
-</div></div>
-`);
+		function popup_wedgwood_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			L.setBottomSheetContent(popup_wedgwood_content)
+
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
+			const el = marker_wedgwood.getElement();
+			if (el != undefined) {
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
+			}
+		}
+
+		function popup_wedgwood_bottom_sheet() {
+			marker_wedgwood.unbindPopup(popup_wedgwood)
+			marker_wedgwood.on("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_popup() {
+			marker_wedgwood.bindPopup(popup_wedgwood)
+			marker_wedgwood.off("click", popup_wedgwood_open_bottom_sheet)
+		}
+
+		function popup_wedgwood_switch() {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		}
+
+		popup_wedgwood_switch()
 
 
-        marker_wedgwood.bindPopup(popup_wedgwood)
-        ;
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				popup_wedgwood_bottom_sheet()
+			} else {
+				popup_wedgwood_popup()
+			}
+		})
+
 
 
 
@@ -482,6 +616,8 @@ img.pottery-image {
 				if (lastWidth > 500 && window.innerWidth <= 500) {
 					map_pottery.closePopup();
 					// TODO: reopen if it was open  map_pottery.openPopup();
+				} else if (lastWidth <= 500 && window.innerWidth > 500) {
+					document.getElementById("bottomSheetDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -493,6 +629,9 @@ img.pottery-image {
 		}
 
 		PopupResizeMonitor();
+
+
+			L.setupBottomSheet();
 
 </script>
 </html>

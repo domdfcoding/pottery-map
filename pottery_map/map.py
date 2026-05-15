@@ -39,6 +39,7 @@ from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus, clean_writer
 from folium.template import Template
 from folium.utilities import escape_backticks
+from folium_bottom_sheet import BottomSheetDialog
 from folium_layercontrols.minimap.toggle import ToggleMinimapLayerControl
 from folium_layercontrols.toggle import ToggleLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
@@ -91,6 +92,8 @@ class PopupResizeMonitor(folium.MacroElement):
 				if (lastWidth > 500 && window.innerWidth <= 500) {
 					{{ this._parent.get_name() }}.closePopup();
 					// TODO: reopen if it was open  {{ this._parent.get_name() }}.openPopup();
+				} else if (lastWidth <= 500 && window.innerWidth > 500) {
+					document.getElementById("bottomSheetDialog").close();
 				}
 
 				lastWidth = window.innerWidth;
@@ -113,14 +116,58 @@ class Popup(folium.Popup):
 			"""
         var {{this.get_name()}} = L.popup({{ this.options|tojavascript }});
 
-        {% for name, element in this.html._children.items() %}
-                {{ this.get_name() }}.setContent(`
-{{ element.render(**kwargs) }}
-`);
-        {% endfor %}
+		const {{this.get_name()}}_content = `{{ this.popup_content }}`;
+		{{ this.get_name() }}.setContent(`<div class="item-details">${ {{this.get_name()}}_content }</div>`);
 
-        {{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
-        {% if this.show %}.openPopup(){% endif %};
+		function {{this.get_name()}}_open_bottom_sheet() {
+			// TODO: dismiss any tooltips
+			L.setBottomSheetContent({{this.get_name()}}_content)
+
+			Array.prototype.forEach.call(document.getElementsByClassName("marker-highlight"), (m) => {
+				m.classList.remove("marker-highlight")
+			})
+			bottomSheetDialog.show();
+			{#- TODO: need to reset colour when opening another, and z-index: 9999 bottomSheetDialog.show(); #}
+			bottomSheetContent.shadowRoot.querySelector(".sheet-content").scroll({top: 0});
+			const el = {{ this._parent.get_name() }}.getElement();
+			if (el != undefined) {
+				el.classList.add("marker-highlight")
+				bottomSheetDialog.addEventListener("close", (event) => {
+					el.classList.remove("marker-highlight")
+					{once: true}
+				});
+			}
+		}
+
+		function {{this.get_name()}}_bottom_sheet() {
+			{{ this._parent.get_name() }}.unbindPopup({{ this.get_name() }})
+			{{ this._parent.get_name() }}.on("click", {{this.get_name()}}_open_bottom_sheet)
+		}
+
+		function {{this.get_name()}}_popup() {
+			{{ this._parent.get_name() }}.bindPopup({{ this.get_name() }})
+			{{ this._parent.get_name() }}.off("click", {{this.get_name()}}_open_bottom_sheet)
+		}
+
+		function {{this.get_name()}}_switch() {
+			if (window.innerWidth < 500){
+				{{this.get_name()}}_bottom_sheet()
+			} else {
+				{{this.get_name()}}_popup()
+			}
+		}
+
+		{{this.get_name()}}_switch()
+		{#{% if this.show %}.openPopup(){% endif %};#}
+
+		addEventListener("resize", (event) => {
+			if (window.innerWidth < 500){
+				{{this.get_name()}}_bottom_sheet()
+			} else {
+				{{this.get_name()}}_popup()
+			}
+		})
+
 
         {% for name, element in this.script._children.items() %}
             {{element.render()}}
@@ -143,6 +190,8 @@ class Popup(folium.Popup):
 
 		super().__init__(html=html_element, max_width=max_width, min_width=min_width, **kwargs)
 		self._id = id
+
+		self.popup_content = html
 
 
 def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True) -> Map:
@@ -212,7 +261,14 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 				location=[company.location["latitude"], company.location["longitude"]],
 				tooltip=company.name,
 				# popup=Popup('\n'.join(popup_text), max_width=400, min_width=245, id=company_id),
-				popup=Popup('\n'.join(popup_text), min_width=285, id=company_id, class_name="pottery-map-popup"),
+				popup=Popup(
+						'\n'.join(popup_text),
+						min_width=285,
+						id=company_id,
+						class_name="pottery-map-popup",
+						autoPanPaddingTopLeft=[45, 0],
+						autoPanPaddingBottomRight=[65, 0],
+						),
 				search_name=company.name,
 				)
 		add_to(marker, marker_cluster, company_id)
@@ -237,6 +293,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 			close_on_submit=True,
 			).add_to(m)
 	PopupResizeMonitor().add_to(m)
+	BottomSheetDialog().add_to(m)
 
 	return m
 

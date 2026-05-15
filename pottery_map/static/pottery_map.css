@@ -1,6 +1,6 @@
 :root {
 	--popup-image-width: 240px;
-	--popup-image-height: 180px;
+	--popup-image-height: calc(var(--popup-image-width) / 4 * 3);
 }
 
 img.pottery-image {
@@ -15,6 +15,11 @@ img.pottery-image {
 .item-details {
 	max-height: 50vh;
 	overflow-y: scroll;
+}
+
+bottom-sheet .company-factory-details {
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 .popup-image-wrapper {
@@ -111,11 +116,30 @@ img.pottery-image {
 	min-width: var(--popup-max-width);
 
 	@media (width <= 500px) {
-		max-width: max(var(--popup-max-width), 50vw);
+		max-width: min(var(--popup-max-width), 50vw);
 	}
 
 	.leaflet-popup-content {
-		margin-left: 10px;
+		margin-left: 10px !important;
 		margin-right: 12px;
 	}
+}
+
+
+.leaflet-popup-close-button {
+	margin-right: 4px;
+	margin-top: 4px;
+
+	span {
+		font-size: 24px;
+	}
+}
+
+.bottom-sheet-dialog {
+	z-index: 9999;
+}
+
+.marker-highlight {
+	/* Purple-ish */
+	filter: hue-rotate(60deg);
 }
