@@ -91,8 +91,18 @@ class PopupResizeMonitor(folium.MacroElement):
 
 
 class Popup(folium.Popup):
-	"""
+	r"""
 	Heavily customised folium popup that displays either a popup or the bottom sheet depending on the screen size.
+
+	:param html: Content to display in the popup or bottom-sheet.
+	:param id: Folium element ID.
+	:param max_width: The maximum width of the popup. Integer pixel values or percentages as strings.
+	:param min_width: The minimum width of the popup. Integer pixel values or percentages as strings.
+	:param show: If :py:obj:`True` displays the popup or bottom sheet on page load.
+	:param sticky: If :py:obj:`True` prevents map and other popup clicks from closing the popup.
+	:param \*\*kwargs: Additional options for ``L.Popup``.
+
+	``min_width``, ``max_width`` and ``sticky`` have no effect on the bottom sheet.
 	"""
 
 	_template = Template(
@@ -121,6 +131,8 @@ class Popup(folium.Popup):
 			id: str,  # noqa: A002  # pylint: disable=redefined-builtin
 			max_width: str | int = 400,
 			min_width: str | int = 245,
+			show: bool = False,
+			sticky: bool = False,
 			**kwargs,
 			):
 		html_element = folium.Html(escape_backticks(html), script=True)
@@ -128,7 +140,7 @@ class Popup(folium.Popup):
 
 		assert not kwargs.get("lazy", False)
 
-		super().__init__(html=html_element, max_width=max_width, min_width=min_width, **kwargs)
+		super().__init__(html=html_element, max_width=max_width, min_width=min_width, show=show, sticky=sticky, **kwargs)
 		self._id = id
 
 		self.popup_content = html
