@@ -140,7 +140,14 @@ class Popup(folium.Popup):
 
 		assert not kwargs.get("lazy", False)
 
-		super().__init__(html=html_element, max_width=max_width, min_width=min_width, show=show, sticky=sticky, **kwargs)
+		super().__init__(
+				html=html_element,
+				max_width=max_width,
+				min_width=min_width,
+				show=show,
+				sticky=sticky,
+				**kwargs,
+				)
 		self._id = id
 
 		self.popup_content = html
