@@ -44,7 +44,7 @@
             </script>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b5/folium_zoom_state/zoom_state.min.js"></script>
 
 				<style>
 					:root {
@@ -336,7 +336,7 @@ bottom-sheet .company-factory-details {
 
 			setupZoomState(map_pottery);
 
-			setupBasemapState(map_pottery);
+			setupBasemapState(map_pottery, "basemap");
 
 
 
@@ -586,7 +586,7 @@ function PopupResizeMonitor(map) {
 
 
 
-			basemapFromURL("OpenStreetMap", layer_control_basemap).addTo(map_pottery);
+			basemapFromURL("OpenStreetMap", layer_control_basemap, "basemap").addTo(map_pottery);
 
 
 				var map_search_control_5a445d4920eb4d85bb24b9224192cafd = L.MapSearchControl({

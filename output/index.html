@@ -267,7 +267,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="./static/js/map_popup.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b3/folium_zoom_state/zoom_state.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-zoom-state@v0.1.0b5/folium_zoom_state/zoom_state.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.layerscontrol-minimap@1.0.21/L.Control.Layers.Minimap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/domdfcoding/folium-layercontrols@v0.1.0b1/folium_layercontrols/L.Control.Layers.Minimap.Toggle.min.js"></script>
@@ -390,7 +390,7 @@
 
 			setupZoomState(map_pottery);
 
-			setupBasemapState(map_pottery);
+			setupBasemapState(map_pottery, "basemap");
 
 
 
@@ -557,7 +557,7 @@
 
 
 
-			basemapFromURL("OpenStreetMap", layer_control_basemap).addTo(map_pottery);
+			basemapFromURL("OpenStreetMap", layer_control_basemap, "basemap").addTo(map_pottery);
 
 
 				var map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b = L.MapSearchControl({
