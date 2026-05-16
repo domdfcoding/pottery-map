@@ -148,7 +148,7 @@ class Companies:
 
 		# Check no extra companies have snuck into or escaped from the graph
 		all_companies: set[str] = {*graph.nodes(), *pottery_by_company}
-		assert not all_companies.difference(pottery_by_company)
+		assert not all_companies.difference(pottery_by_company), all_companies.difference(pottery_by_company)
 		assert all_companies == set(pottery_by_company)
 
 		return cls(
