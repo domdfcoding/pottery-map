@@ -107,6 +107,8 @@ class PotteryMap:
 				all_categories=tuple(sorted(self.category_data.keys())),
 				)
 
+		# TODO: images directory to copy for notes and wishlist. Markdown extension to rewrite image paths and copy images.
+
 		try:
 			self.notes_markdown = self.input_directory.joinpath("notes.md").read_text()
 			self.has_notes = True

@@ -66,6 +66,7 @@ class PotteryItem:
 	notes: list[str] = attrs.field(factory=list)
 	links: dict[str, str] = attrs.field(factory=dict)
 	photo_paths: list[str] = attrs.field(factory=list)
+	# TODO: Optionally two-element lists for photo_paths giving image path and title/alt text (otherwise default used)
 	diameter: str | None = None
 	quantity: int = 1
 
