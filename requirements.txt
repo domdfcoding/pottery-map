@@ -1,14 +1,14 @@
 attrs>=25.4.0
 consolekit>=1.13.0
 dom-toml>=2.1.0
-domdf-folium-tools>=0.1.0b17
+domdf-folium-tools>=0.1.0b25
 domdf-python-tools>=3.10.0
 folium>=0.20.0
-folium-about-button @ git+https://github.com/domdfcoding/folium-about-button
+folium-about-button>=0.2.0
 folium-bottom-sheet @ git+https://github.com/domdfcoding/folium-bottom-sheet
 folium-layercontrols @ git+https://github.com/domdfcoding/folium-layercontrols
 folium-map-search @ git+https://github.com/domdfcoding/folium-map-search
-folium-zoom-state @ git+https://github.com/domdfcoding/folium-zoom-state
+folium-zoom-state>=0.1.0
 gradpyent>=0.9.5
 jinja2>=3.1.6
 jinja2-workarounds @ git+https://github.com/domdfcoding/jinja2_workarounds
