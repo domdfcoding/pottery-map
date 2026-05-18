@@ -25,7 +25,6 @@ body {
 }
 
 
-
 img.pottery-image {
 	min-width: var(--popup-image-width);
 	min-height: var(--popup-image-height);
@@ -160,4 +159,13 @@ bottom-sheet .company-factory-details {
 	span {
 		font-size: 24px;
 	}
+}
+
+.bottom-sheet-dialog {
+	z-index: 9999;
+}
+
+.marker-highlight {
+	/* Purple-ish */
+	filter: hue-rotate(60deg);
 }

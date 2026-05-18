@@ -48,6 +48,9 @@
 
 				<style>
 					:root {
+	/* TODO: loading dots come too low */
+
+	/* --popup-image-width: min(240px, 50vw); */
 	--popup-image-width: 240px;
 	--popup-image-height: calc(var(--popup-image-width) / 4 * 3);
 }
@@ -72,7 +75,6 @@ body {
 		height: 100svh;
 	}
 }
-
 
 
 img.pottery-image {
@@ -194,6 +196,10 @@ bottom-sheet .company-factory-details {
 	.leaflet-popup-content {
 		margin-left: 10px !important;
 		margin-right: 12px;
+	}
+
+	.properties {
+		font-size: 1rem;
 	}
 }
 
@@ -485,9 +491,7 @@ function PopupResizeMonitor(map) {
 </div>
 
     <hr class="mt-1 mb-2">
-    <h4>
-        Strawberry Border
-    </h4>
+    <h4>Strawberry Border</h4>
     <div class="container properties">
         <div class="row">
             <span>Earthenware Plate</span>
