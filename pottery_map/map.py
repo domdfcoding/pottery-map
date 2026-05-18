@@ -43,7 +43,7 @@ from folium_bottom_sheet import BottomSheetDialog
 from folium_layercontrols.minimap.toggle import ToggleMinimapLayerControl
 from folium_layercontrols.toggle import ToggleLayerControl
 from folium_map_search import MapSearchControl, MapSearchProvider
-from folium_zoom_state import BasemapFromURL, ZoomStateJS, ZoomStateMap
+from folium_zoom_state import BasemapState, ZoomStateJS, ZoomStateMap
 
 # this package
 from pottery_map.companies import CompanyItems
@@ -189,7 +189,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 	set_id(os25inch, "os25inch").add_to(m)
 	# TODO: use these IDs in the url rather than the long, space-filled, human-readable name
 
-	ZoomStateJS(setup_basemap_state=True).add_to(m)
+	ZoomStateJS().add_to(m)
 
 	if standalone:
 		EmbeddedCSSJS(
@@ -244,7 +244,7 @@ def make_map(pottery_collection: Iterable[CompanyItems], standalone: bool = True
 
 	add_to(layer_control, m, "basemap")
 
-	BasemapFromURL(osm_tiles.tile_name, layer_control).add_to(m)
+	BasemapState(osm_tiles.tile_name, layer_control).add_to(m)
 	# TODO: about dialog
 	MapSearchControl(
 			provider=MapSearchProvider(layer=marker_cluster, map=m, feature_type="settlement"),

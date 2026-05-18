@@ -390,8 +390,6 @@
 
 			setupZoomState(map_pottery);
 
-			setupBasemapState(map_pottery, "basemap");
-
 
 
             var marker_cluster_collection = L.markerClusterGroup(
@@ -555,7 +553,9 @@
 
 
 
-			basemapFromURL("OpenStreetMap", layer_control_basemap, "basemap").addTo(map_pottery);
+            const basemapState = new BasemapState(map_pottery, layer_control_basemap, "basemap")
+            basemapState.fromURL("OpenStreetMap").addTo(map_pottery)
+            basemapState.setup();
 
 
 				var map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b = L.MapSearchControl({

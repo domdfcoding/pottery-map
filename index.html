@@ -365,8 +365,6 @@ bottom-sheet .company-factory-details {
 
 			setupZoomState(map_pottery);
 
-			setupBasemapState(map_pottery, "basemap");
-
 
 
 				// TODO: nice animation when closing bottom sheet, not just disappear
@@ -613,7 +611,9 @@ function PopupResizeMonitor(map) {
 
 
 
-			basemapFromURL("OpenStreetMap", layer_control_basemap, "basemap").addTo(map_pottery);
+            const basemapState = new BasemapState(map_pottery, layer_control_basemap, "basemap")
+            basemapState.fromURL("OpenStreetMap").addTo(map_pottery)
+            basemapState.setup();
 
 
 				var map_search_control_5a445d4920eb4d85bb24b9224192cafd = L.MapSearchControl({
