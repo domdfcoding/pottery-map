@@ -146,6 +146,10 @@ bottom-sheet .company-factory-details {
 		margin-left: 10px !important;
 		margin-right: 12px;
 	}
+
+	.properties {
+		font-size: 1rem;
+	}
 }
 
 
