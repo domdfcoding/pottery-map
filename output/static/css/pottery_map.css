@@ -3,6 +3,29 @@
 	--popup-image-height: calc(var(--popup-image-width) / 4 * 3);
 }
 
+
+body {
+	overflow-y: hidden;
+}
+
+.map-container {
+	height: 100vh;
+}
+
+@supports (height: 100dvh) {
+	.map-container {
+		height: 100dvh;
+	}
+}
+
+@supports (height: 100svh) {
+	.map-container {
+		height: 100svh;
+	}
+}
+
+
+
 img.pottery-image {
 	min-width: var(--popup-image-width);
 	min-height: var(--popup-image-height);

@@ -14,8 +14,10 @@ html {
 }
 
 body {
-	min-height: 100vh;
-	min-height: 100dvh;
+	/* height: 100vh; */
+
+	/* min-height: 100vh;
+	min-height: 100dvh; */
 
 	/* background-color: var(--base-colour); */
 
