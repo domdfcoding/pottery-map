@@ -1,14 +1,22 @@
-{% set ancestors = networkx.ancestors(companies.graph, company) %}
-{{ ancestors.add(company) |default("", True) -}}
+{% set ancestors = networkx.ancestors(companies.graph, company_name) %}
+{{ ancestors.add(company_name) |default("", True) -}}
 {% set item_count = get_item_count(companies.get_company_item_counts(), ancestors) -%}
+{% set current_company = current_company | default(None) -%}
+{% set show_counts = show_counts | default(True) -%}
 <li>
-    <a href='{{ make_id(company) }}.html'>{{ company }}</a> ({{ item_count }})
-    {{ defunct_dagger(company) }}
+    {% if current_company and current_company == company_name -%}
+        <span class="current-company-name">{{ company_name }}</span>
+    {%- else -%}
+        <a href='{{ make_id(company_name) }}.html'>{{ company_name }}</a>
+    {%- endif -%}
+
+    {%- if show_counts %}{{ ' ' }}({{ item_count }}){% endif %}
+    {{ defunct_dagger(company_name) }}
 </li>
-{%- set predecessors = list(companies.graph.predecessors(company)) %}
+{%- set predecessors = list(companies.graph.predecessors(company_name)) %}
 {% if predecessors -%}
-    <ul>
-        {%- for company in predecessors %}
+    <ul class="company-tree">
+        {%- for company_name in predecessors %}
             {%- include "write_company_entries.macro.jinja2" indent content %}
         {% endfor %}
     </ul>

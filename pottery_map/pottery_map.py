@@ -224,7 +224,9 @@ class PotteryMap:
 			html = self.render_page(
 					"company_page.jinja2",
 					company=company,
+					companies=self.companies,
 					items=items,
+					get_item_count=_get_item_count,
 					)
 			yield company.name, html
 

@@ -214,3 +214,34 @@ nav#sidebar .companies-search {
 nav#sidbar.close .companies-search {
 	display: none;
 }
+
+
+.current-company-name {
+	font-weight: bold;
+}
+
+ul.company-tree {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+	overflow: hidden;
+
+	ul {
+		padding-left: 1rem;
+	}
+
+	li {
+		position: relative;
+	}
+
+	ul.company-tree:not(.top-level) li::before {
+		content: "";
+		position: absolute;
+		border-left: 2px solid #999;
+		border-bottom: 2px solid #999;
+		right: calc(100% + 0.15rem);
+		top: -500%;
+		width: 0.5rem;
+		bottom: calc(100% - 0.9rem);
+	}
+}

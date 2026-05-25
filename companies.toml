@@ -14,3 +14,10 @@ notes = [
 ]
 
 ["WWRD"]
+
+["A J Wilkinson Ltd"]
+factory = "Royal Staffordshire Pottery, Burslem"
+location = { "latitude" = 53.03724233493298, "longitude" = -2.2047666040970704 }
+successor = "J & G Meakin"
+defunct = true
+area = "Burslem"

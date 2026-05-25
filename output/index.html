@@ -167,6 +167,12 @@
 
 
 
+                                    <li data-company="A J Wilkinson Ltd">
+                                        <a href="companies/a_j_wilkinson_ltd.html">A J Wilkinson Ltd</a>
+                                    </li>
+
+
+
                                     <li data-company="J & G Meakin">
                                         <a href="companies/j_g_meakin.html">J & G Meakin</a>
                                     </li>
@@ -527,6 +533,56 @@
             );
 
 
+            var marker_a_j_wilkinson_ltd = L.marker(
+                [53.03724233493298, -2.2047666040970704],
+                {
+  "searchName": "A J Wilkinson Ltd",
+}
+            ).addTo(marker_cluster_collection);
+
+
+        var popup_a_j_wilkinson_ltd_popup = L.popup({
+  "maxWidth": 400,
+  "minWidth": 285,
+  "className": "pottery-map-popup",
+  "autoPanPaddingTopLeft": [
+45,
+0,
+],
+  "autoPanPaddingBottomRight": [
+65,
+0,
+],
+});
+
+        var popup_a_j_wilkinson_ltd = new PopupOrBottomSheet(
+            marker=marker_a_j_wilkinson_ltd,
+            content=`<div slot="header" class="company-factory-details">
+    <h2><a href="companies/a_j_wilkinson_ltd.html">A J Wilkinson Ltd</a></h2>
+    <h3 class="fs-5">
+        <strong>Royal Staffordshire Pottery, Burslem</strong>
+    </h3>
+</div>`,
+            popup=popup_a_j_wilkinson_ltd_popup,
+        );
+
+        popup_a_j_wilkinson_ltd.switch();
+
+
+
+
+
+
+            marker_a_j_wilkinson_ltd.bindTooltip(
+                `<div>
+                     A J Wilkinson Ltd
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+
+
             marker_cluster_collection.addTo(map_pottery);
 
 
@@ -558,7 +614,7 @@
             basemapState.setup();
 
 
-				var map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b = L.MapSearchControl({
+				var map_search_control_a3340a8c42fc85f2064dc9d29d19c465 = L.MapSearchControl({
 					provider: new L.MapSearchProvider({
 				map: map_pottery,
 				layer: marker_cluster_collection,
@@ -569,9 +625,9 @@
 				)
 
 				// Close search box when map clicked.
-				map_pottery.on('click', map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.close, map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b);
+				map_pottery.on('click', map_search_control_a3340a8c42fc85f2064dc9d29d19c465.close, map_search_control_a3340a8c42fc85f2064dc9d29d19c465);
 
-				map_search_control_7f9ca5ce9cd6dc7d13fd1a675c50515b.addTo(map_pottery);
+				map_search_control_a3340a8c42fc85f2064dc9d29d19c465.addTo(map_pottery);
 
 
 		map_pottery.on('click', bottomSheetDialog.close, bottomSheetDialog);

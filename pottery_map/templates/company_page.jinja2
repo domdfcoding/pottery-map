@@ -1,4 +1,5 @@
 {% extends "collection_page.jinja2" %}
+{% from "defunct_dagger.jinja2" import defunct_dagger with context %}
 {% set title = company.name %}
 {% set root = "../" %}
 {% set companies_page = True %}
@@ -21,19 +22,31 @@
                 Google Maps
             </a>
         </h6>
-
-        {# djlint:off #}
-        {%- if company.has_notes -%}
-            {%- set show_item_notes = False -%}
-            {%- set show_company_notes = True -%}
-            {%- set base_id = make_id(company.name) %}
-            <div class="company-notes mb-2">
-                {% include "notes.jinja2" indent content %}
-            </div>
-        {% endif -%}
-        {# djlint:on #}
-
     {%- endif %}
+
+    {%- set successors = list(companies.graph.successors(company.name)) or [company.name] %}
+    {% if successors -%}
+        {%- set current_company = company.name %}
+        {%- set show_counts = False %}
+        <ul class="company-tree">
+            {%- for company_name in successors %}{# Should only be one #}
+                {#- TODO: max depth (2) #}
+                {%- include "write_company_entries.macro.jinja2" indent content %}
+            {% endfor %}
+        </ul>
+    {%- endif -%}
+
+    {# djlint:off #}
+    {%- if company.has_notes -%}
+        {%- set show_item_notes = False -%}
+        {%- set show_company_notes = True -%}
+        {%- set base_id = make_id(company.name) %}
+        <div class="company-notes mb-2">
+            {% include "notes.jinja2" indent content %}
+        </div>
+    {% endif -%}
+    {# djlint:on #}
+
     {%- if items %}
         <div class="wares gy-2" id="{{ make_id(company.name) }}-wares">
             <h3>Wares</h3>
