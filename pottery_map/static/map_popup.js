@@ -16,7 +16,6 @@ class PopupOrBottomSheet {
 	}
 
 	openBottomSheet() {
-		// TODO: dismiss any tooltips
 		L.setBottomSheetContent(this.content);
 
 		Array.prototype.forEach.call(document.getElementsByClassName('marker-highlight'), (m) => {

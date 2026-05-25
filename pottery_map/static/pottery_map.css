@@ -169,3 +169,10 @@ bottom-sheet .company-factory-details {
 	/* Purple-ish */
 	filter: hue-rotate(60deg);
 }
+
+
+@media (max-width: 500px) {
+	.leaflet-tooltip {
+		display: none;
+	}
+}
