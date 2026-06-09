@@ -223,11 +223,6 @@ nav#sidbar.close .companies-search {
 	display: none;
 }
 
-
-.current-company-name {
-	font-weight: bold;
-}
-
 ul.company-tree {
 	ul {
 		padding-left: 1rem;
