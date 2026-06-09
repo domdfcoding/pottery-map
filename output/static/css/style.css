@@ -248,6 +248,8 @@ ul.company-tree {
 }
 
 /* Hide siblings' and childrens' trees */
-ul.company-tree > ul > li:not(.current-company) + ul:not(.current-company) {
-	display: none;
+.compact-tree ul.company-tree, ul.company-tree.compact-tree {
+	> ul > li:not(.current-company) + ul:not(.current-company) {
+		display: none;
+	}
 }

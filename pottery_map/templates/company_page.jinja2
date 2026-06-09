@@ -29,7 +29,7 @@
     {% if predecessors or successors -%}
         {%- set current_company = company.name %}
         {%- set show_counts = False %}
-        <ul class="company-tree">
+        <ul class="company-tree compact-tree">
             {%- for company_name in successors or [company.name] %}{# Should only be one #}
                 {#- TODO: max depth (2) #}
                 {%- include "write_company_entries.macro.jinja2" indent content %}
