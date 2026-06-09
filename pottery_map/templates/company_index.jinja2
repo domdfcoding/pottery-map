@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-6">
             <h2>By Parent</h2>
-            <ul class="company-tree ps-2">
+            <ul class="company-tree">
                 {% for company_name in companies.top_level_companies %}
                     {%- include "write_company_entries.macro.jinja2" indent content -%}
                 {% endfor %}

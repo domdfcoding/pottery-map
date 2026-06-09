@@ -3,7 +3,7 @@
 {% set item_count = get_item_count(companies.get_company_item_counts(), ancestors) -%}
 {% set current_company = current_company | default(None) -%}
 {% set show_counts = show_counts | default(True) -%}
-<li>
+<li{% if current_company and current_company == company_name %} class="curret-company"{% endif %}>
     {% if current_company and current_company == company_name -%}
         <span class="current-company-name">{{ company_name }}</span>
     {%- else -%}
@@ -15,7 +15,7 @@
 </li>
 {%- set predecessors = list(companies.graph.predecessors(company_name)) %}
 {% if predecessors -%}
-    <ul class="company-tree">
+    <ul class="company-tree{% if current_company and current_company == company_name %} current-company{% endif %}">
         {%- for company_name in predecessors %}
             {%- include "write_company_entries.macro.jinja2" indent content %}
         {% endfor %}
