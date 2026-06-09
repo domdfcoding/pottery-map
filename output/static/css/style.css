@@ -120,9 +120,17 @@ main p {
 
 .item {
 	max-width: 340px;
-
-	/* flex-basis: 20vw; */
 	flex-grow: 1;
+
+	@media (width >= 1000px) {
+		flex-basis: 18vw;
+		min-width: 18vw;
+	}
+
+	@media (width < 1000px) {
+		flex-basis: 40vw;
+		min-width: 40vw;
+	}
 }
 
 .chart {
