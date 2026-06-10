@@ -198,3 +198,37 @@ class Companies:
 		"""
 
 		return list(self.get_company_item_counts(include_unrepresented=False))
+
+	def get_predecessors(self, company: str | Company) -> list[str]:
+		"""
+		Returns the company's predecessors (company acquired by it).
+
+		Successors in the graph.
+
+		:param company:
+		"""
+
+		if isinstance(company, Company):
+			company = company.name
+
+		if not self.graph.has_node(company):
+			return []
+
+		return list(self.graph.successors(company))
+
+	def get_successors(self, company: str | Company) -> list[str]:
+		"""
+		Returns the company's successors (who acquired it).
+
+		Predecessors in the graph.
+
+		:param company:
+		"""
+
+		if isinstance(company, Company):
+			company = company.name
+
+		if not self.graph.has_node(company):
+			return []
+
+		return list(self.graph.predecessors(company))

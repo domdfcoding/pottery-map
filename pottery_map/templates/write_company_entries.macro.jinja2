@@ -15,10 +15,10 @@
     {%- if show_counts %}{{ ' ' }}({{ item_count }}){% endif -%}
     {{ defunct_dagger(company_name) }}
 </li>
-{%- set predecessors = list(companies.graph.predecessors(company_name)) %}
-{% if predecessors -%}
+{%- set successors = companies.get_successors(company_name) %}
+{% if successors -%}
     <ul class="{{ ul_classes }}">
-        {%- for company_name in predecessors %}
+        {%- for company_name in successors %}
             {%- include "write_company_entries.macro.jinja2" indent content %}
         {% endfor %}
     </ul>

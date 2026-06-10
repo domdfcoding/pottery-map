@@ -24,13 +24,13 @@
         </h6>
     {%- endif %}
 
-    {%- set predecessors = list(companies.graph.predecessors(company.name)) %}
-    {%- set successors = list(companies.graph.successors(company.name)) %}
+    {%- set successors = companies.get_successors(company) %}
+    {%- set predecessors = companies.get_predecessors(company) %}
     {% if predecessors or successors -%}
         {%- set current_company = company.name %}
         {%- set show_counts = False %}
         <ul class="company-tree compact-tree">
-            {%- for company_name in successors or [company.name] %}{# Should only be one #}
+            {%- for company_name in predecessors or [company.name] %}{# Should only be one #}
                 {#- TODO: max depth (2) #}
                 {%- include "write_company_entries.macro.jinja2" indent content %}
             {% endfor %}
