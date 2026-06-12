@@ -14,32 +14,21 @@
              data-bs-parent="#{{ base_id }}-notes">
 
             <div class="accordion-body">
+                {% set show_item_notes = show_item_notes and (item.notes or item.links) -%}
+                {% set show_company_notes = show_company_notes and (company.notes or company.links) -%}
+
                 {%- if show_item_notes %}
-                    {%- for note in item.notes %}
-                        <code>{{ format_note(note, root) }}</code>
-                        <br>
-                    {%- endfor %}
+                    {%- set show_other_notes = show_company_notes %}
+                    {%- set item_or_company = item %}
+                    {%- set notes_section_title = "This Item" %}
+                    {%- include "notes_section.macro.jinja2" indent content -%}
                 {%- endif %}
 
                 {%- if show_company_notes %}
-                    {%- for note in company.notes %}
-                        <code>{{ format_note(note, root) }}</code>
-                        <br>
-                    {%- endfor %}
-                {%- endif %}
-
-                {%- if show_item_notes %}
-                    {%- for link_text, link_target in item.links.items() %}
-                        <a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
-                        <br>
-                    {%- endfor %}
-                {%- endif %}
-
-                {%- if show_company_notes %}
-                    {%- for link_text, link_target in company.links.items() %}
-                        <a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
-                        <br>
-                    {%- endfor %}
+                    {%- set show_other_notes = show_item_notes %}
+                    {%- set item_or_company = company %}
+                    {%- set notes_section_title = "Company" %}
+                    {%- include "notes_section.macro.jinja2" indent content -%}
                 {%- endif %}
             </div>
         </div>

@@ -134,5 +134,5 @@ repos:
    rev: v1.35.2
    hooks:
     - id: djlint-reformat-jinja
-      exclude: ^pottery_map/templates/(company_page|write_company_entries.macro).jinja2$
+      exclude: ^pottery_map/templates/(company_page|.*.macro).jinja2$
     - id: djlint-jinja

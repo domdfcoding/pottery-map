@@ -1,0 +1,23 @@
+{%- if show_other_notes %}
+    <fieldset class="notes-section border rounded-1 p-1">
+        <legend class="float-none w-auto px-1">
+            <small>{{ notes_section_title }}</small>
+        </legend>
+{%- else %}
+    <div class="alone">
+{%- endif -%}
+    {%- for note in item_or_company.notes %}
+        <p class="note">{{ format_note(note, root) }}</p>
+    {%- endfor %}
+
+    {%- for link_text, link_target in item_or_company.links.items() %}
+        <p class="note">
+            <a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
+        </p>
+    {%- endfor %}
+
+{%- if show_other_notes %}
+    </fieldset>
+{% else %}
+    </div>
+{% endif %}
