@@ -37,7 +37,7 @@ from jinja2 import Environment
 from jinja2_workarounds import MultiLineInclude  # type: ignore[import-untyped]
 
 # this package
-from pottery_map.utils import format_note, make_id, normalise_category
+from pottery_map.utils import format_note, get_link_icon, make_id, normalise_category
 
 __all__ = ["base64_encode", "render_template"]
 
@@ -67,6 +67,7 @@ templates.globals["sorted"] = sorted
 templates.globals["enumerate"] = enumerate
 templates.globals["len"] = len
 templates.globals["format_note"] = format_note
+templates.globals["get_link_icon"] = get_link_icon
 
 templates.filters["base64_encode"] = base64_encode
 

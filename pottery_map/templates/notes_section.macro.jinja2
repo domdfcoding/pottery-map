@@ -12,7 +12,7 @@
 
     {%- for link_text, link_target in item_or_company.links.items() %}
         <p class="note">
-            <a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
+            <i class="{{ get_link_icon(link_target) }}"></i><a href="{{ link_target }}" target="_blank">{{ link_text }}</a>
         </p>
     {%- endfor %}
 

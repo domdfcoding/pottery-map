@@ -35,6 +35,7 @@ from collections import defaultdict
 from collections.abc import Callable, Collection, Iterable
 from hashlib import sha256
 from typing import TYPE_CHECKING, TypeVar
+from urllib.parse import urlparse
 
 # 3rd party
 import domdf_folium_tools.static_files
@@ -57,6 +58,7 @@ __all__ = [
 		"copy_static_files",
 		"filter_keys",
 		"format_note",
+		"get_link_icon",
 		"get_photo_path",
 		"get_sha256_hash",
 		"groupby",
@@ -416,3 +418,18 @@ def format_note(note_text: str, root: str = '') -> str:
 	md = markdown.Markdown()
 	md.inlinePatterns.register(XRefProcessor(r'\[\[(.*)\]\]', root), "xref", 65)
 	return md.convert(note_text).removeprefix("<p>").removesuffix("</p>")
+
+
+def get_link_icon(url: str) -> str:
+	"""
+	Returns the Font Awesome icon to display next to the given URL.
+
+	:param url:
+	"""
+
+	parts = urlparse(url)
+
+	if parts.netloc and ".wikipedia.org" in parts.netloc:
+		return "fa-brands fa-wikipedia-w"
+	else:
+		return "fa-solid fa-link"

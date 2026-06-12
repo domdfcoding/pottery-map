@@ -61,18 +61,6 @@ main p {
 } */
 
 
-.notes .accordion-item {
-	--padding: 8px;
-
-	padding-left: var(--padding);
-	padding-right: var(--padding);
-
-	h2, .alone {
-		padding-right: calc((var(--bs-gutter-x) * 0.5) - var(--padding));
-		padding-left: calc((var(--bs-gutter-x) * 0.5) - var(--padding));
-	}
-}
-
 .accordion.notes {
 	margin: 4px 1px 2px;
 
@@ -86,6 +74,40 @@ main p {
 
 	.accordion-button:not(.collapsed) {
 		background-color: unset !important;
+	}
+
+	.accordion-item {
+		--padding: 8px;
+
+		padding-left: var(--padding);
+		padding-right: var(--padding);
+
+		h2, .alone {
+			padding-right: calc((var(--bs-gutter-x) * 0.5) - var(--padding));
+			padding-left: calc((var(--bs-gutter-x) * 0.5) - var(--padding));
+		}
+
+		i.fa-solid, i.fa-brands {
+			margin-left: 6px;
+		}
+	}
+
+
+	.note {
+		margin-top: 1px;
+		margin-bottom: 3px;
+
+		--indent: 1em;
+
+		padding-left: var(--indent);
+		text-indent: calc(-1 * var(--indent));
+	}
+
+	.notes-section {
+		legend {
+			font-size: var(--bs-body-font-size);
+			margin-bottom: -5px;
+		}
 	}
 }
 
@@ -279,25 +301,5 @@ ul.company-tree {
 .compact-tree ul.company-tree, ul.company-tree.compact-tree {
 	> ul > li:not(.current-company) + ul:not(.current-company) {
 		display: none;
-	}
-}
-
-
-.note {
-	margin-top: 1px;
-	margin-bottom: 3px;
-
-	--indent: 1em;
-
-	padding-left: var(--indent);
-	text-indent: calc(-1 * var(--indent));
-}
-
-.notes-section legend {
-	font-size: var(--bs-body-font-size);
-	margin-bottom: -5px;
-
-	p {
-		margin-left: 5px;
 	}
 }
