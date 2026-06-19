@@ -31,3 +31,9 @@ extra_formate_deps:
 extra_formate_types:
  - javascript
  - ts
+
+extras_require:
+  links:
+    - beautifulsoup4
+    - tomledit
+    - requests
