@@ -29,6 +29,7 @@ Helpers to find links for companies (Wikipedia, thepotteries.org).
 # stdlib
 import posixpath
 import webbrowser
+from collections.abc import Callable
 from urllib.parse import quote, urlparse
 
 # 3rd party
@@ -44,6 +45,7 @@ from pottery_map.company import CompanyData
 __all__ = [
 		"extract_html_title",
 		"extract_wikipedia_title",
+		"find_links_interactive",
 		"google_pdo",
 		"has_url_for",
 		"search_wikipedia",
@@ -138,3 +140,42 @@ def has_url_for(domain: str, company: CompanyData) -> bool:
 
 	links: dict[str, str] = company.get("links", {})
 	return any(domain in text.lower() or domain in url.lower() for text, url in links.items())
+
+
+def find_links_interactive(
+		companies: Document,
+		domain: str,
+		search_fn: Callable[[str], None],
+		update_callback: Callable[[str, CompanyData, str], None],
+		) -> Document:
+	"""
+	Interactively open the web browser to search for company links and prompt the user to enter said link.
+
+	:param companies: Data for the companies, loaded from ``companies.toml`` with :func:`~.toml_load_editable`.
+	:param domain: The domain name to search for in the existing links, e.g. ``wikipedia.org``.
+	:param search_fn: Function to open the web browser. Takes the function name as its only argument. Return value is ignored.
+	:param update_callback: Function to set the link title and URL on the company.
+		Passed the following arguments in order: Company Name, Company data dictionary, the URL.
+		Return value is ignored.
+	"""
+
+	company_name: str
+	company: CompanyData
+	for company_name, company in companies.items():
+
+		if not has_url_for(domain, company):
+			print(company_name)
+			search_fn(company_name)
+
+			url = input("Enter URL or leave blank and hit enter >")
+			url = url.strip()
+
+			if not url:
+				continue
+			elif url == 'q':
+				break
+
+			company.setdefault("links", {})
+			update_callback(company_name, company, url)
+
+	return companies
