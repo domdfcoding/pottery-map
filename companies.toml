@@ -4,7 +4,7 @@ factory = "Eagle Pottery"
 location = { "latitude" = 53.02308684898784, "longitude" = -2.1629028183132877 }
 successor = "Wedgwood"
 area = "Hanley"
-links = {"Wikipedia" = "https://en.wikipedia.org/wiki/J._%26_G._Meakin"}
+links = { "Wikipedia" = "https://en.wikipedia.org/wiki/J._%26_G._Meakin" }
 
 ["Wedgwood"]
 factory = "Wedgwood Barlaston"
