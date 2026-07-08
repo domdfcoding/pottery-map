@@ -120,3 +120,4 @@ class CompanyData(TypedDict):
 	defunct: Required[bool]
 	area: NotRequired[str | None]
 	items: NotRequired[list["PotteryItem"]]
+	links: NotRequired[dict[str, str]]
