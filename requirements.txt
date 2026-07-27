@@ -15,5 +15,5 @@ jinja2-workarounds @ git+https://github.com/domdfcoding/jinja2_workarounds
 markdown>=3.10.2
 networkx>=3.4
 pillow>=12.2.0
-tqdm>=4.67.3
+tqdm<4.68.4,>=4.67.3
 typing-extensions>=4.15.0
