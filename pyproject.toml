@@ -22,6 +22,9 @@ Homepage = "https://github.com/domdfcoding/pottery-map"
 "Issue Tracker" = "https://github.com/domdfcoding/pottery-map/issues"
 "Source Code" = "https://github.com/domdfcoding/pottery-map"
 
+[project.scripts]
+pottery-map = "pottery_map.__main__:main"
+
 [project.optional-dependencies]
 links = [ "beautifulsoup4", "requests", "tomledit",]
 all = [ "beautifulsoup4", "requests", "tomledit",]

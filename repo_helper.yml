@@ -28,6 +28,9 @@ manifest_additional:
 extra_formate_deps:
  - formate-js>=0.1.0
 
+console_scripts:
+  - pottery-map = pottery_map.__main__:main
+
 extra_formate_types:
  - javascript
  - ts
