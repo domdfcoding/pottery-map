@@ -38,9 +38,9 @@ from typing import TYPE_CHECKING, TypeVar
 from urllib.parse import urlparse
 
 # 3rd party
+import araokaat
 import domdf_folium_tools.static_files
 import markdown
-import tqdm
 from consolekit.terminal_colours import Fore
 from domdf_python_tools.paths import PathPlus, TemporaryPathPlus
 from domdf_python_tools.typing import PathLike
@@ -216,7 +216,7 @@ def get_sha256_hash(filename: PathLike, blocksize: int = 1 << 20) -> str:
 		return hash_obj.hexdigest()
 
 
-class ProgressBar(tqdm.tqdm):  # noqa: PRM002
+class ProgressBar(araokaat.araokaat):  # noqa: PRM002
 	"""
 	Customised ``tqdm`` progressbar.
 	"""

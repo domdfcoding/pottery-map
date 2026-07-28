@@ -1,4 +1,3 @@
 types-beautifulsoup4
 types-Markdown
 types-networkx
-types-tqdm
