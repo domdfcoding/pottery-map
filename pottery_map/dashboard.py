@@ -35,7 +35,7 @@ from typing import Any
 
 # 3rd party
 import networkx
-from gradpyent import Gradient  # type: ignore[import-untyped]
+from gradpyent import Gradient
 
 # this package
 from pottery_map.companies import Companies, _get_item_count
@@ -141,7 +141,7 @@ def gradient_for_data(
 	for count in data:
 		background_colour.append(count_colour_map[count])
 
-	return background_colour
+	return background_colour  # type: ignore[return-value]  # False positive; gradpyent needs @overload
 
 
 def sort_counts(counts: Mapping[str, float], other_count: float | None = None) -> tuple[list[str], list[float]]:
