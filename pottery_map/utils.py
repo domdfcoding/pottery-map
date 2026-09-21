@@ -44,6 +44,7 @@ import markdown
 from consolekit.terminal_colours import Fore
 from domdf_python_tools.paths import PathPlus, TemporaryPathPlus
 from domdf_python_tools.typing import PathLike
+from fold_to_ascii import fold
 from markdown.inlinepatterns import InlineProcessor
 from PIL import Image
 
@@ -79,7 +80,9 @@ def make_id(string: str) -> str:
 	:param string:
 	"""
 
-	return _id_regex.sub('_', string.lower())
+	replacement = '_'
+	sans_diactirics = fold(string, replacement=replacement)
+	return _id_regex.sub(replacement, sans_diactirics.lower())
 
 
 def copy_static_files(static_dir: PathPlus) -> None:
