@@ -44,7 +44,7 @@ import markdown
 from consolekit.terminal_colours import Fore
 from domdf_python_tools.paths import PathPlus, TemporaryPathPlus
 from domdf_python_tools.typing import PathLike
-from fold_to_ascii import fold
+from fold_to_ascii import fold  # type: ignore[import-untyped]
 from markdown.inlinepatterns import InlineProcessor
 from PIL import Image
 
