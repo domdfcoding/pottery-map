@@ -84,7 +84,7 @@ repos:
     - id: forbid-crlf
 
  - repo: https://github.com/python-formate/snippet-fmt
-   rev: v0.3.1
+   rev: v0.3.2
    hooks:
     - id: snippet-fmt
       additional_dependencies:
@@ -125,13 +125,14 @@ repos:
        - --fix
       exclude: (\.min.css|main.css|scss/bootstrap/)
 
- - repo: https://github.com/ComPWA/taplo-pre-commit
-   rev: v0.9.3
+ - repo: https://github.com/domdfcoding/taplo-pre-commit
+   rev: v0.10.0
    hooks:
     - id: taplo-format
       exclude: (pyproject.toml|formate.toml)
     - id: taplo-lint
       exclude: (pyproject.toml|formate.toml)
+      args: []
 
  - repo: https://github.com/djlint/djLint
    rev: v1.35.2
