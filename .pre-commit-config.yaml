@@ -125,15 +125,6 @@ repos:
        - --fix
       exclude: (\.min.css|main.css|scss/bootstrap/)
 
- - repo: https://github.com/domdfcoding/taplo-pre-commit
-   rev: v0.10.0
-   hooks:
-    - id: taplo-format
-      exclude: (pyproject.toml|formate.toml)
-    - id: taplo-lint
-      exclude: (pyproject.toml|formate.toml)
-      args: []
-
  - repo: https://github.com/djlint/djLint
    rev: v1.35.2
    hooks:
